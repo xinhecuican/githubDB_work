@@ -103,14 +103,14 @@ def get_contributor(user_name, repo_name, repo_id):
     soup = BeautifulSoup(html, 'html.parser')
     c = soup.find_all('a', attrs={'data-octo-click': 'hovercard-link-click'})
     for i in range(len(c)):
-        temp.append((repo_id, get_user_id(c[i].get('href').rpartition('/')[2])))
+        if [repo_id, get_user_id(str(c[i].get('href').rpartition('/')[2]))] not in temp:
+            temp.append([repo_id, get_user_id(str(c[i].get('href').rpartition('/')[2]))])
 
-    temp = list(set(temp))
+
     with open(r'D:\\21-22-1\\Database_Practice\\contributor.csv', 'a+') as f:
         writer = csv.writer(f)
         writer.writerows(temp)
-
-    print('已获取项目', repo_name, '的贡献者, 收录其中', len(temp), '人')
+    print('已获取项目', repo_name, '的贡献者, 有', len(temp), '人')
 # --------------------------------------------------------------------------------------
 
 def get_user_repositories(user_name):
@@ -163,20 +163,20 @@ def get_repositories_info(r_url, user_name):
     if contributor_num != 0:
         print('计算')
         get_contributor(user_name, r_url, repository_id)
-    get_all_branch(url + '/branches', repository_id, user_name, default_branch)
+    get_all_branch(url + '/branches', repository_id, user_name, default_branch, r_url)
 
 
 
-def get_all_branch(url, repository_id, user_name, defalut_branch):
+def get_all_branch(url, repository_id, user_name, defalut_branch, r_url):
     html = getHTML(url)
     soup = BeautifulSoup(html, 'html.parser')
     all_b = soup.find_all('branch-filter-item')
     for i in range(len(all_b)):
         t = url.partition('/branches')
-        get_branch(t[0], all_b[i].get('branch'), repository_id, user_name, defalut_branch)
+        get_branch(t[0], all_b[i].get('branch'), repository_id, user_name, defalut_branch, r_url)
 
 
-def get_branch(turl, name, repository_id, user_name, default_branch):
+def get_branch(turl, name, repository_id, user_name, default_branch, r_url):
     # print(name)
     url = turl + '/tree/' + name
     html = getHTML(url)
@@ -194,7 +194,10 @@ def get_branch(turl, name, repository_id, user_name, default_branch):
     owner_repo = repository_id
     commit_num = soup.find_all('strong')[3]
 
-    info = [branch_name, branch_par, owner_repo, last_commit, commit_num.text]
+    download_link = 'https://github.com/' + user_name + '/' + r_url + '/' + 'archive/refs/heads/' + name + '.zip'
+    print(download_link)
+
+    info = [branch_name, branch_par, owner_repo, last_commit, commit_num.text, download_link]
 
     with open(r'D:\\21-22-1\\Database_Practice\\branches.csv', 'a+') as f:
         writer = csv.writer(f)
