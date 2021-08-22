@@ -60,14 +60,14 @@ def get_user_info(user_name):
         writer = csv.writer(f)
         writer.writerow(info)
 
-    print('已爬取', user_name, '的用户信息')
+    print('已爬取', user_name, '的用户信息, star', star_num, '个')
 
 # --------------------------------------------------------------------------------------
 
 def get_followers(user_name):
     fid = get_user_id(user_name)
     temp = []
-    for i in range(1, 3):
+    for i in range(1, 2):
         try:
             url = 'https://github.com/' + user_name + '?page=' + str(i) + '&tab=followers'
             html = getHTML(url)
@@ -83,7 +83,6 @@ def get_followers(user_name):
             for j in range(len(followers_name)):
                 if followers_name[j].text not in name_done:
                     q.put(followers_name[j].text)
-                    # print('队列长度：', q.qsize())
                     d = get_user_id(followers_name[j].text)
                     temp.append((d, fid))
         except:
@@ -98,19 +97,20 @@ def get_followers(user_name):
 def get_contributor(user_name, repo_name, repo_id):
     temp = []
     url = 'https://github.com/' + user_name + '/' + repo_name
-    # print('url是:', url)
+    print('url是:', url)
     html = getHTML(url)
     # print(html)
     soup = BeautifulSoup(html, 'html.parser')
-    c = soup.find_all('a', class_='Link--primary no-underline flex-self-center')
+    c = soup.find_all('a', attrs={'data-octo-click': 'hovercard-link-click'})
     for i in range(len(c)):
-        temp.append((repo_id, get_user_id(str(c[i].get('href')).rpartition('/')[2])))
+        temp.append((repo_id, get_user_id(c[i].get('href').rpartition('/')[2])))
 
+    temp = list(set(temp))
     with open(r'D:\\21-22-1\\Database_Practice\\contributor.csv', 'a+') as f:
         writer = csv.writer(f)
         writer.writerows(temp)
 
-    print('已获取项目', repo_name, '的贡献者,共', len(temp), '人')
+    print('已获取项目', repo_name, '的贡献者, 收录其中', len(temp), '人')
 # --------------------------------------------------------------------------------------
 
 def get_user_repositories(user_name):
@@ -136,7 +136,7 @@ def get_repositories_info(r_url, user_name):
     repository_id = re.search(r'repository_id" content="\d{6,11}', shtml).group(0)[24:]
     default_branch = re.search(r'data-menu-button>\w*</span>', shtml).group(0).partition('>')[2].partition('<')[0]
     try:
-        contributor_num = re.search(r'Contributors <span title="\d*', shtml).group(0).partition('"')[2]
+        contributor_num = re.search(r'Contributors <span title="\d*', shtml).group(0).rpartition(r'"')[2]
     except:
         contributor_num = 0
     # watch_num = re.search(r'\d* users are watching this repository', shtml)
@@ -157,25 +157,26 @@ def get_repositories_info(r_url, user_name):
         writer = csv.writer(f)
         writer.writerow(info)
 
-    print('已获取项目', r_url, '的基本信息')
+    print('已获取项目', r_url, '的基本信息, con_num是', contributor_num, 'star', star_num, ' fork', fork_num)
 
     # print(contributor_num)
     if contributor_num != 0:
+        print('计算')
         get_contributor(user_name, r_url, repository_id)
-    get_all_branch(url + '/branches', repository_id, user_name)
+    get_all_branch(url + '/branches', repository_id, user_name, default_branch)
 
 
 
-def get_all_branch(url, repository_id, user_name):
+def get_all_branch(url, repository_id, user_name, defalut_branch):
     html = getHTML(url)
     soup = BeautifulSoup(html, 'html.parser')
     all_b = soup.find_all('branch-filter-item')
     for i in range(len(all_b)):
         t = url.partition('/branches')
-        get_branch(t[0], all_b[i].get('branch'), repository_id, user_name)
+        get_branch(t[0], all_b[i].get('branch'), repository_id, user_name, defalut_branch)
 
 
-def get_branch(turl, name, repository_id, user_name):
+def get_branch(turl, name, repository_id, user_name, default_branch):
     # print(name)
     url = turl + '/tree/' + name
     html = getHTML(url)
@@ -189,7 +190,7 @@ def get_branch(turl, name, repository_id, user_name):
     last_commit = soup2.find_all('a', class_='text-mono f6 btn btn-outline BtnGroup-item')[0].text.strip()
 
 
-    branch_par = 'master'
+    branch_par = default_branch
     owner_repo = repository_id
     commit_num = soup.find_all('strong')[3]
 
@@ -224,7 +225,7 @@ def get_commit(turl, commit_id, repository_id, user_name, name):
 
 # 获取个人信息 关注者信息 仓库信息 单个仓库信息 贡献者 分支 提交
 if __name__ == '__main__':
-    q.put('ssd71')
+    q.put('sparshg')
     while True:
         temp_name = q.get()
         # print(q.qsize())
