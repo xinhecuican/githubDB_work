@@ -27,7 +27,7 @@ def get_user_id(user_name):
         user_id = re.search(r'profile_user_id&quot;:\d{4,9}', str(html)).group(0)[22:]
         return user_id
     except:
-        pass
+        return None
 
 # --------------------------------------------------------------------------------------
 
@@ -38,10 +38,10 @@ def get_user_info(user_name):
 
     time.sleep(1)
     user_id = get_user_id(user_name)
-    nick = soup.find('span', class_='p-name vcard-fullname d-block overflow-hidden')
-    nick_name = str(nick.text[2:]).strip()
-    if nick_name == '':
-        nick_name = 'no nick name'
+    # nick = soup.find('span', class_='p-name vcard-fullname d-block overflow-hidden')
+    # nick_name = str(nick.text[2:]).strip()
+    # if nick_name == '':
+    #     nick_name = 'no nick name'
 
     Counters_data = soup.find_all('span', class_='text-bold color-text-primary')
     followers = Counters_data[0].text
@@ -53,10 +53,10 @@ def get_user_info(user_name):
     project_num = proj_data[1].text
 
     name_done.append(user_name)
-    info = [user_id, nick_name, followers, following, star_num, repositories_num, project_num]
+    info = [user_id, user_name, followers, following, star_num, repositories_num, project_num]
     # print(info)
 
-    with open(r'D:\\21-22-1\\Database_Practice\\user_info.csv', 'a+') as f:
+    with open(r'D:\\21-22-1\\Database_Practice1\\user_info.csv', 'a+') as f:
         writer = csv.writer(f)
         writer.writerow(info)
 
@@ -88,29 +88,30 @@ def get_followers(user_name):
         except:
             pass
 
-    with open(r'D:\\21-22-1\\Database_Practice\\followers.csv', 'a+') as f:
+    with open(r'D:\\21-22-1\\Database_Practice1\\followers.csv', 'a+') as f:
         writer = csv.writer(f)
         writer.writerows(temp)
 
 # --------------------------------------------------------------------------------------
 
 def get_contributor(user_name, repo_name, repo_id):
-    temp = []
+    tmp = []
     url = 'https://github.com/' + user_name + '/' + repo_name
     print('url是:', url)
     html = getHTML(url)
-    # print(html)
-    soup = BeautifulSoup(html, 'html.parser')
-    c = soup.find_all('a', attrs={'data-octo-click': 'hovercard-link-click'})
-    for i in range(len(c)):
-        if [repo_id, get_user_id(str(c[i].get('href').rpartition('/')[2]))] not in temp:
-            temp.append([repo_id, get_user_id(str(c[i].get('href').rpartition('/')[2]))])
-
-
-    with open(r'D:\\21-22-1\\Database_Practice\\contributor.csv', 'a+') as f:
+    print(html)
+    a = re.findall(r'Link--primary no-underline flex-self-center', html)
+    print(a)
+    for i in range(len(a)):
+        cid = get_user_id(a[i].rpartition('/')[2].partition('"')[0])
+        if cid == None:
+            cid = 0
+        tmp.append([repo_id, cid])
+    print(tmp)
+    with open(r'D:\\21-22-1\\Database_Practice1\\contributor.csv', 'a+') as f:
         writer = csv.writer(f)
-        writer.writerows(temp)
-    print('已获取项目', repo_name, '的贡献者, 有', len(temp), '人')
+        writer.writerows(tmp)
+    print('已获取项目', repo_name, '的贡献者, 有', len(tmp), '人')
 # --------------------------------------------------------------------------------------
 
 def get_user_repositories(user_name):
@@ -133,6 +134,7 @@ def get_repositories_info(r_url, user_name):
     shtml = str(html)
     soup = BeautifulSoup(html, 'html.parser')
     # print(shtml)
+    repository_name = soup.find_all('a', attrs={'data-pjax':'#js-repo-pjax-container'})[0].text
     repository_id = re.search(r'repository_id" content="\d{6,11}', shtml).group(0)[24:]
     default_branch = re.search(r'data-menu-button>\w*</span>', shtml).group(0).partition('>')[2].partition('<')[0]
     try:
@@ -141,28 +143,32 @@ def get_repositories_info(r_url, user_name):
         contributor_num = 0
     # watch_num = re.search(r'\d* users are watching this repository', shtml)
     try:
-        star_num = re.search(r'\d* users starred this repository', shtml).group(0).partition(' ')[0]
+        star_num = re.search(r'\d* \w* starred this repository', shtml).group(0).partition(' ')[0]
     except:
         star_num = 0
+
+
     try:
-        fork_num = re.search(r'\d* users forked this repository', shtml).group(0).partition(' ')[0]
+        fork_num = re.search(r'\d* \w* forked this repository', shtml).group(0).partition(' ')[0]
     except:
         fork_num = 0
+
+
     # print(star_num.group(0))
     owner_id = get_user_id(user_name)
 
-    info = [repository_id, user_name, default_branch, contributor_num, star_num, fork_num]
+    info = [repository_name, repository_id, user_name, default_branch, contributor_num, star_num, fork_num]
 
-    with open(r'D:\\21-22-1\\Database_Practice\\repository.csv', 'a+') as f:
+    with open(r'D:\\21-22-1\\Database_Practice1\\repository.csv', 'a+') as f:
         writer = csv.writer(f)
         writer.writerow(info)
 
     print('已获取项目', r_url, '的基本信息, con_num是', contributor_num, 'star', star_num, ' fork', fork_num)
 
     # print(contributor_num)
-    if contributor_num != 0:
-        print('计算')
-        get_contributor(user_name, r_url, repository_id)
+    # if contributor_num != 0:
+        # print('计算')
+        # get_contributor(user_name, r_url, repository_id)
     get_all_branch(url + '/branches', repository_id, user_name, default_branch, r_url)
 
 
@@ -199,7 +205,7 @@ def get_branch(turl, name, repository_id, user_name, default_branch, r_url):
 
     info = [branch_name, branch_par, owner_repo, last_commit, commit_num.text, download_link]
 
-    with open(r'D:\\21-22-1\\Database_Practice\\branches.csv', 'a+') as f:
+    with open(r'D:\\21-22-1\\Database_Practice1\\branches.csv', 'a+') as f:
         writer = csv.writer(f)
         writer.writerow(info)
 
@@ -214,12 +220,12 @@ def get_commit(turl, commit_id, repository_id, user_name, name):
     html = getHTML(url)
     soup = BeautifulSoup(html, 'html.parser')
     commit_date = soup.find_all('h2', class_='f5 text-normal')[0].text[11:]
-    comment = soup.find_all('a', class_='Link--primary text-bold js-navigation-open markdown-title')[0].text[:-2]
+    comment = soup.find_all('a', class_='Link--primary text-bold js-navigation-open markdown-title')[0].text
 
     commit_user = soup.find_all('a', class_='commit-author user-mention')[0].text
 
     info = [commit_id, repository_id, commit_user, commit_date, comment]
-    with open(r'D:\\21-22-1\\Database_Practice\\commit.csv', 'a+') as f:
+    with open(r'D:\\21-22-1\\Database_Practice1\\commit.csv', 'a+') as f:
         writer = csv.writer(f)
         writer.writerow(info)
 
@@ -228,7 +234,7 @@ def get_commit(turl, commit_id, repository_id, user_name, name):
 
 # 获取个人信息 关注者信息 仓库信息 单个仓库信息 贡献者 分支 提交
 if __name__ == '__main__':
-    q.put('sparshg')
+    q.put('Frederick-S')
     while True:
         temp_name = q.get()
         # print(q.qsize())
