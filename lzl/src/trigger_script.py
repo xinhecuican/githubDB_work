@@ -33,16 +33,28 @@ before insert on Branches
 for each row
 begin
     if(not exists(select * from Branches where new.branch_id = branch_id))then
-        signal sqlstate '45000';
+        signal sqlstate '45000' set message_text = 'parent branches don't exists';
     end if;
 end;'''
 
+trigger_branches_delete = '''
+create trigger on_branches_delete
+after delete on Branches
+for each row
+begin
+    if(exists(select * from repository 
+    where repository_id = old.owner_repository and default_branch = old.branch_name))then
+        signal sqlstate '45000' set message_text = 'can't delete default branches';
+    end if;
+end;'''
+
+# 检测是否有重复的库
 trigger_repository_insert = '''
 create trigger on_repository_insert
 before insert on Repository
 for each row
 begin
     if(exists(select * from Repository where new.owner_id = owner_id and new.name = name))then
-        signal sqlstate '45000'
+        signal sqlstate '45000' set message_text = 'data have already been inserted';
     end if;
 end'''

@@ -4,6 +4,8 @@ import pymysql
 from common import Debug
 import trigger_script
 import Tables_script
+from lzl.src import test_data
+
 
 class DB_helper():
     def __init__(self, host, username, password, db=""):
@@ -51,20 +53,36 @@ class DB_helper():
 
     def create_all_tables(self):
         names = [e for e in dir(Tables_script) if not e.startswith("_")]
+        cursor = self.connection.cursor()
+        cursor.execute("show tables")
+        datas = cursor.fetchall()
+        cursor.close()
+        tables = []
+        for data in datas:
+            tables.append(data[0])
         for name in names:
-            self.run(getattr(Tables_script, name), True)
+            contains = False
+            for table in tables:
+                if table.lower() == name.lower()[6:] and not name.startswith("test"):
+                    contains = True
+                    break
+            if not contains:
+                self.run(getattr(Tables_script, name), True)
 
     def run(self, state, need_commit=False):
         cursor = self.connection.cursor()
         try:
             cursor.execute(state)
-            print_sql(cursor.fetchall())
+            datas = cursor.fetchall()
+            print_sql(datas)
         except:
             Debug.error_message("执行命令出错")
             Debug.print_traceback()
+            cursor.close()
         if need_commit:
             self.connection.commit()
         cursor.close()
+        return datas
 
     def show_table(self, name):
         cursor = self.connection.cursor()
@@ -75,13 +93,45 @@ class DB_helper():
     def insert(self, table, datas):
         func_name = table.lower() + "_insert"
         if hasattr(trigger_script, func_name):
-            getattr(trigger_script, func_name)(self.connection, datas)
+            try:
+                getattr(trigger_script, func_name)(self.connection, datas)
+            except pymysql.err.OperationalError as e:
+                print(e)
+                return False
         else:
             cursor = self.connection.cursor()
             for data in datas:
                 cursor.execute("insert into " + table + " values(" + ','.join(data) + ")")
             self.connection.commit()
             cursor.close()
+        return True
+
+    def delete(self, table, state):
+        func_name = table.lower + "_delete"
+        if hasattr(trigger_script, func_name):
+            try:
+                getattr(trigger_script, func_name)(self.connection, state)
+            except pymysql.err.OperationalError as e:
+                print(e)
+                return False
+        else:
+            cursor = self.connection.cursor()
+            cursor.execute("delete from " + table + " where " + state)
+            self.connection.commit()
+            cursor.close()
+        return True
+
+
+    def insert_all_trigger(self):
+        trigger_name = [e for e in dir(trigger_script) if not e.startswith("_") and e.startswith("trigger")]
+        for trigger in trigger_name:
+            self.run(getattr(trigger_script, trigger), True)
+
+    def insert_all_data(self):
+        datas = [e for e in dir(test_data) if not e.startswith("_")]
+        for data in datas:
+            self.insert(data[:-5], getattr(test_data, data))
+
 
 
 

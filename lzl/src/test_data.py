@@ -4,4 +4,8 @@ User_info_data = [['0', "'a'", '0', '0', '0', '0', '0', '0'],
 
 followers_data = [['0', '1'], ['1', '0']]
 
-repository_data = [['NULL', "'test'", '0', "'main'", '0', '1', '2', '0']]
+repository_data = [['NULL', '0', "'test'", "'main'", '0', '1', '2', '0'],
+                   ['NULL', '0', "'test1'", "'main'", '0', '1', '2', '0']]
+
+contributors_data = [['2', '0'], ['2', '2']]
+
