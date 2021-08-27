@@ -19,6 +19,38 @@ def user_info_insert(connection, datas):
     cursor.close()
 
 
+def branches_delete(connection, states):
+    cursor = connection.cursor()
+    cursor.execute("select branch_id from branches where " + states)
+    datas = cursor.fetchall()
+    for data in datas:
+        cursor.execute(f"select parent_branch from branches where branch_id='{data[0]}'")
+        parent_branch = cursor.fetchone()[0]
+        cursor.execute(f"update branches set parent_branch= '{parent_branch}' where parent_branch='{data[0]}'")
+        
+    cursor.execute("delete from branches where " + states)
+    connection.commit()
+    cursor.close()
+
+
+def commits_delete(connection, states):
+    cursor = connection.cursor()
+    cursor.execute("select commit_id from Commits where " + states)
+    datas = cursor.fetchall()
+    for data in datas:
+        cursor.execute(f"select commit_id from Commits where parent_commit ='{data[0]}'")
+        child_datas = cursor.fetchall()
+        cursor.execute(f"select parent_commit from Commits where commit_id='{data[0]}'")
+        parent_commit = cursor.fetchone()[0]
+        for child_data in child_datas:  # 更新commit的parent
+            cursor.execute(f"update Commits set parent= '{parent_commit}' where commit_id = '{child_data[0]}'")
+        cursor.execute(f"update Branches set latest_commit='{parent_commit}' where "
+                       f"latest_commit = '{data[0]}'")
+    cursor.execute("delete from Commits where " + states)
+    connection.commit()
+    cursor.close()
+
+
 trigger_user_info_delete = '''
 create trigger on_user_info_delete
 after delete on User_info

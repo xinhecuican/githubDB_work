@@ -75,6 +75,7 @@ class DB_helper():
             cursor.execute(state)
             datas = cursor.fetchall()
             print_sql(datas)
+            return datas
         except:
             Debug.error_message("执行命令出错")
             Debug.print_traceback()
@@ -82,7 +83,6 @@ class DB_helper():
         if need_commit:
             self.connection.commit()
         cursor.close()
-        return datas
 
     def show_table(self, name):
         cursor = self.connection.cursor()
@@ -101,13 +101,16 @@ class DB_helper():
         else:
             cursor = self.connection.cursor()
             for data in datas:
-                cursor.execute("insert into " + table + " values(" + ','.join(data) + ")")
+                try:
+                    cursor.execute("insert into " + table + " values(" + ','.join(data) + ")")
+                except:
+                    Debug.print_traceback()
             self.connection.commit()
             cursor.close()
         return True
 
     def delete(self, table, state):
-        func_name = table.lower + "_delete"
+        func_name = table.lower() + "_delete"
         if hasattr(trigger_script, func_name):
             try:
                 getattr(trigger_script, func_name)(self.connection, state)

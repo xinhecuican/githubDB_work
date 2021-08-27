@@ -42,6 +42,7 @@ def resolve_repository(helper, file):
     cor.insert(0, 'owner_id', owner_name)
     cor.insert(0, 'repository_id', id)
     lists = cor.values.tolist()
+    lists = [x for x in lists if x[1] != "NULL"]
     for l in lists:
         l.insert(-2, '0')
         l[-2] = str2num(l[-2])
@@ -51,5 +52,12 @@ def resolve_repository(helper, file):
         l[2] = "'" + l[2] + "'"
         l[3] = "'" + l[3] + "'"
     helper.insert("repository", lists)
+
+def resolve_followers(helper, file):
+    lists = csv2list(file)
+    for list in lists:
+        list[0] = str(list[0])
+        list[1] = str(list[1])
+    helper.insert("followers", lists)
 
 

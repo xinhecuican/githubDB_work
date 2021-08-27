@@ -62,51 +62,59 @@ create table Branches(
     commit_num int,
     foreign key fk_owner_repository(owner_repository) references Repository(repository_id)
     on update cascade
-    on delete cascade,
-    foreign key fk_create_user(create_user) references User_info(user_id)
-    on update cascade
-    on delete set null
+    on delete cascade
 );'''
 
 # comment是提交时的说明
 # commit是commit的编号，长度为40位
-# commit_directory_address是目录文件地址
+# commit_directory_address是目录文件，它的格式为
+# {"directory_name":{
+#     "file_name": file_id
+# }}
+# longtext最多2^32 - 1个字节
 table_commits = '''
 create table Commits(
     commit_id char(50) primary key,
+    parent_commit char(50),
     repository_id int,
-    author int,
     commit_date date,
     message varchar(255),
-    commit_directory_address varchar(255),
+    commit_directory_address longtext,
     add_line int,
     delete_line int,
-    commit_branch int,
-    
     foreign key fk_repository_id(repository_id) references Repository(repository_id)
     on delete cascade
-    on update cascade,
-    foreign key fk_commit_user(commit_user) references User_info(user_id)
-    on delete set null
-    on update cascade, 
-    foreign key fk_commit_branch(commit_branch) references Branches(commit_branch)
-    on delete set null
     on update cascade
  );'''
 
-# 这只是一个演示，它应该是Branches表table_structure_address对应文件的一项的大致内容
-# 如果使用数据库负载太大，并且没有必要
-# type=0为目录, type=1为文件，文件的address才有实际意义
-# related_commit是这个文件最后被修改的commit键
-test_table_files = '''
-create table Files(
-    file_id int primary key auto_increment,
-    owner_branch_id int foreign key references Branches(branch_id)
-    on delete cascade
-    on update cascade,
-    parent_id int,
+# user_action: 0是commit 1是authored
+table_commit_contributor = '''
+create table Commit_contributor
+(
+    commit_id char(50),
+    contributor_id int,
+    user_action int  
+);'''
+
+# 用户的活动,在主页面显示
+# type =0为创建仓库 =1为commit =2 pull request
+table_activity = '''
+create table Activity(
+    activity_id int primary key auto_increment,
     type int,
-    related_commit varchar(50),
-    name varchar(255),
-    address varchar(255)
+    owner_repository_id int,
+    activity_date date
+);'''
+
+# 文件内容使用二进制存储，最多4G
+# file_type是文件后缀
+# file_action是该commit对这个文件的动作，create
+# 只记录每个commit进行修改的文件必须要从最初的commit开始爬取，每次爬取时还要获得它的目录结构并重建为json格式
+table_commit_files = '''
+create table commit_files(
+    file_id int not null primary key auto_increment,
+    file_type char(20),
+    file_action int,
+    file_name varchar(255) not null,
+    file_content longblob
 );'''
