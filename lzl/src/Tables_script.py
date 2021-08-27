@@ -108,13 +108,15 @@ create table Activity(
 
 # 文件内容使用二进制存储，最多4G
 # file_type是文件后缀
-# file_action是该commit对这个文件的动作，create
+# file_action是该commit对这个文件的动作，create=0，modified=1,remove=2,rename=3
 # 只记录每个commit进行修改的文件必须要从最初的commit开始爬取，每次爬取时还要获得它的目录结构并重建为json格式
 table_commit_files = '''
 create table commit_files(
     file_id int not null primary key auto_increment,
     file_type char(20),
     file_action int,
+    int add_lines,
+    int remove_lines,
     file_name varchar(255) not null,
     file_content longblob
 );'''

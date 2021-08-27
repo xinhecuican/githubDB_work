@@ -27,7 +27,7 @@ def branches_delete(connection, states):
         cursor.execute(f"select parent_branch from branches where branch_id='{data[0]}'")
         parent_branch = cursor.fetchone()[0]
         cursor.execute(f"update branches set parent_branch= '{parent_branch}' where parent_branch='{data[0]}'")
-        
+
     cursor.execute("delete from branches where " + states)
     connection.commit()
     cursor.close()
