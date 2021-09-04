@@ -1,32 +1,35 @@
+# 为了描述user_info的结构加上了password，但是实际上无法获得数据，直接使用default值即可
+# description (Object):{
+#    'email': 在首页提供的邮箱
+#    'location': 首页提供的地址
+#    'comments': 首页提供的评论
+#     'link'： 首页提供的链接
+# }
+# followers和followings的格式相同 [{'id': 用户id, 'description': 用户简介}]
 table_user_info = '''create table User_info(
     user_id int primary key,
     user_name varchar(100),
+    password char(30) default '',
+    email char(50) default '',
     follower_num int default 0,
     following_num int default 0,
     star_num int default 0,
     project_num int default 0,
     repository_num int default 0,
-    package_num int default 0
-);'''
-
-# 多对多关系，无法建立主键，可以建立索引
-table_followers = '''create table Followers(
-    follower_id int,
-    following_id int,
-    foreign key fk_follower(follower_id) references User_info(user_id)
-    on delete set null
-    on update cascade,
-    foreign key fk_following(following_id) references User_info(user_id)
-    on delete set null
-    on update cascade
+    package_num int default 0,
+    description text,
+    followers text,
+    followings text
 );'''
 
 # repository_id可以在仓库主界面的html中搜repository，第一个显示的就是它的id
+# visibility只能检索到true的
 table_repository = '''
 create table Repository(
     repository_id int primary key,
     owner_id int not NULL,
     name varchar(255), 
+    visibility bool default true,
     default_branch varchar(255),
     contributor_num int,
     watch_num int,
@@ -36,6 +39,31 @@ create table Repository(
     on update cascade
     on delete cascade
 );'''
+
+# repository中的issue
+# status： issue的状态，有open，closed等等
+# comments: 是一个json文档，格式为
+# {
+#     id: comment的id
+#     quota: 引用评论的id
+#     user_id: 用户id
+#     name: 用户名字
+#     action: str,操作类型，new表示新建，comment表示评论，label表示增加label, close表示关闭
+#     commit_date: 提交时间
+#     text: 提交内容
+# }
+table_issue = '''
+create table issue(
+    issue_id int primary key auto_increment,
+    owner_repository int,
+    creator_id int,
+    labels text,
+    status int,
+    create_date date,
+    comments_sum int,
+    question text,
+    comments longtext
+};'''
 
 # 需要在repository上建立索引
 table_contributors = '''
@@ -72,6 +100,7 @@ create table Branches(
 #     "file_name": file_id
 # }}
 # longtext最多2^32 - 1个字节
+# comments和issue表中的内容类似，但是没有action
 table_commits = '''
 create table Commits(
     commit_id char(50) primary key,
@@ -79,7 +108,9 @@ create table Commits(
     repository_id int,
     commit_date date,
     message varchar(255),
-    commit_directory_address longtext,
+    comments longtext,
+    contributors text,
+    commit_directory_address MediumText,
     add_line int,
     delete_line int,
     foreign key fk_repository_id(repository_id) references Repository(repository_id)

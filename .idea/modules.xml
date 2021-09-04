@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/../../drm/drm1_backend/.idea/drm1_backend.iml" filepath="$PROJECT_DIR$/../../drm/drm1_backend/.idea/drm1_backend.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/githubDB.iml" filepath="$PROJECT_DIR$/.idea/githubDB.iml" />
     </modules>
   </component>

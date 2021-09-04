@@ -1,2 +1,7 @@
 index_Contributors = '''create index index_repository_id on Contributors(repository_id)'''
 index_Followers = '''create index index_follower_id on Followers(follower_id);'''
+index_user_info_user_name = '''create index index_user_name on User_info(user_name);'''
+index_branches_branch_name = '''create index index_branch_name on Branches(branch_name);'''
+index_commits_repository_id = '''create index index_repository_id on commits(repository_id);'''
+index_commit_contributor_commit_id = '''create index index_contributor on commit_contributor(commit_id);'''
+index_issue_owner_repository = '''create index index_owner_repository on issue(owner_repository)'''
