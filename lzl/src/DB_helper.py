@@ -140,12 +140,12 @@ class DB_helper():
 
 def print_sql(datas, cols=None):
     header_name = []
-
     if cols is not None:
         for col in cols:
             header_name.append(col[0])
     print(("{:<15}" * len(header_name)).format(*header_name))
     for data in datas:
+        data =  [str(x) for x in data]
         print(("{:<15}" * len(data)).format(*data))
 
 

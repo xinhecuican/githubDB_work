@@ -7,7 +7,7 @@
 # }
 # followers和followings的格式相同 [{'id': 用户id, 'description': 用户简介}]
 table_user_info = '''create table User_info(
-    user_id int primary key,
+    id int primary key,
     user_name varchar(100),
     password char(30) default '',
     email char(50) default '',
@@ -24,22 +24,44 @@ table_user_info = '''create table User_info(
 
 # repository_id可以在仓库主界面的html中搜repository，第一个显示的就是它的id
 # visibility只能检索到true的
+# contributors (Array): 所有contributor的id
 table_repository = '''
 create table Repository(
-    repository_id int primary key,
-    owner_id int not NULL,
-    name varchar(255), 
+    id int primary key,
+    user_id int not NULL,
+    name varchar(255) default '', 
     visibility bool default true,
-    default_branch varchar(255),
-    contributor_num int,
-    watch_num int,
-    star_num int,
-    fork_num int,
-    foreign key fk_owner_id(owner_id) references User_info(user_id)
+    default_branch varchar(255) default 'main',
+    description varchar(255) default '',
+    licenses varchar(255) default '',
+    contributor_num int default 0,
+    contributors text,
+    watch_num int default 0,
+    star_num int default 0,
+    fork_num int default 0,
+    foreign key fk_owner_id(user_id) references User_info(id)
     on update cascade
     on delete cascade
 );'''
 
+"""
+assets (Array):[{
+                    'name': 文件名
+                    'size': 文件大小
+                    'file_link': 文件链接
+                }]
+"""
+table_release = '''
+create table release(
+    id int primary key auto_increment,
+    name varchar(255),
+    repository_id int,
+    author_id int,
+    commit_id int,
+    tag varchar(255),
+    publish_date date,
+    assets mediumtext
+);'''
 # repository中的issue
 # status： issue的状态，有open，closed等等
 # comments: 是一个json文档，格式为
@@ -54,8 +76,8 @@ create table Repository(
 # }
 table_issue = '''
 create table issue(
-    issue_id int primary key auto_increment,
-    owner_repository int,
+    id int primary key auto_increment,
+    repository_id int,
     creator_id int,
     labels text,
     status int,
@@ -66,17 +88,17 @@ create table issue(
 };'''
 
 # 需要在repository上建立索引
-table_contributors = '''
-create table Contributors(
-    repository_id int,
-    contributor_id int,
-    foreign key fk_repository_id(repository_id) references Repository(repository_id)
-    on update cascade
-    on delete cascade,
-    foreign key fk_contributor_id(contributor_id) references User_info(user_id)
-    on update cascade
-    on delete set null
-);'''
+# table_contributors = '''
+# create table Contributors(
+#     repository_id int,
+#     contributor_id int,
+#     foreign key fk_repository_id(repository_id) references Repository(id)
+#     on update cascade
+#     on delete cascade,
+#     foreign key fk_contributor_id(contributor_id) references User_info(id)
+#     on update cascade
+#     on delete set null
+# );'''
 
 # latest_commit是最近相关的提交，使用函数进行修改,就不建立外键
 # parent_branch需要进行检查
@@ -88,7 +110,7 @@ create table Branches(
     owner_repository int,
     latest_commit char(50),
     commit_num int,
-    foreign key fk_owner_repository(owner_repository) references Repository(repository_id)
+    foreign key fk_owner_repository(owner_repository) references Repository(id)
     on update cascade
     on delete cascade
 );'''
@@ -113,19 +135,19 @@ create table Commits(
     commit_directory_address MediumText,
     add_line int,
     delete_line int,
-    foreign key fk_repository_id(repository_id) references Repository(repository_id)
+    foreign key fk_repository_id(repository_id) references Repository(id)
     on delete cascade
     on update cascade
  );'''
 
 # user_action: 0是commit 1是authored
-table_commit_contributor = '''
-create table Commit_contributor
-(
-    commit_id char(50),
-    contributor_id int,
-    user_action int  
-);'''
+# table_commit_contributor = '''
+# create table Commit_contributor
+# (
+#     commit_id char(50),
+#     contributor_id int,
+#     user_action int
+# );'''
 
 # 用户的活动,在主页面显示
 # type =0为创建仓库 =1为commit =2 pull request
@@ -133,6 +155,7 @@ table_activity = '''
 create table Activity(
     activity_id int primary key auto_increment,
     type int,
+    user_id int,
     owner_repository_id int,
     activity_date date
 );'''
