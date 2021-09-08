@@ -102,6 +102,7 @@ class DB_helper():
             cursor = self.connection.cursor()
             for data in datas:
                 try:
+
                     cursor.execute("insert into " + table + " values(" + ','.join(data) + ")")
                 except:
                     Debug.print_traceback()

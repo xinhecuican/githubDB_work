@@ -4,7 +4,7 @@ import DB_helper
 def user_info_insert(connection, datas):
     cursor = connection.cursor()
     for data in datas:
-        cursor.execute("select * from User_info where user_id = " + data[0] + " limit 1")
+        cursor.execute("select * from User_info where id = " + data[0] + " limit 1")
         row = cursor.fetchone()
         d = cursor.description
         if row is not None:
@@ -19,34 +19,12 @@ def user_info_insert(connection, datas):
     cursor.close()
 
 
-def followers_delete(connection, states):
-    cursor = connection.cursor()
-    sql = f'''update user_info set follower_num = follower_num-1
-    where user_id in
-        {{
-            select following_id from followers
-            where {states}
-        }}'''
-
-    cursor.execute(sql)
-    sql = f'''update user_info set following_num = following_num - 1
-    where user_id in
-    {{
-        select follower_id from followers
-        where {states}
-    }}'''
-    cursor.execute(sql)
-    cursor.execute(f"delete from followers where {states}")
-    connection.commit()
-    cursor.close()
-
-
 # 更新user_info中repository_num
 def repository_delete(connection, states):
     sql = f'''update user_info set repository_num = repository_num - 1
-    where user_id in
+    where id in
         {{
-            select owner_id from repository
+            select user_id from repository
             where {states} 
         }}'''
     cursor = connection.cursor()

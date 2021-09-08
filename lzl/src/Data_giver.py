@@ -25,8 +25,8 @@ class Data_giver:
         table_names = self.helper.run("show tables")
         for table_name in table_names:
             name = table_name[0]
-            row_count = self.helper.run(f"select count(*) from {name}")[0][0]
-            col_infos = self.helper.run(f"desc {name}")
+            row_count = self.helper.run(f"select count(*) from '{name}'")[0][0]
+            col_infos = self.helper.run(f"desc '{name}'")
             info_arr = []
             for col_info in col_infos:
                 info_arr.append({
@@ -51,13 +51,66 @@ class Data_giver:
         :return (Array): 返回一个二维列表，第一行是列名，其他行是数据
         """
         cursor = self.helper.connection.cursor()
-        cursor.execute(f"select * from {table_name}")
+        cursor.execute(f"select * from '{table_name}'")
         col_name = []
         for cols in cursor.description:
             col_name.append(cols[0])
         datas = cursor.fetchall()
+        cursor.close()
         ans = []
         ans.append(col_name)
         for data in datas:
             ans.append(data)
         return ans
+
+    def give_user_info(self, user_name):
+        """
+        未找到返回None
+        :param user_name:
+        :return: (Object){
+                        'id': 用户id
+                        'name' 用户名
+                        'follower_num':
+                        'following_num':
+                        'star_num':
+                        'repository_num':
+                        'description' (Object):
+                            }
+        """
+        cursor = self.helper.connection.cursor()
+        cursor.execute(f"select * from user_info where user_name = '{user_name}'")
+        info = cursor.fetchall()
+        if info is None:
+            return None
+        ans = {}
+        for data in info:
+            ans['id'] = data[0]
+            ans['name'] = data[1]
+            ans['follower_num'] = data[4]
+            ans['following_num'] = data[5]
+            ans['star_num'] = data[6]
+            ans['repository_num'] = data[8]
+            ans['description'] = eval(data[10])
+        return ans
+
+    def give_user_activity(self, user_id, from_date, to_date):
+        """
+
+        :param user_id:
+        :param from_date: 格式YY-MM-DD
+        :param to_date:
+        :return: (Array): [[是一个二维数组
+                            type: 活动类型
+                            repository_name: 活动关联仓库名
+
+        """
+        sql = f'''
+        select type, repository.name, activity.date
+        from activity
+        join repository on repository.id = activity.owner_repository_id
+        where user_id = {user_id} and Date(activity_date) between '{from_date}' to '{to_date}'
+        order by activity_date;'''
+        cursor = self.helper.connection.cursor()
+        cursor.execute(sql)
+        res = cursor.fetchall()
+        return res
