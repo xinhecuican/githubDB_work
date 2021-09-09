@@ -5,7 +5,6 @@ table_user_info = '''create table User_info(
     user_name varchar(100),
     password char(30) default '',
     email char(50) default '',
-    status varchar(50) default '',
     follower_num int default 0,
     following_num int default 0,
     star_num int default 0,
@@ -29,10 +28,46 @@ create user_description(
     id int primary key,
     user_name varchar(100),
     nick_name varchar(100) default '',
+    status varchar(50) default '',
     company varchar(255) default '',
     location varchar(255) default '',
     comments text default '',
-    link varchar(255) default ''
+    link varchar(255) default '',
+    avatar_url varchar(255) default ''
+);'''
+
+
+# user_action: 0是commit 1是authored
+# table_commit_contributor = '''
+# create table Commit_contributor
+# (
+#     commit_id char(50),
+#     contributor_id int,
+#     user_action int
+# );'''
+# 用户的活动,在主页面显示
+# type =0为创建仓库 =1为commit =2 pull request =3 following
+table_activity = '''
+create table Activity(
+    id int primary key auto_increment,
+    type tinyint,
+    user_id int,
+    owner_repository_id int,
+    activity_date date
+);'''
+
+
+"""
+每天一次统计activity的记录
+related_activities_id (Array): 相关活动id
+"""
+table_activity_record = '''
+create table activity_record(
+    id int primary key auto_increment,
+    user_id int,
+    clear_date date,
+    contribution_num int,
+    related_activities_id text
 );'''
 
 
@@ -51,15 +86,17 @@ create user_notification(
 repository_id可以在仓库主界面的html中搜repository，第一个显示的就是它的id
 visibility只能检索到true的
 contributors (Array): 所有contributor的id
+default_branch: 默认的分支，爬取时爬取分支名
+create_date: 创建时间，如果无法获得可以使用第一个commit的时间
 """
 table_repository = '''
 create table Repository(
     id int primary key,
     user_id int not NULL,
     name varchar(255) default '', 
+    create_date datetime,
     visibility bool default true,
-    default_branch varchar(255) default 'main',
-    latest_commit_id varchar(50),
+    default_branch int,
     contributor_num int default 0,
     watch_num int default 0,
     star_num int default 0,
@@ -110,12 +147,11 @@ create table tags(
     repository_id int,
     user_id int,
     name varchar(255),
-    type smallint,
+    type tinyint,
     related_id int,
-    name varchar(255),
+    asset_num smallint default 0,
     publish_date date,
     is_pre_release boolean,
-    assets mediumtext,
     react mediumtext
 );'''
 
@@ -141,8 +177,7 @@ create table issue(
     status int,
     create_date date,
     comments_sum int,
-    question text,
-    comments longtext
+    question text
 );'''
 
 
@@ -156,8 +191,17 @@ create table issue_comment(
     user_id int,
     name varchar(100),
     action tinyint,
-    commit_date date,
+    commit_date datetime,
     content text default ''
+);'''
+
+
+table_labels = '''
+create table labels(
+    id int primary key auto_increment,
+    url varchar(255) default '',
+    name varchar(50) default '',
+    color varchar(10) default ''
 );'''
 
 
@@ -202,13 +246,12 @@ create table pull_request_action(
 # parent_branch需要进行检查
 table_branches = '''
 create table Branches(
-    branch_id int primary key auto_increment,
+    id int primary key auto_increment,
     branch_name varchar(255),
-    parent_branch int,
-    owner_repository int,
+    repository_id int,
     latest_commit char(50),
     commit_num int,
-    foreign key fk_owner_repository(owner_repository) references Repository(id)
+    foreign key fk_owner_repository(repository_id) references Repository(id)
     on update cascade
     on delete cascade
 );'''
@@ -216,62 +259,41 @@ create table Branches(
 
 # comment是提交时的说明
 # commit是commit的编号，长度为40位
-# commit_directory_address是目录文件，它的格式为
-# {"directory_name":{
-#     "file_name": file_id
-# }}
 # longtext最多2^32 - 1个字节
-# comments和issue表中的内容类似，但是没有action
+# contributors 依照下面的commit_contributor表
+# 不考虑merge的两个parent
 table_commits = '''
 create table Commits(
     id int primary key auto_increment,
-    commit_id char(50),
-    parent_commit char(50),
+    commit_sha char(41),
+    parent_commit int,
     repository_id int,
-    commit_date date,
+    author_user_id int default '',
+    commit_user_id int default '',
+    commit_date datetime,
     message varchar(255),
-    comments mediumtext,
-    contributors text,
-    commit_directory_address MediumText,
-    add_line int,
-    delete_line int,
+    contributors text default '',
     foreign key fk_repository_id(repository_id) references Repository(id)
     on delete cascade
     on update cascade
  );'''
 
 
-# user_action: 0是commit 1是authored
-# table_commit_contributor = '''
-# create table Commit_contributor
-# (
-#     commit_id char(50),
-#     contributor_id int,
-#     user_action int
-# );'''
-# 用户的活动,在主页面显示
-# type =0为创建仓库 =1为commit =2 pull request =3 following
-table_activity = '''
-create table Activity(
-    id int primary key auto_increment,
-    type int,
-    user_id int,
-    owner_repository_id int,
-    activity_date date
-);'''
-
-
-"""
-每天一次统计activity的记录
-related_activities_id (Array): 相关活动id
-"""
-table_activity_record = '''
-create table activity_record(
-    id int primary key auto_increment,
-    user_id int,
-    clear_date date,
-    contribution_num int,
-    related_activities_id text
+# commit_directory_address是目录文件，它的格式为
+# {
+#     'file_name': {
+#                     'dic_commit_id': commit_id
+#                     'file_name': file_id
+#                 }
+#     'file_name': file_id
+# }
+table_commit_file_info = '''
+create commit_file_info(
+    id int primary key,
+    commit_directory_address varchar(255),
+    add_line int default 0,
+    delete_line int default 0,
+    change_file_num int default 0
 );'''
 
 
@@ -282,20 +304,35 @@ create table activity_record(
 更新： 只需要爬取每次commit更改的文件，然后每个commit构建一个目录，目录格式为
 {
     'file_name': {
-                    'file_name': commit_id
+                    'dic_commit_id': commit_id
+                    'file_name': file_id
                 }
-    'file_name': commit_id
+    'file_name': file_id
 }
+commit_comment: 冗余项，减少查询commit表
 数据库中只存文件路径，具体的文件由路径搜索然后从网上载入
 """
 table_commit_files = '''
 create table commit_files(
-    file_id int not null primary key auto_increment,
+    id int not null primary key auto_increment,
     commit_id int,
+    commit_comment varchar(255) default '',
+    from_file_id int,
     file_type char(20) default '',
     file_action int,
     file_line int default 0,
     add_lines int default 0,
     remove_lines int default 0,
-    file_path text not null,
+    file_path text not null
+);'''
+
+
+# 对这个commit的评论
+table_commit_comment = '''
+create table commit_comment(
+    id int primary key auto_increment,
+    commit_id int,
+    quota id int default 0,
+    comment_date datetime,
+    comment_content text default ''
 );'''
