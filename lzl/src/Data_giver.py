@@ -1,5 +1,4 @@
-from DB_helper import DB_helper
-
+from lzl.src.DB_helper import DB_helper
 
 class Data_giver:
 
@@ -25,8 +24,11 @@ class Data_giver:
         table_names = self.helper.run("show tables")
         for table_name in table_names:
             name = table_name[0]
-            row_count = self.helper.run(f"select count(*) from '{name}'")[0][0]
-            col_infos = self.helper.run(f"desc '{name}'")
+            row_count = 0
+            res = self.helper.run(f"select count(*) from {name}")
+            if res is not None:
+                row_count = res[0][0]
+            col_infos = self.helper.run(f"desc {name}")
             info_arr = []
             for col_info in col_infos:
                 info_arr.append({
@@ -42,6 +44,28 @@ class Data_giver:
                 'rows': row_count,
                 'col_info': info_arr
             })
+        return ans
+
+    def give_table_info(self, table_name):
+        ans = {}
+        row_count = 0
+        res = self.helper.run(f"select count(*) from {table_name}")
+        if res is not None:
+            row_count = res[0][0]
+        col_infos = self.helper.run(f"desc {table_name}")
+        info_arr = []
+        for col_info in col_infos:
+            info_arr.append({
+                'name': col_info[0],
+                'type': col_info[1],
+                'null_enable': True if col_info[2] == 'YES' else False,
+                'key': col_info[3],
+                'default': col_info[4],
+                'is_auto_increment': True if col_info[5] == 'auto_increment' else False
+            })
+        ans['name'] = table_name
+        ans['rows'] = row_count
+        ans['col_info'] = info_arr
         return ans
 
     def give_table(self, table_name):
@@ -74,11 +98,18 @@ class Data_giver:
                         'following_num':
                         'star_num':
                         'repository_num':
-                        'description' (Object):
+                        'description' (Object):{
+                                                'nick_name'
+                                                'status':
+                                                'company'
+                                                'location':
+                                                'comments'
+                                                'link'
                             }
         """
         cursor = self.helper.connection.cursor()
-        cursor.execute(f"select * from user_info where user_name = '{user_name}'")
+        cursor.execute(f"select id, user_name, follower_num, following_num,"
+                       f"star_num, repository_num from user_info where user_name = '{user_name}'")
         info = cursor.fetchall()
         if info is None:
             return None
@@ -90,7 +121,17 @@ class Data_giver:
             ans['following_num'] = data[5]
             ans['star_num'] = data[6]
             ans['repository_num'] = data[8]
-            ans['description'] = eval(data[10])
+            cursor.execute(f'''select nick_name, status, company, location, comments, link 
+                            from user_description where id = {data[0]}''')
+            res = cursor.fetchall()[0]
+            ans['description'] = {
+                'nick_name': res[0],
+                'status': res[1],
+                'company': res[2],
+                'location': res[3],
+                'comments': res[4],
+                'link': res[5]
+            }
         return ans
 
     def give_user_activity(self, user_id, from_date, to_date):

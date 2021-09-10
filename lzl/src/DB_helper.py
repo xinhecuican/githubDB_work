@@ -2,9 +2,7 @@ from _ctypes import PyObj_FromPtr
 
 import pymysql
 from common import Debug
-import trigger_script
-import Tables_script
-from lzl.src import test_data
+from lzl.src import test_data, Tables_script
 
 
 class DB_helper():
@@ -69,12 +67,13 @@ class DB_helper():
             if not contains:
                 self.run(getattr(Tables_script, name), True)
 
-    def run(self, state, need_commit=False):
+    def run(self, state, need_commit=False, need_print = False):
         cursor = self.connection.cursor()
         try:
             cursor.execute(state)
             datas = cursor.fetchall()
-            print_sql(datas)
+            if need_print:
+                print_sql(datas)
             return datas
         except:
             Debug.error_message("执行命令出错")

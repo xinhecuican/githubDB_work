@@ -24,14 +24,14 @@ create table followers(
 
 # user_name是冗余字段，但是一般查用户信息都要用户名
 table_user_description = '''
-create user_description(
+create table user_description(
     id int primary key,
     user_name varchar(100),
     nick_name varchar(100) default '',
     status varchar(50) default '',
     company varchar(255) default '',
     location varchar(255) default '',
-    comments text default '',
+    comments text,
     link varchar(255) default '',
     avatar_url varchar(255) default ''
 );'''
@@ -73,7 +73,7 @@ create table activity_record(
 
 # 不需要爬数据，只是应该有这个表
 table_user_notification = '''
-create user_notification(
+create table user_notification(
     id int primary key auto_increment,
     user_id int,
     type int,
@@ -100,10 +100,7 @@ create table Repository(
     contributor_num int default 0,
     watch_num int default 0,
     star_num int default 0,
-    fork_num int default 0,
-    foreign key fk_owner_id(user_id) references User_info(id)
-    on update cascade
-    on delete cascade
+    fork_num int default 0
 );'''
 
 
@@ -122,14 +119,17 @@ create table repository_info(
     licenses_id int,
     tag text,
     code_type text,
-    contributors text
+    contributors text,
+    foreign key fk_repository_id(id) references repository(id)
+    on delete cascade
+    on update cascade
 );'''
 
 
 table_licenses = '''
 create table licenses(
     id int primary key auto_increment,
-    name str(100),
+    name varchar(100),
     license_content longtext  
 );'''
 
@@ -192,23 +192,26 @@ create table issue_comment(
     name varchar(100),
     action tinyint,
     commit_date datetime,
-    content text default ''
+    content text
 );'''
 
 
 table_labels = '''
 create table labels(
     id int primary key auto_increment,
+    repository_id int,
     url varchar(255) default '',
     name varchar(50) default '',
     color varchar(10) default ''
 );'''
 
 
+# question_id: 对应pull_request_action的id，是pull_request的第一个comment
 table_pull_request = '''
 create table pull_request(
     id int primary key auto_increment,
     repository_id int,
+    question_id int,
     base_branch_id int,
     from_branch_id int,
     related_commit_id text,
@@ -218,13 +221,28 @@ create table pull_request(
 );'''
 
 
+# id就是pull_request的id
+# labels (Array): 记录label表中的id
+# projects： 只是一个占位符，因为没考虑projects表
+# milestone: 只是一个占位符
+table_pull_request_info = '''
+create table pull_request_info(
+    id int primary key,
+    Assignee_id int,
+    labels text,
+    projects text,
+    milestone text,
+    link_pull_request_id int default -1
+);'''
+
+
 # 'action': 0-添加评论 1-增加commit 2-review
 table_pull_request_action = '''
 create table pull_request_action(
     id int primary key auto_increment,
     pull_request_id int,
     user_id int,
-    comment text default '',
+    comment text,
     action tinyint
 );'''
 
@@ -249,11 +267,8 @@ create table Branches(
     id int primary key auto_increment,
     branch_name varchar(255),
     repository_id int,
-    latest_commit char(50),
-    commit_num int,
-    foreign key fk_owner_repository(repository_id) references Repository(id)
-    on update cascade
-    on delete cascade
+    latest_commit int,
+    commit_num int default 0
 );'''
 
 
@@ -268,14 +283,11 @@ create table Commits(
     commit_sha char(41),
     parent_commit int,
     repository_id int,
-    author_user_id int default '',
-    commit_user_id int default '',
+    author_user_id int default -1,
+    commit_user_id int default -1,
     commit_date datetime,
     message varchar(255),
-    contributors text default '',
-    foreign key fk_repository_id(repository_id) references Repository(id)
-    on delete cascade
-    on update cascade
+    contributors text
  );'''
 
 
@@ -288,7 +300,7 @@ create table Commits(
 #     'file_name': file_id
 # }
 table_commit_file_info = '''
-create commit_file_info(
+create table commit_file_info(
     id int primary key,
     commit_directory_address varchar(255),
     add_line int default 0,
@@ -332,7 +344,7 @@ table_commit_comment = '''
 create table commit_comment(
     id int primary key auto_increment,
     commit_id int,
-    quota id int default 0,
+    quota_id int default 0,
     comment_date datetime,
-    comment_content text default ''
+    comment_content text
 );'''

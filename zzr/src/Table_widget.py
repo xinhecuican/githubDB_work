@@ -1,18 +1,59 @@
 from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QPalette
 from PyQt5.QtWidgets import QWidget, QPushButton, QToolButton, QVBoxLayout, QLabel, QHBoxLayout, QTableView, \
-    QHeaderView, QTableWidget, QTableWidgetItem
+    QHeaderView, QTableWidget, QTableWidgetItem, QCommandLinkButton
 
 
-class Table_widget(QToolButton):
+class Table_widget(QWidget):
 
     def __init__(self, table_name, row_count, cols_info):
         super(Table_widget, self).__init__()
         self.cols_info = cols_info
+        self.setMinimumSize(30, 30)
         self.base_layout = QVBoxLayout()
         self.base_layout.setDirection(QVBoxLayout.TopToBottom)
 
-        self.name_label = QLabel(table_name)
-        self.count_label = QLabel(row_count)
+        self.setLayout(self.base_layout)
+        self.setStyleSheet('''
+        QCommandLinkButton:hover{
+            background-color: rgba(98, 230, 230, 0.2);
+        }
+        QCommandLinkButton:pressed{
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+        QHeaderView::section, QTableCornerButton::section 
+        {
+            padding: 1px;border: none;
+            border-bottom: 1px solid rgb(75, 120, 154);
+            border-right: 1px solid rgb(75, 120, 154);
+            border-bottom: 1px solid gray;
+            background-color:rgba(75, 120, 154, 1);}
+
+
+        QHeaderView::section
+        {
+            font-size:14px;
+            font-family:"Microsoft YaHei";
+            background-color: transparent;
+            border:none;
+            text-align:left;
+            margin-left:0px;
+            padding-left:0px;
+        }
+        QTableWidget::item
+        {
+            border-bottom:1px solid #EEF1F7 ;
+        }
+        QTableWidget::item::selected
+        {
+            color:red;
+            background: rgba(74, 218, 218, 0.2);
+        }
+        ''')
+        self.name_label = QCommandLinkButton()
+        self.name_label.setText(table_name)
+        self.count_label = QLabel()
+        self.count_label.setText("行数: " + str(row_count))
 
         self.label_layout = QHBoxLayout()
         self.label_layout.addWidget(self.name_label)
@@ -21,32 +62,39 @@ class Table_widget(QToolButton):
 
         self.tableview = QTableWidget()
         self.tableview.setColumnCount(6)
-        self.tableview.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
-        self.append_row(0)
+        self.tableview.setFrameShape(QHeaderView.NoFrame)
+        self.tableview.verticalHeader().setVisible(False)
+        self.tableview.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+        self.tableview.setHorizontalHeaderLabels(['列名', '类型', '是否为空', '键值', '默认值', '自增'])
+        self.tableview.setBackgroundRole(QPalette.Light)
+        self.tableview.setShowGrid(False)
+        for i in range(len(self.cols_info)):
+            self.append_row(i)
         self.base_layout.addWidget(self.tableview)
 
         # 显示全部按钮
-        self.show_button = QPushButton()
-        self.show_state = False
+        # self.show_button = QPushButton()
+        # self.show_state = False
         # self.hide_button.setIcon() 添加向下箭头，需要一张图片
-        self.show_button.clicked.connect(lambda : self.on_show_button_click())
-        self.base_layout.addWidget(self.hide_button)
+        # self.show_button.clicked.connect(lambda: self.on_show_button_click())
+        # self.base_layout.addWidget(self.show_button)
+        self.adjustSize()
 
     def on_show_button_click(self):
 
         if self.show_state:
-            self.tableview.setRowCount(1) # 没试过，可能有问题，就是只显示一行
+            self.tableview.setRowCount(1)  # 没试过，可能有问题，就是只显示一行
             # self.show_button.setIcon()更换图标
             self.show_state = False
         else:
             for i in range(1, len(self.cols_info)):
                 self.append_row(i)
-            #self.show_button.setIcon()
+            # self.show_button.setIcon()
             self.show_state = True
 
     def append_row(self, index):
         data = self.cols_info[index]
-        self.tableview.setRowCount(self.tableview.rowCount()+1)
+        self.tableview.setRowCount(self.tableview.rowCount() + 1)
         col_name = QTableWidgetItem()
         col_name.setText(data['name'])
         self.tableview.setItem(index, 0, col_name)
@@ -70,7 +118,3 @@ class Table_widget(QToolButton):
         col_is_auto_increment = QTableWidgetItem()
         col_is_auto_increment.setData(Qt.DisplayRole, data['is_auto_increment'])
         self.tableview.setItem(index, 5, col_is_auto_increment)
-
-
-
-
