@@ -2,7 +2,7 @@ from _ctypes import PyObj_FromPtr
 
 import pymysql
 from common import Debug
-from lzl.src import test_data, Tables_script
+from lzl.src import test_data, Tables_script, trigger_script
 
 
 class DB_helper():
@@ -140,7 +140,7 @@ class DB_helper():
 
 def print_sql(datas, cols=None):
     header_name = []
-    if cols is not None:
+    if cols:
         for col in cols:
             header_name.append(col[0])
     print(("{:<15}" * len(header_name)).format(*header_name))

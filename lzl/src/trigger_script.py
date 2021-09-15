@@ -1,8 +1,12 @@
 from pymysql import Connection
 
-import DB_helper
-from main import helper
 
+def delete(connection, table, states):
+    cursor = connection.cursor()
+    cursor.execute("delete from " + table + " where " + states)
+    connection.commit()
+    cursor.close()
+    return True
 
 def user_info_insert(connection, datas):
     cursor = connection.cursor()
@@ -47,7 +51,7 @@ def user_info_delete(connection: Connection, states):
         cursor.execute(f"delete from activity where user_id = {id}")
         cursor.execute(f"delete from activity_record where user_id = {id}")
         cursor.execute(f"delete from user_notification where user_id = {id}")
-        helper.delete("repository", f"user_id = {id}")
+        delete(connection, "repository", f"user_id = {id}")
     connection.commit()
     cursor.close()
 
@@ -138,12 +142,12 @@ def repository_delete(connection, states):
     for data in datas:
         cursor.execute(f"update user_info set repository_num = repository_num - 1 where id = {data[1]}")
         cursor.execute(f"delete from repository_info where id = {data[0]}")
-        helper.delete("tags", f"repository_id = {data[0]}")
-        helper.delete("issue", f"repository_id = {data[0]}")
-        helper.delete("pull_request", f"repository_id = {data[0]}")
+        delete(connection, "tags", f"repository_id = {data[0]}")
+        delete(connection, "issue", f"repository_id = {data[0]}")
+        delete(connection, "pull_request", f"repository_id = {data[0]}")
         cursor.execute(f"delete from labels where repository_id = {data[0]}")
         cursor.execute(f"delete from branches where repository_id = {data[0]}")
-        helper.delete("commits", f"repository_id = {data[0]}")
+        delete(connection, "commits", f"repository_id = {data[0]}")
 
 
 def tags_insert(connection:Connection, datas):

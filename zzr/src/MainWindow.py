@@ -1,7 +1,7 @@
-from PyQt5.QtCore import Qt, QLine
-from PyQt5.QtGui import QIcon, QPalette, QPixmap, QBrush
-from PyQt5.QtWidgets import QMainWindow, QVBoxLayout, QLineEdit, QToolButton, QHBoxLayout, QWidget, QSplitter, QFrame
+from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import QMainWindow, QVBoxLayout, QLineEdit, QToolButton, QHBoxLayout, QWidget
 
+from zzr.src.Repository_info.Repository_info_card import Repository_info_card
 from zzr.src.Search_area import Search_area
 import lzl.src.main as m
 from zzr.src.Table_widget import Table_widget
@@ -13,6 +13,7 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.base_layout = QVBoxLayout()
+        self.base_layout.setDirection(QVBoxLayout.TopToBottom)
         self.centralWidget = QWidget(self)
         self.setCentralWidget(self.centralWidget)
         self.setObjectName("MainWindow")
@@ -49,16 +50,17 @@ class MainWindow(QMainWindow):
             return
 
         data = m.helper.run(f"select id from user_info where user_name = '{name}'")
-        if data is not None:
-            self.main_area.add_widget(User_info_card(m.giver.give_user_info(name)))
+        if data:
+            data = m.giver.give_user_info(name)
+            if data is not None:
+                self.main_area.add_widget(User_info_card(data))
 
         if name in self.table_name:
             info = m.giver.give_table_info(name)
             self.main_area.add_widget(Table_widget(info['name'], info['rows'], info['col_info']))
 
         data = m.helper.run(f"select id from repository where name = '{name}'")
-        if data is not None:
-            print(1)
-            # TODO: 先将仓库信息卡片完成
+        if data:
+            self.main_area.add_widget(Repository_info_card(m.giver.give_repository_info(name)))
 
 

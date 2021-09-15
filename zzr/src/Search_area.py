@@ -32,11 +32,10 @@ class Search_area(QScrollArea):
             child = self.base_layout.takeAt(0)
             if child.widget():
                 child.widget().deleteLater()
+        self.update()
 
     def add_widget(self, widget: QWidget):
         self.base_layout.addWidget(widget)
-        self.adjustSize()
 
     def add_layout(self, layout: QLayout):
         self.base_layout.addLayout(layout)
-        self.adjustSize()

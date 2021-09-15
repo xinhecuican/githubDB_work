@@ -1,8 +1,8 @@
-from lzl.src.DB_helper import DB_helper
+# from lzl.src.DB_helper import DB_helper
 
 class Data_giver:
 
-    def __init__(self, helper: DB_helper):
+    def __init__(self, helper):
         self.helper = helper
 
     def give_tables_info(self):
@@ -26,7 +26,7 @@ class Data_giver:
             name = table_name[0]
             row_count = 0
             res = self.helper.run(f"select count(*) from {name}")
-            if res is not None:
+            if res:
                 row_count = res[0][0]
             col_infos = self.helper.run(f"desc {name}")
             info_arr = []
@@ -50,7 +50,7 @@ class Data_giver:
         ans = {}
         row_count = 0
         res = self.helper.run(f"select count(*) from {table_name}")
-        if res is not None:
+        if res:
             row_count = res[0][0]
         col_infos = self.helper.run(f"desc {table_name}")
         info_arr = []
@@ -104,33 +104,38 @@ class Data_giver:
                                                 'company'
                                                 'location':
                                                 'comments'
-                                                'link'
+                                                'link',
+                                                'avatar_url'
                             }
         """
         cursor = self.helper.connection.cursor()
         cursor.execute(f"select id, user_name, follower_num, following_num,"
                        f"star_num, repository_num from user_info where user_name = '{user_name}'")
         info = cursor.fetchall()
-        if info is None:
+        if not info:
             return None
         ans = {}
         for data in info:
             ans['id'] = data[0]
             ans['name'] = data[1]
-            ans['follower_num'] = data[4]
-            ans['following_num'] = data[5]
-            ans['star_num'] = data[6]
-            ans['repository_num'] = data[8]
-            cursor.execute(f'''select nick_name, status, company, location, comments, link 
+            ans['follower_num'] = data[2]
+            ans['following_num'] = data[3]
+            ans['star_num'] = data[4]
+            ans['repository_num'] = data[5]
+            cursor.execute(f'''select nick_name, status, company, location, comments, link, avatar_url
                             from user_description where id = {data[0]}''')
-            res = cursor.fetchall()[0]
+            res = cursor.fetchall()
+            if not res:
+                return None
+            res = res[0]
             ans['description'] = {
                 'nick_name': res[0],
                 'status': res[1],
                 'company': res[2],
                 'location': res[3],
                 'comments': res[4],
-                'link': res[5]
+                'link': res[5],
+                'avatar_url': res[6]
             }
         return ans
 
@@ -155,3 +160,38 @@ class Data_giver:
         cursor.execute(sql)
         res = cursor.fetchall()
         return res
+
+    def give_repository_info(self, name):
+        """
+
+        :param name:
+        :return: （Object){
+            name (str): 仓库名
+            id (int): 仓库id
+            author (str): 仓库创作者名字
+            star_num (int)
+            fork_num
+            contributor_num (int): 贡献者数量
+        }
+        """
+        sql = f'''
+        select repository.name, repository.id, user_description.user_name, repository.star_num, 
+        repository.fork_num, repository.contributor_num
+        from repository
+        join user_description
+        on repository.user_id = user_description.id
+        where repository.name = '{name}';'''
+        cursor = self.helper.connection.cursor()
+        cursor.execute(sql)
+        datas = cursor.fetchall()
+        ans = {}
+        for data in datas:
+            ans['name'] = data[0]
+            ans['id'] = data[1]
+            ans['author'] = data[2]
+            ans['star_num'] = data[3]
+            ans['fork_num'] = data[4]
+            ans['contributor_num'] = data[5]
+        cursor.close()
+        return ans
+
