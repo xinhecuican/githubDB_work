@@ -232,20 +232,34 @@ def get_commit(turl, commit_id, repository_id, user_name, name):
     print('已获取提交', commit_id, '的基本信息')
 # --------------------------------------------------------------------------------------
 
+def get_something(temp_name):
+    get_user_info(temp_name)
+    get_followers(temp_name)
+    get_user_repositories(temp_name)
+    print('用户', temp_name, '已完成')
+
+def get_something2(temp_name):
+    get_user_info(temp_name)
+    get_followers(temp_name)
+    get_user_repositories(temp_name)
+    print('用户', temp_name, '已完成')
+
+def get_something3(temp_name):
+    get_user_info(temp_name)
+    get_followers(temp_name)
+    get_user_repositories(temp_name)
+    print('用户', temp_name, '已完成')
+
+
 # 获取个人信息 关注者信息 仓库信息 单个仓库信息 贡献者 分支 提交
 if __name__ == '__main__':
     q.put('Frederick-S')
+    q.put('xinhecuican')
+    q.put('bollnh')
     while True:
         temp_name = q.get()
-        # print(q.qsize())
-        # a = threading.Thread(target=get_user_info, args=(temp_name,))
-        # b = threading.Thread(target=get_followers, args=(temp_name,))
-        # c = threading.Thread(target=get_user_repositories, args=(temp_name,))
-        get_user_info(temp_name)
-        get_followers(temp_name)
-        get_user_repositories(temp_name)
-        # a.start()
-        # b.start()
-        # c.start()
-        # print(q.qsize())
-        print('用户', temp_name, '已完成')
+        temp_name2 = q.get()
+        temp_name3 = q.get()
+        a = threading.Thread(target=get_something, args=(temp_name,)).start()
+        b = threading.Thread(target=get_something2, args=(temp_name2,)).start()
+        c = threading.Thread(target=get_something3, args=(temp_name3,)).start()
