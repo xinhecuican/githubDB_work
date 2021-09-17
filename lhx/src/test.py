@@ -31,14 +31,12 @@ def getHTML(url):
         print('conn failed')
         return None
 
-url = 'https://github.com/tonybaloney/wily/issues'
+url = 'https://api.github.com/repos/tonybaloney/wily/commits/e72b7d95228bbe5538a072dc5d1186daa318bb03'
+# IssueLabel hx_IssueLabel d-inline-block v-align-middle
 html = getHTML(url)
 soup = BeautifulSoup(html, 'html.parser')
-a = soup.find_all('div', class_='Box-row Box-row--focus-gray p-0 mt-0 js-navigation-item js-issue-row')
-for i in range(len(a)):
-    print(a[i].get('id').partition('_')[2])
-
-# print(len(a))
-# print(html)
-
+# a = soup.find('a', class_='pl-3 pr-3 py-3 p-md-0 mt-n3 mb-n3 mr-n3 m-md-0 Link--primary no-underline no-wrap').find('strong').text
+p = json.loads(html)
+pj = json.dumps(p, indent=4, separators=(',', ':'))
+print(pj)
 
