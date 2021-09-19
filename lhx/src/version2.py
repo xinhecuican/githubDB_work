@@ -66,11 +66,13 @@ def get_user_info(user_name):
         except:
             location = None
         try:
-            comments = soup.find('div', class_='p-note user-profile-bio mb-3 js-user-profile-bio f4').get('data-bio-text')
+            # comments = soup.find('div', class_='p-note user-profile-bio mb-3 js-user-profile-bio f4').get('data-bio-text')
+            comments = js_res['bio']
         except:
             comments = None
         try:
-            link = soup.find('a', rel='nofollow me').get('href')
+            # link = soup.find('a', rel='nofollow me').get('href')
+            link = js_res['blog']
         except:
             link = None
         avatar_url = soup.find('a', itemprop='image').get('href')
@@ -91,7 +93,7 @@ def get_user_info(user_name):
         # end followers---------------------------------------------------------------
 
         # start repository---------------------------------------------------------------
-        get_repo_info(user_name, id)
+        # get_repo_info(user_name, id)
         # end repository---------------------------------------------------------------
     else:
         pass
