@@ -3,26 +3,7 @@ import json
 import csv
 import re
 from bs4 import BeautifulSoup
-
-
-def getHTML(url):
-    headers =  {
-        'User-Agent': 'Mozilla/5.0',
-        'Authorization': 'token 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',
-        'Content-Type': 'application/json',
-        'method': 'GET',
-        'Accept': 'application/json'
-    }
-    if 'api' in url:
-        r = requests.get(url, timeout=30, headers=headers)
-    else:
-        r = requests.get(url, timeout=30)
-    try:
-        if r.status_code == 200:
-            return r.text
-    except:
-        print('conn failed')
-        return None
+from common import getHTML
 
 
 # 处理 user_info, user_description, followers表
@@ -45,7 +26,7 @@ def get_user_info(user_name):
         star_num = soup.find_all('span', class_='text-bold color-text-primary')[2].text
         repo_num = soup.find_all('span', class_='Counter')[0].text
         proj_num = soup.find_all('span', class_='Counter')[1].text
-        package_num = 0
+        package_num = 0 # TODO: 没见过0+的
 
         single_user_info = [id, user_name, password, email, follower_num, following_num, star_num, proj_num, repo_num, package_num]
         print(single_user_info)
@@ -81,19 +62,18 @@ def get_user_info(user_name):
         print(single_user_description)
         # end user_description---------------------------------------------------------------
 
-        # start follwers TODO: 修改成最新格式---------------------------------------------------------------
-        # 对于每个人只爬30个follower, 目前采用[被follow，follow者]格式
+        # start follwers TODO: 目前每人爬30个
         followers_url = js_res['followers_url']
         followers_html = getHTML(followers_url)
         f_res = json.loads(followers_html)
         followers_list = []
         for i in range(len(f_res)):
-            followers_list.append([id, f_res[i]['id']])
+            followers_list.append([f_res[i]['id'], id])
         print(followers_list)
         # end followers---------------------------------------------------------------
 
         # start repository---------------------------------------------------------------
-        # get_repo_info(user_name, id)
+        get_repo_info(user_name, id)
         # end repository---------------------------------------------------------------
     else:
         pass
@@ -127,7 +107,7 @@ def get_repo_info(user_name, user_id):
         # end repository---------------------------------------------------------------
 
         # start repository_info---------------------------------------------------------------
-        # id = id FIXME: 存疑
+        # id = id
         description = js_res[i]['description']
         # website TODO: 是啥
         # licenses_id TODO: 是啥
@@ -155,6 +135,17 @@ def get_repo_info(user_name, user_id):
             licenses_content = get_licenses_content(licenses_content_url)
         except:
             licenses_content = None
+
+        # 获得id
+        licenses_url = 'https://github.com/' + user_name + '/' + name + '/blob/' + default_branch + '/LICENSE'
+        print(licenses_url)
+        lic_url = getHTML(licenses_url)
+        try:
+            lic_bs = BeautifulSoup(lic_url, 'html.parser')
+            licenses_id = lic_bs.find('a', class_='https://github.com/tonybaloney/wily/blob/master/LICENSE').text
+            print(['[licenses]: ', id, description, licenses_id, tags, code_type, contributors])
+        except:
+            print('no licenses')
         # end licenses---------------------------------------------------------------
 
         # start issue---------------------------------------------------------------
@@ -300,6 +291,6 @@ def save_sth(list, fname):
 # ---------------------------------------------------------------------------------------------------------------------
 
 
-# get_user_info('bollnh')
+get_user_info('bollnh')
 # get_user_info('antsmartian')
-get_user_info('tonybaloney')
+# get_user_info('tonybaloney')
