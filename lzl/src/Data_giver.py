@@ -109,8 +109,8 @@ class Data_giver:
                             }
         """
         cursor = self.helper.connection.cursor()
-        cursor.execute(f"select id, user_name, follower_num, following_num,"
-                       f"star_num, repository_num from user_info where user_name = '{user_name}'")
+        cursor.execute(f'''select id, user_name, follower_num, following_num,
+                       star_num, repository_num from user_info where user_name = '{user_name}';''')
         info = cursor.fetchall()
         if not info:
             return None
@@ -137,6 +137,7 @@ class Data_giver:
                 'link': res[5],
                 'avatar_url': res[6]
             }
+        cursor.close()
         return ans
 
     def give_user_activity(self, user_id, from_date, to_date):
@@ -159,6 +160,7 @@ class Data_giver:
         cursor = self.helper.connection.cursor()
         cursor.execute(sql)
         res = cursor.fetchall()
+        cursor.close()
         return res
 
     def give_repository_info(self, name):
@@ -172,6 +174,10 @@ class Data_giver:
             star_num (int)
             fork_num
             contributor_num (int): 贡献者数量
+            description:{
+                            code_type (str): 仓库代码类型
+                            description (str)
+                        }
         }
         """
         sql = f'''
@@ -192,6 +198,43 @@ class Data_giver:
             ans['star_num'] = data[3]
             ans['fork_num'] = data[4]
             ans['contributor_num'] = data[5]
+        sql = f'''select code_type, description
+        from repository_info
+        where id = {ans['id']}'''
+        cursor.execute(sql)
+        datas = cursor.fetchall()
+        for data in datas:
+            ans['description'] = {
+                'code_type': data[0],
+                'description': data[1]
+            }
+        cursor.close()
+        return ans
+
+    def give_user_repository(self, user_name: str, limit=False):
+        """
+
+        :param limit: 只显示前十个
+        :param user_name:
+        :return: (Array)[
+            所有在give_repository_info中的属性
+        ]
+        """
+        sql = f'''
+        select repository.name
+        from user_info
+        join repository
+        on user_info.id = repository.user_id
+        where user_info.user_name = '{user_name}'
+        '''
+        if limit:
+            sql += " order by repository.star_num limit 10"
+        cursor = self.helper.connection.cursor()
+        cursor.execute(sql)
+        datas = cursor.fetchall()
+        ans = []
+        for data in datas:
+            ans.append(self.give_repository_info(data[0]))
         cursor.close()
         return ans
 

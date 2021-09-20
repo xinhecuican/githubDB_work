@@ -2,6 +2,7 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPixmap, QIcon
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QToolButton, QHBoxLayout, QAction
 
+from zzr.src.Helper import Window_manager
 from zzr.src.Widgets.Line import Line
 from zzr.src.Widgets.Pic_label import Pic_label
 
@@ -66,4 +67,4 @@ class User_info_card(QWidget):
         self.base_layout.addLayout(self.center_layout)
 
     def on_name_button_click(self):
-        print(1)
+        Window_manager.change_window("User_info_panel", [self.name])

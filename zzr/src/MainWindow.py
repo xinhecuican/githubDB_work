@@ -1,6 +1,8 @@
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QMainWindow, QVBoxLayout, QLineEdit, QToolButton, QHBoxLayout, QWidget
 
+from zzr.src.Helper.Base_window import Base_window
+from zzr.src.Helper.Register import Registers
 from zzr.src.Repository_info.Repository_info_card import Repository_info_card
 from zzr.src.Search_area import Search_area
 import lzl.src.main as m
@@ -8,7 +10,9 @@ from zzr.src.Table_widget import Table_widget
 from zzr.src.User_info.User_info_card import User_info_card
 
 
-class MainWindow(QMainWindow):
+
+@Registers.model.register
+class MainWindow(Base_window):
 
     def __init__(self):
         super().__init__()
@@ -62,5 +66,12 @@ class MainWindow(QMainWindow):
         data = m.helper.run(f"select id from repository where name = '{name}'")
         if data:
             self.main_area.add_widget(Repository_info_card(m.giver.give_repository_info(name)))
+        self.main_area.base_layout.addStretch()
+
+    def on_window_select(self, *args):
+        pass
+
+    def on_window_cancel(self, *args):
+        pass
 
 

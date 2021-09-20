@@ -1,5 +1,6 @@
 import datetime
 
+import numpy as np
 import pandas as pd
 
 
@@ -69,7 +70,7 @@ def resolve_repository(helper, file="../../lhx/res/repository.csv"):
     lists = [x for x in lists if x[1] != "NULL"]
     for l in lists:
         l.insert(-2, '0')
-        l.insert(3,  str(datetime.datetime.now()))
+        l.insert(3, str(datetime.datetime.now()))
         l.insert(4, str(True))
         l[-2] = str2num(l[-2])
         l[-1] = str2num(l[-1])
@@ -79,6 +80,21 @@ def resolve_repository(helper, file="../../lhx/res/repository.csv"):
         l[3] = "'" + l[3] + "'"
         l[5] = str(0)
     helper.insert("repository", lists)
+
+
+def resolve_repository_info(helper, file="../../lhx/res/repository.csv"):
+    lists = csv2list(file)
+    ans = []
+    for list in lists:
+        ans.append([str(list[1])])
+    for l in ans:
+        l.append("''")
+        l.append("''")
+        l.append("0")
+        l.append("''")
+        l.append("''")
+        l.append("''")
+    helper.insert("repository_info", ans)
 
 
 def resolve_followers(helper, file):

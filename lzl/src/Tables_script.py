@@ -303,6 +303,7 @@ table_commit_file_info = '''
 create table commit_file_info(
     id int primary key,
     commit_directory_address varchar(255),
+    file_type varchar(255) default '',
     add_line int default 0,
     delete_line int default 0,
     change_file_num int default 0
