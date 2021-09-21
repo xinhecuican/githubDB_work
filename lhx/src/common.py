@@ -1,5 +1,6 @@
 import requests
 import json
+import csv
 
 def getHTML(url):
     headers = {
@@ -15,6 +16,7 @@ def getHTML(url):
         r = requests.get(url, timeout=30)
     try:
         if r.status_code == 200:
+            r.encoding = r.apparent_encoding
             return r.text
     except:
         print('conn failed')
@@ -39,10 +41,24 @@ def trans_date_format(date, type): # yy-mm-dd
         'Jan': '01', 'Feb': '02', 'Mar': '03', 'Apr': '04', 'May': '05', 'Jun': '06', 'Jul': '07', 'Aug': '08', 'Sep': '09', 'Oct': '10', 'Nov': '11', 'Dec': '12'
     }
 
-    if type == 0: # Sep 7, 2021
+    if type == 0: # Sep 7, 2021 --- 2021-09-07
         date_l = date.split(' ')
         yy = date_l[2]
         mm = month[date_l[0]]
         dd = date_l[1].replace(',', '').zfill(2)
         res_data = yy + '-' + mm + '-' + dd
-        return(res_data)
+        return res_data
+    elif type == 1: # 2021-02-21T02:53:55Z
+        d = date.partition('T')[0]
+        return d
+
+def save_sth(lists, fname, types): # 0是单行 1是多行
+    path = r'D:\\21-22-1\\Database_Practice1\\' + fname + '.csv'
+    with open(path, 'a+', newline='', encoding='utf-8-sig') as f:
+        writer = csv.writer(f)
+        if types == 0:
+            writer.writerow(lists)
+        elif types == 1:
+            writer.writerows(lists)
+        else:
+            print('error when saving')

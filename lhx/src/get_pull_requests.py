@@ -3,29 +3,11 @@ import json
 import csv
 import re
 from bs4 import BeautifulSoup
-# from lhx.src.version2 import getHTML
+from common import getHTML, save_sth, get_user_id
 
-def getHTML(url):
-    headers =  {
-        'User-Agent': 'Mozilla/5.0',
-        'Authorization': 'token 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',
-        'Content-Type': 'application/json',
-        'method': 'GET',
-        'Accept': 'application/json'
-    }
-    if 'api' in url:
-        r = requests.get(url, timeout=30, headers=headers)
-    else:
-        r = requests.get(url, timeout=30)
-    try:
-        if r.status_code == 200:
-            return r.text
-    except:
-        print('conn failed')
-        return None
 
 # pull_request
-def get_open_pulls(user_name, repo_name):
+def get_open_pulls(user_name, repo_name, repo_id):
     url = 'https://github.com/' + user_name + '/' + repo_name + '/pulls' # 网页
     html = getHTML(url)
     soup = BeautifulSoup(html, 'html.parser')
@@ -35,7 +17,7 @@ def get_open_pulls(user_name, repo_name):
     for each in range(len(all_question)):
         q_id = all_question[each].find('span', class_='opened-by').text.split()[0][1:]
         each_url_api = 'https://api.github.com/repos/' + user_name + '/' + repo_name + '/pulls/' + q_id # api
-        print(each_url_api)
+        # print(each_url_api)
         each_html = getHTML(each_url_api)
         each_js = json.loads(each_html)
 
@@ -49,11 +31,33 @@ def get_open_pulls(user_name, repo_name):
         else:
             check_status = False
 
-        assignees = each_js['assignees'] # TODO
-        labels = each_js['labels']
-        milestone = each_js['milestone']
 
-        print([q_id, base_branch, from_branch, is_open, merge_status, check_status])
+        try:
+            assignees_id = get_user_id(each_js['assignees'])
+        except:
+            assignees_id = ''
+        try:
+            labels = each_js['labels']['id']
+        except:
+            labels = []
+        # milestone = each_js['milestone']
+
+
+        related_commit = []
+        related_commit_url = each_js['commits_url']
+        related_commit_html = getHTML(related_commit_url)
+        related_commit_js = json.loads(related_commit_html)
+        for j in range(len(related_commit_js)):
+            related_commit.append(related_commit_js[j]['sha'][:7])
+
+        # 保存部分
+        single_pull_request = [repo_id, q_id, base_branch, from_branch, related_commit, is_open, merge_status, check_status]
+        save_sth(single_pull_request, 'pull_request', 0)
+        print('[pull_request]: ', single_pull_request)
+
+        single_pull_info = [assignees_id, labels, '', '', -1]
+        save_sth(single_pull_info, 'pull_request_info', 0)
+        print('[pull_request_info]: ', single_pull_info)
 
         # 每个问题下的每个动作--普通评论
         each_comm_url_api = 'https://api.github.com/repos/' + user_name + '/' + repo_name + '/issues/' + q_id + '/comments'
@@ -65,14 +69,25 @@ def get_open_pulls(user_name, repo_name):
             comment = each_comm_js[i]['body']
             action = 0
 
+            single_pull_act_0 = [q_id, user_id, comment, action]
+            save_sth(single_pull_act_0, 'pull_request_action', 0)
+            print('[pull_request_action]: ', single_pull_act_0)
+
         # 每个问题下的每个动作--commit
         each_comi_url_api = 'https://api.github.com/repos/' + user_name + '/' + repo_name + '/issues/' + q_id + '/commits'
         each_comi_html_api = getHTML(each_comi_url_api)
-        each_comi_js = json.loads(each_comi_html_api)
-        for i in range(len(each_comi_html_api)):
-            user_id = each_comi_js[i]['committer']['name'] # TODO: 名字->id
-            comment = each_comi_js[i]['message']
-            action = 1
+        try:
+            each_comi_js = json.loads(each_comi_html_api)
+            for i in range(len(each_comi_html_api)):
+                user_id = get_user_id(each_comi_js[i]['committer']['name'])
+                comment = each_comi_js[i]['message']
+                action = 1
+
+                single_pull_act_1 = [q_id, user_id, comment, action]
+                save_sth(single_pull_act_1, 'pull_request_action', 0)
+                print('[pull_request_action]: ', single_pull_act_1)
+        except:
+            pass
 
         # 每个问题下的每个动作--review
         each_revw_url_api = 'https://api.github.com/repos/' + user_name + '/' + repo_name + '/pulls/' + q_id + '/comments'
@@ -83,5 +98,8 @@ def get_open_pulls(user_name, repo_name):
             comment = each_revw_js[i]['body']
             action = 2
 
+            single_pull_act_2 = [q_id, user_id, comment, action]
+            save_sth(single_pull_act_2, 'pull_request_action', 0)
+            print('[pull_request_action]: ', single_pull_act_2)
 
 # get_open_pulls('log4cplus', 'log4cplus')

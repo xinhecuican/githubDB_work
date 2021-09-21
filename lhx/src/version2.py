@@ -3,7 +3,7 @@ import json
 import csv
 import re
 from bs4 import BeautifulSoup
-from common import getHTML
+from common import getHTML, save_sth, trans_date_format
 
 
 # 处理 user_info, user_description, followers表
@@ -30,6 +30,7 @@ def get_user_info(user_name):
 
         single_user_info = [id, user_name, password, email, follower_num, following_num, star_num, proj_num, repo_num, package_num]
         print(single_user_info)
+        save_sth(single_user_info, 'user_info', 0)
         # end user_info---------------------------------------------------------------
 
         # start user_description---------------------------------------------------------------
@@ -60,6 +61,7 @@ def get_user_info(user_name):
 
         single_user_description = [id, user_name, nick_name, status, company, location, comments, link, avatar_url]
         print(single_user_description)
+        save_sth(single_user_description, 'user_description', 0)
         # end user_description---------------------------------------------------------------
 
         # start follwers TODO: 目前每人爬30个
@@ -70,7 +72,13 @@ def get_user_info(user_name):
         for i in range(len(f_res)):
             followers_list.append([f_res[i]['id'], id])
         print(followers_list)
+        save_sth(followers_list, 'followers', 1)
         # end followers---------------------------------------------------------------
+
+        # start activity---------------------------------------------------------------
+        # ...
+        # end activity---------------------------------------------------------------
+# =========================================   以上是个人信息   =========================================================================
 
         # start repository---------------------------------------------------------------
         get_repo_info(user_name, id)
@@ -99,61 +107,79 @@ def get_repo_info(user_name, user_id):
         # 这里只爬30个contributor 大于30也写30
         con_url = js_res[i]['contributors_url']
         con_html = getHTML(con_url)
-        con_js = json.loads(con_html)
+        try:
+            con_js = json.loads(con_html)
+        except:
+            con_js = []
         contributor_num = len(con_js)
 
         single_repository = [id, user_id, fname, create_date, visibility, default_branch, contributor_num, watch_num, star_num, fork_num]
+        save_sth(single_repository, 'repository', 0)
         print('[repository]: ', single_repository)
         # end repository---------------------------------------------------------------
 
         # start repository_info---------------------------------------------------------------
         # id = id
         description = js_res[i]['description']
-        # website TODO: 是啥
-        # licenses_id TODO: 是啥
+        # print('[description]: ', description)
         temp_url = 'https://github.com/' + user_name + '/' + name
         temp_html = getHTML(temp_url)
         tags = get_tags(temp_html)
+        # print('[tags] = ', tags)
         code_type = get_code_type(temp_html)
+        # print('[code_type]: ', code_type)
         contributors = []
         for i in range(len(con_js)):
             contributors.append(con_js[i]['login'])
-        print('[contriburtors]: ', contributors)
+        # print('[contriburtors]: ', contributors)
+
+
         # end repository_info---------------------------------------------------------------
 
         # start licenses---------------------------------------------------------------
         licenses_name_d = js_res[i]['license']
         if licenses_name_d != None:
             licenses_name = licenses_name_d['name']
-            print('[licenses_name]: ', licenses_name)
+            # print('[licenses_name]: ', licenses_name)
         else:
-            licenses_name = None
+            licenses_name = ''
 
         licenses_content_url_d = js_res[i]['license']
         try:
             licenses_content_url = licenses_content_url_d['url']
             licenses_content = get_licenses_content(licenses_content_url)
         except:
-            licenses_content = None
+            licenses_content = ''
 
         # 获得id
         licenses_url = 'https://github.com/' + user_name + '/' + name + '/blob/' + default_branch + '/LICENSE'
-        print(licenses_url)
+        # print(licenses_url)
         lic_url = getHTML(licenses_url)
         try:
             lic_bs = BeautifulSoup(lic_url, 'html.parser')
             licenses_id = lic_bs.find('a', class_='https://github.com/tonybaloney/wily/blob/master/LICENSE').text
-            print(['[licenses]: ', id, description, licenses_id, tags, code_type, contributors])
+            # print(['[licenses]: ', id, description, licenses_id, tags, code_type, contributors])
         except:
-            print('no licenses')
+            licenses_id = ''
+            # print('no licenses')
         # end licenses---------------------------------------------------------------
 
+        # licenses在这存
+        single_licenses = [licenses_name, licenses_content]
+        save_sth(single_licenses, 'licenses', 0)
+        print(single_licenses)
+
+        # repository_info在这存
+        single_repository_info = [id, description, '', licenses_id, tags, code_type, contributors]
+        save_sth(single_repository_info, 'repository_info', 0) # TODO: 存在格式问题
+        print(single_repository_info)
+
         # start issue---------------------------------------------------------------
-        get_issue(user_name, name, id)
+        # get_issue(user_name, name, id)
         # end issue---------------------------------------------------------------
 
         # start branch-----------------------------------------------------------
-        get_branches(user_name, name)
+        # get_branches(user_name, name, id)
         # end branch-------------------------------------------------------------
 
 
@@ -161,7 +187,7 @@ def get_issue(user_name, name, repo_id): # 处理issue issue_comment labels
     url = 'https://github.com/' + user_name + '/' + name + '/issues'
     html = getHTML(url)
     soup = BeautifulSoup(html, 'html.parser')
-
+    print('start!!!')
     # start issue 1--------------------------------------------------------------
     # 目前是open部分
     issue_ids = soup.find_all('div', class_='Box-row Box-row--focus-gray p-0 mt-0 js-navigation-item js-issue-row')
@@ -179,7 +205,8 @@ def get_issue(user_name, name, repo_id): # 处理issue issue_comment labels
         create_date = issue_js['created_at']
         comments_sum = issue_js['comments']
         question = issue_js['title']
-        single_issue = [issue_id, creator_id, labels, status, create_date, comments_sum, question]
+        single_issue = [repo_id, creator_id, labels, status, trans_date_format(create_date, 1), comments_sum, question]
+        save_sth(single_issue, 'issue', 0)
         print('[issue]: ', single_issue)
         # end issue 1------------------------------------------------------------
 
@@ -192,8 +219,13 @@ def get_issue(user_name, name, repo_id): # 处理issue issue_comment labels
         # create_date = create_date
         create_content = issue_js['body']
 
+        single_issue_comm_0 = [issue_id, 0, creator_id, creator_name, action0, create_date, create_content]
+        save_sth(single_issue_comm_0, 'issue_comment', 0)
+        print('[issue_comment]: ', single_issue_comm_0)
+
         # 1类型
         comment_api_url = 'https://api.github.com/repos/' + user_name + '/' + name + '/issues/' + issue_id + '/comments'
+        # print(comment_api_url)
         comment_html = getHTML(comment_api_url)
         comment_js = json.loads(comment_html)
 
@@ -204,11 +236,18 @@ def get_issue(user_name, name, repo_id): # 处理issue issue_comment labels
             action1 = '1'
             comment_date = comment_js[i]['created_at']
             comment_content = comment_js[i]['body']
-        comment_url = comment_js['html_url'] # FIXME: ERROR
 
+            single_issue_comm_1 = [issue_id, quota_id, commentator_id, commentator_name, action1, comment_date, comment_content]
+            save_sth(single_issue_comm_1, 'issue_comment', 0)
+            print(single_issue_comm_1)
+        # TODO: 一点小问题
+        try:
+            comment_url = comment_js['html_url']
         # 2类型
         # label_creator = user_name
-        get_label_comment(comment_url)
+        #     get_label_comment(comment_url, repo_id)
+        except:
+            pass
         # end issue_comment------------------------------------------------------
 
         # start labels----------------------------------------------------------
@@ -217,12 +256,14 @@ def get_issue(user_name, name, repo_id): # 处理issue issue_comment labels
             label_url = label_js[i]['url']
             label_name = label_js[i]['name']
             label_color = label_js[i]['color']
-            single_label = [label_url, label_name, label_color]
+
+            single_label = [repo_id, label_url, label_name, label_color]
+            save_sth(single_label, 'labels', 0)
             print('[label]: ', single_label)
         # end labels------------------------------------------------------------
 
 
-def get_branches(user_name, repo_name):
+def get_branches(user_name, repo_name, repo_id):
     url = 'https://github.com/' + user_name + '/' + repo_name + '/branches'
     html = getHTML(url)
     soup = BeautifulSoup(html, 'html.parser')
@@ -232,7 +273,10 @@ def get_branches(user_name, repo_name):
         each_html = getHTML(each_url)
         each_soup = BeautifulSoup(each_html, 'html.parser')
         commit_num = each_soup.find('a', class_='pl-3 pr-3 py-3 p-md-0 mt-n3 mb-n3 mr-n3 m-md-0 Link--primary no-underline no-wrap').find('strong').text
-        single_branch = [all_b[i].get('branch'), commit_num]
+        last_commit = each_soup.find('a', class_='d-none js-permalink-shortcut').get('href').rpartition('/')[2][:7]
+
+        single_branch = [repo_id, all_b[i].get('branch'), last_commit, commit_num]
+        save_sth(single_branch, 'branches', 0)
         print('[branch]: ', single_branch)
 # -------------------------------------------------------------------------------------------------------------------
 def get_tags(temp_html):
@@ -242,8 +286,8 @@ def get_tags(temp_html):
     for i in range(len(tag)):
         temp = tag[i].get('data-octo-dimensions').partition(':')[2]
         res.append(temp)
-    if res != []:
-        print(res)
+    # if res != []:
+        # print(res)
     return res
 
 def get_code_type(temp_html):
@@ -252,8 +296,8 @@ def get_code_type(temp_html):
     for i in range(len(types)):
         par = types[i].partition('="')[2][:-1].partition(" ")
         dict[par[0]] = par[2]
-    if dict != {}:
-        print(dict)
+    # if dict != {}:
+        # print(dict)
     return dict
 
 def get_licenses_content(l_url):
@@ -263,7 +307,7 @@ def get_licenses_content(l_url):
     res = js_l['body']
     return res
 
-def get_label_comment(url):
+def get_label_comment(url, repo_id):
     html = getHTML(url)
     soup = BeautifulSoup(html, 'html.parser')
 
@@ -280,17 +324,13 @@ def get_label_comment(url):
                 except:
                     each_labels.append('')
             time = label_infos[i].find('a', class_='Link--secondary').text
-            single_label_comment = [each_labels, each_content, time]
+            single_label_comment = [repo_id, each_labels, each_content, time]
             print('[label_comment]: ', single_label_comment)
 # ---------------------------------------------------------------------------------------------------------------------
-def save_sth(list, fname):
-    path = r'D:\\21-22-1\\Database_Practice1\\' + fname + '.csv'
-    with open(path, 'a+') as f:
-        writer = csv.writer(f)
-        writer.writerows(list)
+
 # ---------------------------------------------------------------------------------------------------------------------
 
-
-get_user_info('bollnh')
+# get_user_info('bollnh')
+# get_user_info('xinhecuican')
 # get_user_info('antsmartian')
 # get_user_info('tonybaloney')
