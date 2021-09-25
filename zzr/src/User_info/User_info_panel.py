@@ -1,3 +1,4 @@
+import datetime
 from abc import ABC
 
 from PyQt5.QtCore import Qt
@@ -8,6 +9,7 @@ import lzl.src.main as m
 from zzr.src.Helper.Base_window import Base_window
 from zzr.src.Helper.Register import Registers
 from zzr.src.Repository_info.Repository_info_card import Repository_info_card
+from zzr.src.User_info.User_activity_card import User_activity_card
 from zzr.src.Widgets.Line import Line
 from zzr.src.Widgets.Pic_label import Pic_label
 
@@ -17,6 +19,7 @@ class User_info_panel(Base_window):
 
     def __init__(self, name):
         super().__init__()
+        self.activity_layout = QVBoxLayout()
         self.repository_card_layout = QGridLayout()
         self.repository_label_layout = QHBoxLayout()
         self.repository_label_layout.addWidget(QLabel("热门仓库: "), 2)
@@ -60,6 +63,7 @@ class User_info_panel(Base_window):
         self.scroll_widget = QWidget()
         self.scroll_layout = QVBoxLayout()
         self.scroll_layout.addLayout(self.repository_layout)
+        self.scroll_layout.addLayout(self.activity_layout)
         self.scroll_widget.setLayout(self.scroll_layout)
         self.scroll_area.setWidget(self.scroll_widget)
         self.scroll_area.setFrameShape(QFrame.NoFrame)
@@ -86,6 +90,7 @@ class User_info_panel(Base_window):
         self.info_layout.addLayout(self.info_honor_layout)
         self.info_layout.addSpacing(10)
         self.info_layout.addStretch()
+        self.setMinimumWidth(1300)
 
     def init_info_panel(self):
         # TODO: layout最後全部要放到__init__中
@@ -120,6 +125,14 @@ class User_info_panel(Base_window):
                 row = row + 1
             else:
                 col = col + 1
+        now = datetime.datetime.now()
+        to_str = now.strftime('%Y-%m-%d')
+        now = now - datetime.timedelta(days=30)
+        from_str = now.strftime('%Y-%m-%d')
+        activity_data = m.giver.give_user_activity(self.data['id'], from_str, to_str)
+        self.clear_layout(self.activity_layout)
+        for data in activity_data:
+            self.activity_layout.addWidget(User_activity_card(data))
 
     def clear(self):
         while self.base_layout.count():

@@ -52,6 +52,7 @@ create table Activity(
     id int primary key auto_increment,
     type tinyint,
     user_id int,
+    commit_id int,
     owner_repository_id int,
     activity_date date
 );'''
@@ -109,7 +110,12 @@ code_type (Array): [{
                         'name' (str): 类型名 如c++, python等
                         'percentage' (float)
                     }]
-tag: 在描述下面呈现 例如 c-plus-plus c等
+contributors (Array): [{
+                            id:
+                            name:
+                      }]
+tag (Array): 在描述下面呈现 例如 c-plus-plus c
+release_num: 由程序解决
 """
 table_repository_info = '''
 create table repository_info(
@@ -120,6 +126,7 @@ create table repository_info(
     tag text,
     code_type text,
     contributors text,
+    release_num int default 0,
     foreign key fk_repository_id(id) references repository(id)
     on delete cascade
     on update cascade
@@ -275,7 +282,7 @@ create table Branches(
 # comment是提交时的说明
 # commit是commit的编号，长度为40位
 # longtext最多2^32 - 1个字节
-# contributors 依照下面的commit_contributor表
+# 如果只有一个人则author就是commit_user
 # 不考虑merge的两个parent
 table_commits = '''
 create table Commits(
@@ -286,8 +293,7 @@ create table Commits(
     author_user_id int default -1,
     commit_user_id int default -1,
     commit_date datetime,
-    message varchar(255),
-    contributors text
+    message varchar(255)
  );'''
 
 

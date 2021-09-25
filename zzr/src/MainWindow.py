@@ -10,7 +10,6 @@ from zzr.src.Table_widget import Table_widget
 from zzr.src.User_info.User_info_card import User_info_card
 
 
-
 @Registers.model.register
 class MainWindow(Base_window):
 
@@ -73,5 +72,3 @@ class MainWindow(Base_window):
 
     def on_window_cancel(self, *args):
         pass
-
-

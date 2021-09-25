@@ -150,6 +150,29 @@ def repository_delete(connection, states):
         delete(connection, "commits", f"repository_id = {data[0]}")
 
 
+def repository_info_insert(connection, datas):
+    cursor = connection.cursor()
+    for data in datas:
+        cursor.execute(f'''
+                        insert into repository_info(
+                            id, 
+                            description,
+                            website,
+                            licenses_id,
+                            tag,
+                            code_type,
+                            contributors)
+                        values(
+                            {data[0]},
+                            '{data[1]}',
+                            '',
+                            0,
+                            '{data[2]}',
+                            '{data[3]}',
+                            '{data[4]}')
+                        ''')
+
+
 def tags_insert(connection:Connection, datas):
     cursor = connection.cursor()
     for data in datas:
@@ -175,6 +198,7 @@ def tags_insert(connection:Connection, datas):
                             {data[7]},
                             '{data[8]}')
                         ''')
+        cursor.execute(f"update repository_info set release_num = release_num+1 where id = {data[0]}")
     connection.commit()
     cursor.close()
 
