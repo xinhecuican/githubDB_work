@@ -1,7 +1,7 @@
 import threading
 import json
 from version2 import get_user_info, get_issue, get_branches
-from get_activity import get_activityss
+from get_activity import get_activity
 from get_tags import get_repo_tags
 from get_pull_requests import get_open_pulls
 from common import getHTML
@@ -17,21 +17,21 @@ def get_all(user_name):
     # user_description
     # repository
     # repository_info
-    # licenses TODO:存在格式问题
+    # licenses
     # threading.Thread(target=get_user_info, args=(user_name,)).start()
 
     # activity
-    # threading.Thread(target=get_activityss, args=(user_name,)).start()
+    # threading.Thread(target=get_activity, args=(user_name,)).start()
 
-    # tags TODO: asset_num, react
-    # tag_files TODO:size
+    # tags
+    # tag_files
     a_repos = get_user_all_repos(user_name)
     for i in range(len(a_repos)):
         # threading.Thread(target=get_repo_tags, args=(user_name, a_repos[i][0], )).start()
         # threading.Thread(target=get_issue, args=(user_name, a_repos[i][0], a_repos[i][1],)).start()
         # get_issue(user_name, a_repos[i][0], a_repos[i][1])
-        # get_open_pulls(user_name, a_repos[i][0], a_repos[i][1])
-        get_branches(user_name, a_repos[i][0], a_repos[i][1])
+        get_open_pulls(user_name, a_repos[i][0], a_repos[i][1])
+        # get_branches(user_name, a_repos[i][0], a_repos[i][1])
 
 
 def get_user_all_repos(user_name):

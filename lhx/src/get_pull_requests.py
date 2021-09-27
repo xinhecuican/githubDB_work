@@ -5,7 +5,7 @@ import re
 from bs4 import BeautifulSoup
 from common import getHTML, save_sth, get_user_id
 
-
+# TODO: CLOSE 部分
 # pull_request
 def get_open_pulls(user_name, repo_name, repo_id):
     url = 'https://github.com/' + user_name + '/' + repo_name + '/pulls' # 网页
@@ -17,7 +17,6 @@ def get_open_pulls(user_name, repo_name, repo_id):
     for each in range(len(all_question)):
         q_id = all_question[each].find('span', class_='opened-by').text.split()[0][1:]
         each_url_api = 'https://api.github.com/repos/' + user_name + '/' + repo_name + '/pulls/' + q_id # api
-        # print(each_url_api)
         each_html = getHTML(each_url_api)
         each_js = json.loads(each_html)
 

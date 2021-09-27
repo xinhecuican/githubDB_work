@@ -1,4 +1,7 @@
-import requests
+# DONE：完成 user_info followers user_description 表
+# DONE：完成 repository 表
+# ALMOST_DONE：repository 表
+
 import json
 import csv
 import re
@@ -6,7 +9,6 @@ from bs4 import BeautifulSoup
 from common import getHTML, save_sth, trans_date_format
 
 
-# 处理 user_info, user_description, followers表
 def get_user_info(user_name):
     url1 = 'https://api.github.com/users/' + user_name
     url2 = 'https://github.com/' + user_name
@@ -17,7 +19,7 @@ def get_user_info(user_name):
 
     # 我们只爬user
     if js_res['type'] == 'User':
-        # start user_info---------------------------------------------------------------
+        # start user_info
         id = js_res['id']
         password = ''
         email = js_res['email']
@@ -31,40 +33,36 @@ def get_user_info(user_name):
         single_user_info = [id, user_name, password, email, follower_num, following_num, star_num, proj_num, repo_num, package_num]
         print(single_user_info)
         save_sth(single_user_info, 'user_info', 0)
-        # end user_info---------------------------------------------------------------
 
-        # start user_description---------------------------------------------------------------
+        # start user_description
         nick_name = js_res['name']
         try:
             status = str(soup.find('div', class_='user-status-message-wrapper f6 color-text-primary no-wrap').find('div')).replace('<div>', '').replace('</div>', '')
         except:
-            status = None
+            status = ''
         try:
             company = js_res['company'].replace(r'\n', '').replace(r'\r', '')
         except:
-            company = None
+            company = ''
         try:
             location = js_res['location']
         except:
-            location = None
+            location = ''
         try:
-            # comments = soup.find('div', class_='p-note user-profile-bio mb-3 js-user-profile-bio f4').get('data-bio-text')
             comments = js_res['bio']
         except:
-            comments = None
+            comments = ''
         try:
-            # link = soup.find('a', rel='nofollow me').get('href')
             link = js_res['blog']
         except:
-            link = None
+            link = ''
         avatar_url = soup.find('a', itemprop='image').get('href')
 
         single_user_description = [id, user_name, nick_name, status, company, location, comments, link, avatar_url]
         print(single_user_description)
         save_sth(single_user_description, 'user_description', 0)
-        # end user_description---------------------------------------------------------------
 
-        # start follwers TODO: 目前每人爬30个
+        # start follwers
         followers_url = js_res['followers_url']
         followers_html = getHTML(followers_url)
         f_res = json.loads(followers_html)
@@ -73,29 +71,22 @@ def get_user_info(user_name):
             followers_list.append([f_res[i]['id'], id])
         print(followers_list)
         save_sth(followers_list, 'followers', 1)
-        # end followers---------------------------------------------------------------
+        # TODO: 爬大于30个
 
-        # start activity---------------------------------------------------------------
-        # ...
-        # end activity---------------------------------------------------------------
-# =========================================   以上是个人信息   =========================================================================
-
-        # start repository---------------------------------------------------------------
+        # start repository
         get_repo_info(user_name, id)
-        # end repository---------------------------------------------------------------
     else:
         pass
 
 
-# 处理 repository, repository_info, licenses
 def get_repo_info(user_name, user_id):
     url1 = 'https://api.github.com/users/' + user_name + '/repos'
     html1 = getHTML(url1)
     js_res = json.loads(html1)
 
-    for i in range(len(js_res)): # 对于每个repo 以下针对的全都是一个项目
-        # start repository---------------------------------------------------------------
-        id = js_res[i]['id'] # FIXME: 目前存疑
+    for i in range(len(js_res)): # 对于每个repo 以下每个 i 是一个repo
+        # start repository
+        id = js_res[i]['id']
         fname = js_res[i]['full_name']
         name = js_res[i]['name']
         create_date = js_res[i]['created_at']
@@ -104,94 +95,56 @@ def get_repo_info(user_name, user_id):
         watch_num = js_res[i]['watchers_count']
         star_num = js_res[i]['stargazers_count']
         fork_num = js_res[i]['forks_count'] # 该值爬了别人fork你的，不是总fork
-        # 这里只爬30个contributor 大于30也写30
         con_url = js_res[i]['contributors_url']
         con_html = getHTML(con_url)
         try:
             con_js = json.loads(con_html)
         except:
             con_js = []
-        contributor_num = len(con_js)
+        contributor_num = len(con_js) # TODO: 直接爬页面，大于30个
 
-        single_repository = [id, user_id, fname, create_date, visibility, default_branch, contributor_num, watch_num, star_num, fork_num]
+        single_repository = [id, user_id, fname, trans_date_format(create_date, 1), visibility, default_branch, contributor_num, watch_num, star_num, fork_num]
         save_sth(single_repository, 'repository', 0)
         print('[repository]: ', single_repository)
-        # end repository---------------------------------------------------------------
 
-        # start repository_info---------------------------------------------------------------
-        # id = id
+        # start repository_info
         description = js_res[i]['description']
-        # print('[description]: ', description)
         temp_url = 'https://github.com/' + user_name + '/' + name
         temp_html = getHTML(temp_url)
         tags = get_tags(temp_html)
-        # print('[tags] = ', tags)
         code_type = get_code_type(temp_html)
-        # print('[code_type]: ', code_type)
         contributors = []
         for i in range(len(con_js)):
             contributors.append(con_js[i]['login'])
-        # print('[contriburtors]: ', contributors)
 
-
-        # end repository_info---------------------------------------------------------------
-
-        # start licenses---------------------------------------------------------------
-        licenses_name_d = js_res[i]['license']
-        if licenses_name_d != None:
-            licenses_name = licenses_name_d['name']
-            # print('[licenses_name]: ', licenses_name)
-        else:
-            licenses_name = ''
-
-        licenses_content_url_d = js_res[i]['license']
-        try:
-            licenses_content_url = licenses_content_url_d['url']
-            licenses_content = get_licenses_content(licenses_content_url)
-        except:
-            licenses_content = ''
-
-        # 获得id
         licenses_url = 'https://github.com/' + user_name + '/' + name + '/blob/' + default_branch + '/LICENSE'
-        # print(licenses_url)
         lic_url = getHTML(licenses_url)
         try:
             lic_bs = BeautifulSoup(lic_url, 'html.parser')
             licenses_id = lic_bs.find('a', class_='https://github.com/tonybaloney/wily/blob/master/LICENSE').text
-            # print(['[licenses]: ', id, description, licenses_id, tags, code_type, contributors])
         except:
             licenses_id = ''
-            # print('no licenses')
-        # end licenses---------------------------------------------------------------
 
-        # licenses在这存
-        single_licenses = [licenses_name, licenses_content]
-        save_sth(single_licenses, 'licenses', 0)
-        print(single_licenses)
+        single_repository_info = [id, description, '', licenses_id, tags, code_type, contributors, 0]
+        save_sth(single_repository_info, 'repository_info', 0)
+        print('[repo_info]: ', single_repository_info)
 
-        # repository_info在这存
-        single_repository_info = [id, description, '', licenses_id, tags, code_type, contributors]
-        save_sth(single_repository_info, 'repository_info', 0) # TODO: 存在格式问题
-        print(single_repository_info)
+        # start issue
+        get_issue(user_name, name, id)
 
-        # start issue---------------------------------------------------------------
-        # get_issue(user_name, name, id)
-        # end issue---------------------------------------------------------------
-
-        # start branch-----------------------------------------------------------
+        # start branch
         # get_branches(user_name, name, id)
-        # end branch-------------------------------------------------------------
 
 
-def get_issue(user_name, name, repo_id): # 处理issue issue_comment labels
+def get_issue(user_name, name, repo_id):
     url = 'https://github.com/' + user_name + '/' + name + '/issues'
     html = getHTML(url)
     soup = BeautifulSoup(html, 'html.parser')
-    print('start!!!')
-    # start issue 1--------------------------------------------------------------
-    # 目前是open部分
+
+    # start issue
+    # TODO: 目前只有open部分 差close部分
     issue_ids = soup.find_all('div', class_='Box-row Box-row--focus-gray p-0 mt-0 js-navigation-item js-issue-row')
-    for i in range(len(issue_ids)):
+    for i in range(len(issue_ids)): # 一个repo下的每一个issue
         issue_id = issue_ids[i].get('id').partition('_')[2]
         url = 'https://api.github.com/repos/' + user_name + '/' + name + '/issues/' + issue_id
         html = getHTML(url)
@@ -205,31 +158,28 @@ def get_issue(user_name, name, repo_id): # 处理issue issue_comment labels
         create_date = issue_js['created_at']
         comments_sum = issue_js['comments']
         question = issue_js['title']
+
         single_issue = [repo_id, creator_id, labels, status, trans_date_format(create_date, 1), comments_sum, question]
         save_sth(single_issue, 'issue', 0)
         print('[issue]: ', single_issue)
-        # end issue 1------------------------------------------------------------
 
-        # 接下来获取单个issue下所有相关信息
-        # start issue_comment---------------------------------------------------
-        # 0类型
-        # user_id = creator_id
+        # 接下来获取单个issue下 comment
+        # start issue_comment
+        # ----- 新建 -----
         creator_name = issue_js['user']['login']
         action0 = '0'
-        # create_date = create_date
         create_content = issue_js['body']
 
         single_issue_comm_0 = [issue_id, 0, creator_id, creator_name, action0, create_date, create_content]
         save_sth(single_issue_comm_0, 'issue_comment', 0)
         print('[issue_comment]: ', single_issue_comm_0)
 
-        # 1类型
+        # ----- 评论 -----
         comment_api_url = 'https://api.github.com/repos/' + user_name + '/' + name + '/issues/' + issue_id + '/comments'
-        # print(comment_api_url)
         comment_html = getHTML(comment_api_url)
         comment_js = json.loads(comment_html)
 
-        for i in range(len(comment_js)): # 此处是评论类comment
+        for i in range(len(comment_js)):
             quota_id = comment_js[i]['id']
             commentator_id = comment_js[i]['user']['id']
             commentator_name = comment_js[i]['user']['login']
@@ -239,18 +189,19 @@ def get_issue(user_name, name, repo_id): # 处理issue issue_comment labels
 
             single_issue_comm_1 = [issue_id, quota_id, commentator_id, commentator_name, action1, comment_date, comment_content]
             save_sth(single_issue_comm_1, 'issue_comment', 0)
-            print(single_issue_comm_1)
-        # TODO: 一点小问题
-        try:
-            comment_url = comment_js['html_url']
-        # 2类型
-        # label_creator = user_name
-        #     get_label_comment(comment_url, repo_id)
-        except:
-            pass
-        # end issue_comment------------------------------------------------------
+            print('[issue_comment]: ', single_issue_comm_1)
 
-        # start labels----------------------------------------------------------
+        # ----- 增加label -----
+        try:
+            get_label_comment(url, repo_id)
+        except:
+            print('获取label型comment失败！！！！！！！！')
+
+        # ----- 关闭 -----
+        # TODO: issue_comment 关闭类型
+
+
+        # start labels
         label_js = issue_js['labels']
         for i in range(len(label_js)):
             label_url = label_js[i]['url']
@@ -260,7 +211,6 @@ def get_issue(user_name, name, repo_id): # 处理issue issue_comment labels
             single_label = [repo_id, label_url, label_name, label_color]
             save_sth(single_label, 'labels', 0)
             print('[label]: ', single_label)
-        # end labels------------------------------------------------------------
 
 
 def get_branches(user_name, repo_name, repo_id):
@@ -275,7 +225,7 @@ def get_branches(user_name, repo_name, repo_id):
         commit_num = each_soup.find('a', class_='pl-3 pr-3 py-3 p-md-0 mt-n3 mb-n3 mr-n3 m-md-0 Link--primary no-underline no-wrap').find('strong').text
         last_commit = each_soup.find('a', class_='d-none js-permalink-shortcut').get('href').rpartition('/')[2][:7]
 
-        single_branch = [repo_id, all_b[i].get('branch'), last_commit, commit_num]
+        single_branch = [all_b[i].get('branch'), repo_id, last_commit, commit_num]
         save_sth(single_branch, 'branches', 0)
         print('[branch]: ', single_branch)
 # -------------------------------------------------------------------------------------------------------------------
@@ -309,9 +259,37 @@ def get_licenses_content(l_url):
 
 def get_label_comment(url, repo_id):
     html = getHTML(url)
-    soup = BeautifulSoup(html, 'html.parser')
+    js = json.loads(html)
 
+    url1 = url + '/timeline'
+    html1 = getHTML(url1)
+    js1 = json.loads(html1)
+
+    labels_name = []
+    labels_description = []
+    labels_date = []
+    labels_info = []
+    # 分成两部分 一部分从 timeline 中获取创建时间
+    # 另一部分从  中获取labels描述
+
+    # 第一部分
+    all_labels = js['labels']
+    for i in range(len(all_labels)):
+        labels_name.append(all_labels[i]['name'])
+        labels_description.append(all_labels[i]['description'])
+    # 第二部分
+    for i in range(len(js1)):
+        if js1[i]['event'] == 'labeled':
+            labels_date.append(js1[i]['created_at'])
+
+    # 将一二部分合起来
+    for i in range(len(labels_name)):
+        each = [repo_id, labels_name[i], labels_description[i], trans_date_format(labels_date[i], 1)]
+        labels_info.append(each)
+        print('[each_label]: ', each)
+'''
     label_infos = soup.find_all('div', class_='TimelineItem-body')
+    print('已进入: ', len(label_infos))
     for i in range(len(label_infos)): # 以每次添加为单位
         if label_infos[i].find('a', class_='IssueLabel hx_IssueLabel d-inline-block v-align-middle') is not None:
             each_labels = []
@@ -326,11 +304,12 @@ def get_label_comment(url, repo_id):
             time = label_infos[i].find('a', class_='Link--secondary').text
             single_label_comment = [repo_id, each_labels, each_content, time]
             print('[label_comment]: ', single_label_comment)
+            '''
 # ---------------------------------------------------------------------------------------------------------------------
 
 # ---------------------------------------------------------------------------------------------------------------------
 
-# get_user_info('bollnh')
+# get_user_info('liuyib')
 # get_user_info('xinhecuican')
 # get_user_info('antsmartian')
 # get_user_info('tonybaloney')

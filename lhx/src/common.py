@@ -40,7 +40,6 @@ def trans_date_format(date, type): # yy-mm-dd
     month = {
         'Jan': '01', 'Feb': '02', 'Mar': '03', 'Apr': '04', 'May': '05', 'Jun': '06', 'Jul': '07', 'Aug': '08', 'Sep': '09', 'Oct': '10', 'Nov': '11', 'Dec': '12'
     }
-
     if type == 0: # Sep 7, 2021 --- 2021-09-07
         date_l = date.split(' ')
         yy = date_l[2]
@@ -49,8 +48,8 @@ def trans_date_format(date, type): # yy-mm-dd
         res_data = yy + '-' + mm + '-' + dd
         return res_data
     elif type == 1: # 2021-02-21T02:53:55Z
-        d = date.partition('T')[0]
-        return d
+        res_data = date.partition('T')[0]
+        return res_data
 
 def save_sth(lists, fname, types): # 0是单行 1是多行
     path = r'D:\\21-22-1\\Database_Practice1\\' + fname + '.csv'

@@ -33,19 +33,35 @@ def getHTML(url):
         print('conn failed')
         return None
 
-url = 'https://github.com/tonybaloney/wily/commit/7ee24205dfeb41fc20ec604a34e2038e0a6d9fe1'
-# IssueLabel hx_IssueLabel d-inline-block v-align-middle
+
+def get_label_comment(url):
+    html = getHTML(url)
+    soup = BeautifulSoup(html, 'html.parser')
+
+    label_infos = soup.find_all('div', class_='TimelineItem-body')
+    print('已进入: ', len(label_infos))
+    for i in range(len(label_infos)): # 以每次添加为单位
+        if label_infos[i].find('a', class_='IssueLabel hx_IssueLabel d-inline-block v-align-middle') is not None:
+            each_labels = []
+            each_content = []
+            temp = label_infos[i].find_all('a', class_='IssueLabel hx_IssueLabel d-inline-block v-align-middle')
+            for j in range(len(temp)): # 此处获取一次添加的所有标签
+                each_labels.append(temp[j].text.replace('\n', '').strip()) # 标签名
+                try:
+                    each_content.append(temp[j].get('title')) # 标签内容
+                except:
+                    each_labels.append('')
+            time = label_infos[i].find('a', class_='Link--secondary').text
+            single_label_comment = [each_labels, each_content, time]
+            print('[label_comment]: ', single_label_comment)
+
+
+url = 'https://github.com/tonybaloney/hathi/commits?author=tonybaloney&since=2021-08-31&until=2021-09-27'
 html = getHTML(url)
 soup = BeautifulSoup(html, 'html.parser')
 
-# all_question = soup.find_all('div', class_='flex-auto min-width-0 p-2 pr-3 pr-md-2')
-#
-# q_ids = all_question[0].find('span', class_='opened-by').text.split()[0][1:]
-all_add_lines = soup.find_all('td', class_='blob-num blob-num-addition js-linkable-line-number')
+b = soup.find('div', class_='TimelineItem TimelineItem--condensed pt-0 pb-2')
+a = b.find('a', class_='text-mono f6 btn btn-outline BtnGroup-item').text
+# print(a)
 
-# a = soup.find('a', class_='pl-3 pr-3 py-3 p-md-0 mt-n3 mb-n3 mr-n3 m-md-0 Link--primary no-underline no-wrap').find('strong').text
-# p = json.loads(html)
-# pj = json.dumps(p, indent=4, separators=(',', ':'))
-# print(soup.find('a', class_='d-none js-permalink-shortcut').get('href').rpartition('/')[2][:7])
-print(html)
-# print(len(all_add_lines))
+get_label_comment('https://github.com/babysor/MockingBird/issues/49', )
