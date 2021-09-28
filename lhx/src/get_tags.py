@@ -1,5 +1,5 @@
 from bs4 import BeautifulSoup
-from common import getHTML, get_user_id, get_repo_id, save_sth
+from common import getHTML, get_user_id, get_repo_id, save_sth, trans_date_format
 
 # 目前只爬第一页
 def get_repo_tags(user_name, repo_name):
@@ -15,12 +15,12 @@ def get_repo_tags(user_name, repo_name):
         tag_type = 1
         related_id = all_tags[each].find('a', class_='Link--muted').text.replace(r'\n', '').strip()
         # TODO: asset_num, react, is_pre_release, size
-        publish_date = all_tags[each].find('relative-time').text
+        publish_date = trans_date_format(all_tags[each].find('relative-time').text, 0)
         is_pre_release = True
 
         single_tag = [repo_id, user_id, name.strip('\n'), tag_type, related_id, '0', publish_date, is_pre_release, '']
         save_sth(single_tag, 'tags', 0)
-        print(single_tag)
+        print('[tags]: ', single_tag)
         # ['\n1.12.3\n', 1, 'e87453e', 'Jul 22, 2019', True]
 
         tag_id = related_id
@@ -29,8 +29,8 @@ def get_repo_tags(user_name, repo_name):
 
         single_tag_file = [tag_id, file_name.replace('\n', ''), '99', file_link]
         save_sth(single_tag_file, 'tag_files', 0)
-        print(single_tag_file)
+        print('[tag_files]: ', single_tag_file)
         # ['e87453e', 'wily\n1.12.3\n', '/tonybaloney/wily/archive/refs/tags/1.12.3.zip']
 
 
-# get_repo_tags('tonybaloney', 'wily')
+get_repo_tags('tonybaloney', 'wily')

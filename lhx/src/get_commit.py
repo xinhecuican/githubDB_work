@@ -1,7 +1,7 @@
 import time
 import json
 from bs4 import BeautifulSoup
-from common import getHTML, get_repo_id, save_sth
+from common import getHTML, get_repo_id, save_sth, trans_date_format
 
 
 #
@@ -42,20 +42,25 @@ def get_commit(user_name, repo_name, branch_name):
         change_files = comi_js['files']
         change_file_num = len(change_files)
         change_file_names = []  # 一个提交的所有改变文件
-        each_temp = []
 
-        # new
+
         all_adddel_lines = get_all_adddel_lines(user_name, repo_name, commit_sha)
         all_add_lines = all_adddel_lines[0]
         all_del_lines = all_adddel_lines[1]
         all_add_lines_index = 0
         all_del_lines_index = 0
-        # print(len(all_add_lines), len(all_del_lines))
 
         single_commit = [commit_sha, parent_commit, repo_id, author_user_id, commit_user_id, commit_date, message]
         save_sth(single_commit, 'commits', 0)
         print('[commits]: ', single_commit)
-        # end new
+
+        # NEW: 9.28 添加一个commit的所有comment
+        try:
+            comi_comm_url_api = comi_url_api + '/comments'
+            commit_comment = get_commit_comment(comi_comm_url_api) # 给commit_files表使用
+        except:
+            commit_comment = [] # 可能根本没有评论
+
 
         for each in range(change_file_num):  # 一个提交的每个改变文件
 
@@ -95,24 +100,25 @@ def get_commit(user_name, repo_name, branch_name):
                     except:
                         pass  # 理由同上
                 all_del_lines_index += 1
-            # end new
 
-            # print('[add]: ', file_add_lines, ' [add_lines]:', all_add_lines_index)
-            # print('[del]: ', file_del_lines, ' [del_lines]:', all_del_lines_index)
+
 
             # commit_file_info表
-            # TODO: commit_directory_address
-            commit_directory_address = ''
+            commit_directory_address = {'file_name': {'dic_commit_id': commit_sha[:7], 'file_name': file_id}, 'file_name': file_id}
             single_commit_file_info = [file_id, commit_directory_address, file_type, file_add_lines, file_del_lines,
                                        file_changes_line_num]
-            print(single_commit_file_info)
+            save_sth(single_commit_file_info, 'commit_file_info', 0)
+            print('[commit_file_info]: ', single_commit_file_info)
 
-            each_temp.append([file_path, file_name, file_type, file_id, file_action])
 
-            # TODO: commit_files
-            print('[commit_files]: ', [commit_sha[:7], parent_commit, repo_id, file_path, file_name, file_type, file_id, file_action])
 
-            print('-----------------------------------------------------------')
+
+
+            # TODO: commit_files表——file_line
+            file_line = 0
+            single_commit_files = [commit_sha[:7], commit_comment, file_name, file_type, file_action_num, file_line, file_add_lines, file_del_lines, file_path]
+            save_sth(single_commit_files, 'commit_files', 0)
+            print('[commit_files]: ', single_commit_files)
             time.sleep(1)
 
 
@@ -132,5 +138,22 @@ def get_all_adddel_lines(user_name, repo_name, sha):
     # print([add_lines, del_lines])
     return [add_lines, del_lines]
 
-get_commit('babysor', 'MockingBird', 'main')
+# NEW
+def get_commit_comment(url): # 传入的是api url
+    html = getHTML(url)
+    js = json.loads(html)
+    res_comment = []
+    for i in range(len(js)):
+        commid_id = js[i]['commit_id'][:7]
+        quota_id = js[i]['id']
+        comment_date = trans_date_format(js[i]['created_at'], 1)
+        comment_content = js[i]['body']
+        res_comment.append(comment_content)
+
+        each_comment = [commid_id, quota_id, comment_date, comment_content]
+        save_sth(each_comment, 'commit_comment', 0)
+        print('[commit_comment]: ', each_comment)
+    return res_comment
+
+# get_commit_comment('https://api.github.com/repos/xinhecuican/githubDB_work/commits/1d497a92a7a84a8a16cda830d0aa3319da74994e/comments')
 # get_all_adddel_lines('tonybaloney', 'wily' , 'e1bcd8dcc1823da3c1d9e4670e68550ac8ac5f77')
