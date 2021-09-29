@@ -37,4 +37,4 @@ def get_user_all_repos(user_name):
 
 
 if __name__ == '__main__':
-    get_all('xinhecuican')
+    get_all('MaxRocamora')
