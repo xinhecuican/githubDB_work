@@ -1,12 +1,10 @@
-# DONE：完成 user_info followers user_description 表
-# DONE：完成 repository 表
-# ALMOST_DONE：repository 表
-
 import json
 import csv
 import re
 from bs4 import BeautifulSoup
 from common import getHTML, save_sth, trans_date_format
+from get_tags import get_tags
+from get_commit import get_commit
 
 
 def get_user_info(user_name):
@@ -111,7 +109,7 @@ def get_repo_info(user_name, user_id):
         description = js_res[i]['description']
         temp_url = 'https://github.com/' + user_name + '/' + name
         temp_html = getHTML(temp_url)
-        tags = get_tags(temp_html)
+        tags = get_this_tags(temp_html)
         code_type = get_code_type(temp_html)
         contributors = []
         for i in range(len(con_js)):
@@ -125,15 +123,24 @@ def get_repo_info(user_name, user_id):
         except:
             licenses_id = ''
 
-        single_repository_info = [id, description, '', licenses_id, tags, code_type, contributors, 0]
+        # NEW
+        temp_soup = BeautifulSoup(temp_html, 'html.parser')
+        hreff = '/' + user_name + '/' + name + '/releases'
+        try:
+            release_num = temp_soup.find('a', href=hreff).find('span').get('title')
+        except:
+            release_num = 0
+
+
+        single_repository_info = [id, description, '', licenses_id, tags, code_type, contributors, release_num]
         save_sth(single_repository_info, 'repository_info', 0)
         print('[repo_info]: ', single_repository_info)
 
         # start issue
-        get_issue(user_name, name, id)
+        # get_issue(user_name, name, id)
 
         # start branch
-        # get_branches(user_name, name, id)
+        # get_branches(user_name, name, id, default_branch)
 
 
 def get_issue(user_name, name, repo_id):
@@ -213,7 +220,7 @@ def get_issue(user_name, name, repo_id):
             print('[label]: ', single_label)
 
 
-def get_branches(user_name, repo_name, repo_id):
+def get_branches(user_name, repo_name, repo_id, default_branch):
     url = 'https://github.com/' + user_name + '/' + repo_name + '/branches'
     html = getHTML(url)
     soup = BeautifulSoup(html, 'html.parser')
@@ -228,8 +235,13 @@ def get_branches(user_name, repo_name, repo_id):
         single_branch = [all_b[i].get('branch'), repo_id, last_commit, commit_num]
         save_sth(single_branch, 'branches', 0)
         print('[branch]: ', single_branch)
+
+        get_commit(user_name, repo_name, all_b[i].get('branch'))
+
+    get_tags(user_name, repo_name, repo_id, default_branch, last_commit)
+
 # -------------------------------------------------------------------------------------------------------------------
-def get_tags(temp_html):
+def get_this_tags(temp_html):
     res = []
     tag_bs4 = BeautifulSoup(temp_html, 'html.parser')
     tag = tag_bs4.find_all('a', attrs={'data-ga-click': 'Topic, repository page'})
@@ -306,7 +318,6 @@ def get_label_comment(url, repo_id):
             print('[label_comment]: ', single_label_comment)
             '''
 # ---------------------------------------------------------------------------------------------------------------------
-
 # ---------------------------------------------------------------------------------------------------------------------
 
 # get_user_info('liuyib')

@@ -2,7 +2,6 @@ import threading
 import json
 from version2 import get_user_info, get_issue, get_branches
 from get_activity import get_activity
-from get_tags import get_repo_tags
 from get_pull_requests import get_open_pulls
 from common import getHTML
 
@@ -10,28 +9,20 @@ from common import getHTML
 # from common import get_user_id
 
 def get_all(user_name):
-    # user_id = get_user_id(user_name)
+    get_user_info(user_name)
+    # 包括 user_info followers description repository repository_info tags tag_files
 
-    # user_info
-    # followers
-    # user_description
-    # repository
-    # repository_info
-    # licenses
-    # threading.Thread(target=get_user_info, args=(user_name,)).start()
+    get_activity(user_name)
+    # 包括 activity
 
-    # activity
-    # threading.Thread(target=get_activity, args=(user_name,)).start()
-
-    # tags
-    # tag_files
     a_repos = get_user_all_repos(user_name)
     for i in range(len(a_repos)):
-        # threading.Thread(target=get_repo_tags, args=(user_name, a_repos[i][0], )).start()
-        # threading.Thread(target=get_issue, args=(user_name, a_repos[i][0], a_repos[i][1],)).start()
-        # get_issue(user_name, a_repos[i][0], a_repos[i][1])
+        get_issue(user_name, a_repos[i][0], a_repos[i][1])
+        # 包括 issue issue_comment labels
         get_open_pulls(user_name, a_repos[i][0], a_repos[i][1])
-        # get_branches(user_name, a_repos[i][0], a_repos[i][1])
+        # 包括 pull_request pull_request_info pull_request_action
+        get_branches(user_name, a_repos[i][0], a_repos[i][1], a_repos[i][2])
+        # 包括 branches commits commit_file_info commit_files commit_comment
 
 
 def get_user_all_repos(user_name):
@@ -40,10 +31,10 @@ def get_user_all_repos(user_name):
     html = getHTML(url)
     js = json.loads(html)
     for i in range(len(js)):
-        res_repo.append([js[i]['name'], js[i]['id']])
+        res_repo.append([js[i]['name'], js[i]['id'], js[i]['default_branch']])
     print(len(res_repo))
     return res_repo
 
 
 if __name__ == '__main__':
-    get_all('bollnh')
+    get_all('xinhecuican')

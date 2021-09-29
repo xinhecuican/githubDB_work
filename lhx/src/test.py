@@ -56,11 +56,17 @@ def get_label_comment(url):
             single_label_comment = [each_labels, each_content, time]
             print('[label_comment]: ', single_label_comment)
 
-url = 'https://github.com/tonybaloney/BotBuilder-Samples/commit/2cd3caf4fb85276863a9467925b5b3a222544931'
-url1 = 'https://api.github.com/repos/xinhecuican/githubDB_work/commits/1d497a92a7a84a8a16cda830d0aa3319da74994e'
+url = 'https://github.com/roman-right/beanie'
 html = getHTML(url)
 soup = BeautifulSoup(html, 'html.parser')
 
+a = soup.find('a', href='/'+'roman-right'+'/'+'beanie'+'/releases').find('span').get('title')
+#
+# for i in range(len(a)):
+#     print(a[i].get('aria-label'))
+
+# b = soup.find_all('div', class_='col-12 col-md-9 col-lg-10 px-md-3 py-md-4 release-main-section commit open float-left')
+# print(b[0].find('button', attrs={'style': 'border-radius:100px;font-size:12px;'}))
 # jss = json.loads(html)
 # js = json.dumps(jss, sort_keys=True, indent=4, separators=(',', ':'))
-print(html)
+print(a)

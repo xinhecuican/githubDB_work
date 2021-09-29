@@ -30,7 +30,10 @@ def get_commit(user_name, repo_name, branch_name):
         comi_js = json.loads(comi_html_api)
 
         parents = comi_js['parents']
-        parent_commit = parents[0]['sha'][:7]
+        try:
+            parent_commit = parents[0]['sha'][:7]
+        except:
+            parent_commit = ''
 
         author_user_id = comi_js['author']['id']
         commit_user_id = comi_js['committer']['id']
@@ -50,7 +53,7 @@ def get_commit(user_name, repo_name, branch_name):
         all_add_lines_index = 0
         all_del_lines_index = 0
 
-        single_commit = [commit_sha, parent_commit, repo_id, author_user_id, commit_user_id, commit_date, message]
+        single_commit = [commit_sha, parent_commit, repo_id, author_user_id, commit_user_id, trans_date_format(commit_date, 1), message]
         save_sth(single_commit, 'commits', 0)
         print('[commits]: ', single_commit)
 
@@ -105,7 +108,7 @@ def get_commit(user_name, repo_name, branch_name):
 
             # commit_file_info表
             commit_directory_address = {'file_name': {'dic_commit_id': commit_sha[:7], 'file_name': file_id}, 'file_name': file_id}
-            single_commit_file_info = [file_id, commit_directory_address, file_type, file_add_lines, file_del_lines,
+            single_commit_file_info = [file_id, commit_directory_address, file_type, file_additions, file_deletions,
                                        file_changes_line_num]
             save_sth(single_commit_file_info, 'commit_file_info', 0)
             print('[commit_file_info]: ', single_commit_file_info)
@@ -116,7 +119,7 @@ def get_commit(user_name, repo_name, branch_name):
 
             # TODO: commit_files表——file_line
             file_line = 0
-            single_commit_files = [commit_sha[:7], commit_comment, file_name, file_type, file_action_num, file_line, file_add_lines, file_del_lines, file_path]
+            single_commit_files = [commit_sha[:7], commit_comment, file_name, file_type, file_action_num, file_line, file_additions, file_deletions, file_path]
             save_sth(single_commit_files, 'commit_files', 0)
             print('[commit_files]: ', single_commit_files)
             time.sleep(1)

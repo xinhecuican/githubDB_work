@@ -1,5 +1,4 @@
-# QUESTION: commit 和 pull request 是否涉及 commit_id
-# ALMOST_DONE: activity 表
+# activty
 
 import datetime
 from bs4 import BeautifulSoup
