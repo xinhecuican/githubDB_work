@@ -1,0 +1,14 @@
+﻿372515533,一个带透明化及滚动截图(截屏)功能的截图软件,,,"['c-plus-plus', 'screenshot']","{'QMake': '2.1', 'C': '0.2'}",['xinhecuican'],7
+386151120,,,,[],"{'QMake': '13.1', 'C': '3.1'}",['xinhecuican'],0
+280409196,,,,[],{'Python': '100.0'},['xinhecuican'],0
+300279853,,,,[],{},[],0
+360873832,,,,[],"{'Python': '94.0', 'Batchfile': '6.0'}",['xinhecuican'],0
+323038495,,,,[],{},['xinhecuican'],0
+316480425,自动唤醒你的LeanCloud,,,[],{'Python': '100.0'},"['Cheny233', 'xinhecuican']",0
+349337159,,,,[],{'Java': '100.0'},['xinhecuican'],0
+225302605,,,,[],"{'HTML': '98.0', 'CSS': '1.6', 'JavaScript': '0.4'}",['xinhecuican'],0
+375749897,Official Documentation for Arcane2 Pipeline,,,"['pipeline', 'animation', 'nuke', 'houdini', 'maya', 'vfx', 'arcane']","{'HTML': '91.0', 'JavaScript': '5.6', 'CSS': '2.9', 'Other': '0.5'}",['MaxRocamora'],0
+188508970,A tool for organize shaders in Autodesk Maya. ,,,"['shaders', 'shader', 'pyside2', 'maya-plugin', 'maya-python', 'maya-script', 'organize-shaders', 'maya-shaders']","{'Mathematica': '71.7', 'Python': '28.3'}",['MaxRocamora'],0
+289805172,Maya Workflow Tools,,,[],{'Python': '100.0'},['MaxRocamora'],0
+240936761,"Load, save, and update data from your class to/from a json file.",,,"['json', 'json-utils']","{'Python': '99.9', 'Batchfile': '0.1'}","['MaxRocamora', 'dependabot[bot]']",0
+404130224,"CGI utilities to copy files from one place to another, find out basic stat differences between them and handle file sequences and textures (tx files)",,,[],{'Python': '100.0'},['xiancg'],0
