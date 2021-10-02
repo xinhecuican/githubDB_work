@@ -1,6 +1,7 @@
 import requests
 import json
 import csv
+import os
 
 def getHTML(url):
     headers = {
@@ -52,7 +53,7 @@ def trans_date_format(date, type): # yy-mm-dd
         return res_data
 
 def save_sth(lists, fname, types): # 0是单行 1是多行
-    path = r'D:\\21-22-1\\Database_Practice1\\' + fname + '.csv'
+    path = r'D:\\21-22-1\\Database_Practice2\\' + fname + '.csv'
     with open(path, 'a+', newline='', encoding='utf-8-sig') as f:
         writer = csv.writer(f)
         if types == 0:
@@ -62,8 +63,14 @@ def save_sth(lists, fname, types): # 0是单行 1是多行
         else:
             print('error when saving')
 
-def save_file(bname, fname, fstr):
-    path = r'D:\\Project\\Py\\githubDB_work\\lhx\\res\\filesss\\' + bname + '-' + fname + '.txt'
+def save_file(path, fstr, fname): # fname是x/x/x的形式
+    if not os.path.exists(path):
+        os.makedirs(path)
+    path = path + r'\\' + fname.replace('/', '&') + '.txt'
     with open(path, 'a+', encoding='utf-8-sig') as f:
-        f.write(fstr)
-    print('文件[', fname, ']已保存')
+        try:
+            f.write(fstr)
+        except:
+            print(fname, '[出问题]')
+
+    print('文件[', path, ']已保存')

@@ -225,6 +225,8 @@ def get_branches(user_name, repo_name, repo_id, default_branch):
     html = getHTML(url)
     soup = BeautifulSoup(html, 'html.parser')
     all_b = soup.find_all('branch-filter-item') # 需要get('branch')
+
+    have_had_commit = []
     for i in range(len(all_b)): # 对于每个分支
         each_url = 'https://github.com/' + user_name + '/' + repo_name + '/tree/' + all_b[i].get('branch')
         each_html = getHTML(each_url)
@@ -236,10 +238,11 @@ def get_branches(user_name, repo_name, repo_id, default_branch):
         save_sth(single_branch, 'branches', 0)
         print('[branch]: ', single_branch)
 
-        get_commit(user_name, repo_name, all_b[i].get('branch'))
+
+        get_commit(user_name, repo_name, all_b[i].get('branch'), have_had_commit)
+        # get_f(user_name, repo_name, all_b[i].get('branch'))
 
     get_tags(user_name, repo_name, repo_id, default_branch, last_commit)
-
 # -------------------------------------------------------------------------------------------------------------------
 def get_this_tags(temp_html):
     res = []
@@ -319,6 +322,7 @@ def get_label_comment(url, repo_id):
             '''
 # ---------------------------------------------------------------------------------------------------------------------
 # NEW: 10.2
+'''
 def get_f(user_name, repo_name, branch_name):
     url = 'https://github.com/' + user_name + '/' + repo_name + '/tree/' + branch_name
     html = getHTML(url)
@@ -333,17 +337,17 @@ def get_f(user_name, repo_name, branch_name):
             real_link = 'https://raw.githubusercontent.com' + link.replace('blob/', '')  # https://raw.githubusercontent.com/xinhecuican/easy-capture/master/logo.aps
             r_html = getHTML(real_link)  # str类型 包含内容
             f_name = link.rpartition('/')[2].replace('.', '-')
-            save_file(branch_name, f_name, r_html)
+            save_file(branch_name, f_name, r_html, repo_name)
         elif file_or_dic == 'octicon-file-directory':  # 是一个dic
             dic_name = link.partition(branch_name)[2]  # /.github/ISSUE_TEMPLATE
             real_link = url + dic_name  # https://github.com/xinhecuican/easy-capture/tree/master/.github/ISSUE_TEMPLATE
             # print('r_link: ', real_link)
-            get_f_dic(real_link, branch_name)
+            get_f_dic(real_link, branch_name, repo_name)
         else:
             print('ERROR!', file_or_dic)
 
 
-def get_f_dic(url, branch_name):
+def get_f_dic(url, branch_name, repo_name):
     html = getHTML(url)
     soup = BeautifulSoup(html, 'html.parser')
 
@@ -357,14 +361,15 @@ def get_f_dic(url, branch_name):
             # https://raw.githubusercontent.com/xinhecuican/easy-capture/master/logo.aps
             r_html = getHTML(real_link)  # str类型 包含内容
             f_name = link.rpartition('/')[2].replace('.', '-')
-            save_file(branch_name, f_name, r_html)
+            save_file(branch_name, f_name, r_html, repo_name)
         elif file_or_dic == 'octicon-file-directory':  # 是一个dic
             dic_name = link.partition(branch_name)[2]  # /Helper/Pool
             real_link = url.partition(branch_name)[0] + branch_name + dic_name
             # https://github.com/xinhecuican/easy-capture/tree/master/.github/ISSUE_TEMPLATE
-            get_f_dic(real_link, branch_name)
+            get_f_dic(real_link, branch_name, repo_name)
         else:
             print('ERROR!', file_or_dic)
+'''
 # ---------------------------------------------------------------------------------------------------------------------
 
 # get_user_info('liuyib')

@@ -6,10 +6,10 @@ import re
 import csv
 import threading
 from datetime import date, timedelta
-from version2 import get_f
 from bs4 import BeautifulSoup
 from queue import Queue
 import json
+from get_commit import get_commit
 
 
 # name_done = []
@@ -58,9 +58,13 @@ def get_label_comment(url):
             print('[label_comment]: ', single_label_comment)
 
 
-get_f('xinhecuican', 'easy-capture', 'master')
-get_f('xinhecuican', 'easy-capture', 'add-license-1')
-get_f('xinhecuican', 'easy-capture', 'main')
+# get_f('xinhecuican', 'easy-capture', 'master')
+# get_f('xinhecuican', 'easy-capture', 'add-license-1')
+# get_f('xinhecuican', 'easy-capture', 'main')
 
 # https://github.com/xinhecuican/easy-capture/tree/master/Helper/Pool
 # https://github.com/xinhecuican/easy-capture/tree/master/Helper/Helper/Pool
+a = []
+get_commit('xinhecuican', 'easy-capture', 'master', a)
+get_commit('xinhecuican', 'easy-capture', 'add-license-1', a)
+get_commit('xinhecuican', 'easy-capture', 'main', a)

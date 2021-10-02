@@ -1,5 +1,6 @@
 import threading
 import json
+import time
 from version2 import get_user_info, get_issue, get_branches
 from get_activity import get_activity
 from get_pull_requests import get_open_pulls
@@ -32,9 +33,12 @@ def get_user_all_repos(user_name):
     js = json.loads(html)
     for i in range(len(js)):
         res_repo.append([js[i]['name'], js[i]['id'], js[i]['default_branch']])
-    print(len(res_repo))
+    # print(len(res_repo))
     return res_repo
 
 
 if __name__ == '__main__':
-    get_all('MaxRocamora')
+    stime = time.time()
+    get_all('xinhecuican')
+    etime = time.time()
+    print('用户 xinhecuican 共用时', etime-stime)
