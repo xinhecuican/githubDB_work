@@ -9,6 +9,7 @@ from datetime import date, timedelta
 from bs4 import BeautifulSoup
 from queue import Queue
 import json
+from get_commit import get_commit
 
 
 # name_done = []
@@ -56,17 +57,14 @@ def get_label_comment(url):
             single_label_comment = [each_labels, each_content, time]
             print('[label_comment]: ', single_label_comment)
 
-url = 'https://github.com/roman-right/beanie'
-html = getHTML(url)
-soup = BeautifulSoup(html, 'html.parser')
 
-a = soup.find('a', href='/'+'roman-right'+'/'+'beanie'+'/releases').find('span').get('title')
-#
-# for i in range(len(a)):
-#     print(a[i].get('aria-label'))
+# get_f('xinhecuican', 'easy-capture', 'master')
+# get_f('xinhecuican', 'easy-capture', 'add-license-1')
+# get_f('xinhecuican', 'easy-capture', 'main')
 
-# b = soup.find_all('div', class_='col-12 col-md-9 col-lg-10 px-md-3 py-md-4 release-main-section commit open float-left')
-# print(b[0].find('button', attrs={'style': 'border-radius:100px;font-size:12px;'}))
-# jss = json.loads(html)
-# js = json.dumps(jss, sort_keys=True, indent=4, separators=(',', ':'))
-print(a)
+# https://github.com/xinhecuican/easy-capture/tree/master/Helper/Pool
+# https://github.com/xinhecuican/easy-capture/tree/master/Helper/Helper/Pool
+a = []
+get_commit('xinhecuican', 'easy-capture', 'master', a)
+get_commit('xinhecuican', 'easy-capture', 'add-license-1', a)
+get_commit('xinhecuican', 'easy-capture', 'main', a)

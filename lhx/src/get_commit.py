@@ -1,13 +1,11 @@
 import time
 import json
 from bs4 import BeautifulSoup
-from common import getHTML, get_repo_id, save_sth, trans_date_format
+from common import getHTML, get_repo_id, save_sth, trans_date_format, save_file
 
 
-#
-
-# 我们目前只爬一页，之后的再说
-def get_commit(user_name, repo_name, branch_name):
+def get_commit(user_name, repo_name, branch_name, have_had_commit):
+    print('已进入')
     url = 'https://github.com/' + user_name + '/' + repo_name + '/commits/' + branch_name
     html = getHTML(url)
     soup = BeautifulSoup(html, 'html.parser')
@@ -20,9 +18,36 @@ def get_commit(user_name, repo_name, branch_name):
                                                    'js-navigation-item js-details-container Details js-socket-channel '
                                                    'js-updatable-content')
 
+    # NEW 10.2 添加所有页面
+    next_link = soup.find('a', attrs={'rel': 'nofollow', 'class': 'btn btn-outline BtnGroup-item'})
+    while next_link is not None:
+        next_page_url = next_link.get('href')
+        next_page_html = getHTML(next_page_url)
+        next_page_soup = BeautifulSoup(next_page_html, 'html.parser')
+        next_page_commits = next_page_soup.find('div', class_='js-navigation-container js-active-navigation-container mt-3').find_all('li',
+                                            class_='Box-row Box-row--focus-gray mt-0 d-flex js-commits-list-item '
+                                                   'js-navigation-item js-details-container Details js-socket-channel '
+                                                   'js-updatable-content')
+        each_date_commit = each_date_commit + next_page_commits  # 两个list拼接
+        next_link = next_page_soup.find_all('a', attrs={'rel': 'nofollow', 'class': 'btn btn-outline BtnGroup-item'})
+        temp_nl = None
+        for i in range(len(next_link)):
+            if next_link[i].text == 'Older':
+                temp_nl = next_link[i]
+        next_link = temp_nl
+    # NEW END 此时each_date_commit包含所有commit
+
+
+    # https://github.com/xinhecuican/githubDB_work/commits/master?before=62423802a3e629f2c738dca9201b1540b6dda8f1+35&branch=master
     # 对于每次提交的详细信息
-    for i in range(len(each_date_commit)):
+    for i in range(len(each_date_commit)-1, -1, -1):
         commit_sha = each_date_commit[i].get('data-url').split('/')[4]
+        # NEW 10.2 避免重复
+        if commit_sha in have_had_commit:
+            print('sha', commit_sha, '已存在')
+            continue
+        have_had_commit.append(commit_sha)
+        # NEW END
         short_id = commit_sha[:7]
         comi_url_api = 'https://api.github.com/repos/' + user_name + '/' + repo_name + '/commits/' + commit_sha
         # print(comi_url_api)
@@ -94,7 +119,7 @@ def get_commit(user_name, repo_name, branch_name):
                         file_add_lines.append(all_add_lines[all_add_lines_index])
                     except:
                         pass  # 由于爬取的页面长度有限，对于长度夸张的commit没法全爬出来，上百个lines的话只能爬一部分
-                        # 或许吧
+                        # 或许？
                 all_add_lines_index += 1
             for i in range(int(file_deletions)):
                 if file_action == 'modified' or file_action == 'renamed' or file_action == 'added':
@@ -107,19 +132,26 @@ def get_commit(user_name, repo_name, branch_name):
 
 
             # commit_file_info表
-            commit_directory_address = {'file_name': {'dic_commit_id': commit_sha[:7], 'file_name': file_id}, 'file_name': file_id}
+            commit_directory_address = [{'file_name': {'dic_commit_id': commit_sha[:7], 'file_name': file_id}, 'file_name': file_id}]
             single_commit_file_info = [file_id, commit_directory_address, file_type, file_additions, file_deletions,
                                        file_changes_line_num]
             save_sth(single_commit_file_info, 'commit_file_info', 0)
             print('[commit_file_info]: ', single_commit_file_info)
 
 
-
-
+# 'https://raw.githubusercontent.com/xinhecuican/easy-capture/d0ced639fc20c604c2b1c9994cf3d75cdd429ba2/capture_window.ui'
+            # NEW 10.2 added文件的爬取
+            if file_action == 'added':
+                path = r'D:\\21-22-1\\Database_Practice2\\new\\' + user_name + r'\\' + repo_name + r'\\' + commit_sha[:7]
+                real_link = 'https://raw.githubusercontent.com/' + user_name + '/' + repo_name + '/' + commit_sha + '/' + file_path
+                r_html = getHTML(real_link)
+                save_file(path, r_html, file_path)
+            # NEW END
 
             # TODO: commit_files表——file_line
             file_line = 0
             single_commit_files = [commit_sha[:7], commit_comment, file_name, file_type, file_action_num, file_line, file_additions, file_deletions, file_path]
+
             save_sth(single_commit_files, 'commit_files', 0)
             print('[commit_files]: ', single_commit_files)
             time.sleep(1)
@@ -157,6 +189,7 @@ def get_commit_comment(url): # 传入的是api url
         save_sth(each_comment, 'commit_comment', 0)
         print('[commit_comment]: ', each_comment)
     return res_comment
+
 
 # get_commit_comment('https://api.github.com/repos/xinhecuican/githubDB_work/commits/1d497a92a7a84a8a16cda830d0aa3319da74994e/comments')
 # get_all_adddel_lines('tonybaloney', 'wily' , 'e1bcd8dcc1823da3c1d9e4670e68550ac8ac5f77')
