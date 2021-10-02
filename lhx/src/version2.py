@@ -2,7 +2,7 @@ import json
 import csv
 import re
 from bs4 import BeautifulSoup
-from common import getHTML, save_sth, trans_date_format
+from common import getHTML, save_sth, trans_date_format, save_file
 from get_tags import get_tags
 from get_commit import get_commit
 
@@ -318,6 +318,53 @@ def get_label_comment(url, repo_id):
             print('[label_comment]: ', single_label_comment)
             '''
 # ---------------------------------------------------------------------------------------------------------------------
+# NEW: 10.2
+def get_f(user_name, repo_name, branch_name):
+    url = 'https://github.com/' + user_name + '/' + repo_name + '/tree/' + branch_name
+    html = getHTML(url)
+    soup = BeautifulSoup(html, 'html.parser')
+
+    first_page = soup.find_all('div', class_='Box-row Box-row--focus-gray py-2 d-flex position-relative js-navigation-item')
+    for i in range(len(first_page)):
+        link = first_page[i].find('a', class_='js-navigation-open Link--primary').get('href')  # /xinhecuican/easy-capture/blob/master/logo.aps
+        file_or_dic = first_page[i].find('svg').get('class')[1]
+        print('[link]: ', link)
+        if file_or_dic == 'octicon-file':  # 是一个file
+            real_link = 'https://raw.githubusercontent.com' + link.replace('blob/', '')  # https://raw.githubusercontent.com/xinhecuican/easy-capture/master/logo.aps
+            r_html = getHTML(real_link)  # str类型 包含内容
+            f_name = link.rpartition('/')[2].replace('.', '-')
+            save_file(branch_name, f_name, r_html)
+        elif file_or_dic == 'octicon-file-directory':  # 是一个dic
+            dic_name = link.partition(branch_name)[2]  # /.github/ISSUE_TEMPLATE
+            real_link = url + dic_name  # https://github.com/xinhecuican/easy-capture/tree/master/.github/ISSUE_TEMPLATE
+            # print('r_link: ', real_link)
+            get_f_dic(real_link, branch_name)
+        else:
+            print('ERROR!', file_or_dic)
+
+
+def get_f_dic(url, branch_name):
+    html = getHTML(url)
+    soup = BeautifulSoup(html, 'html.parser')
+
+    first_page = soup.find_all('div', class_='Box-row Box-row--focus-gray py-2 d-flex position-relative js-navigation-item')
+    for i in range(len(first_page)):
+        link = first_page[i].find('a', class_='js-navigation-open Link--primary').get('href')  # /xinhecuican/easy-capture/blob/master/logo.aps
+        print('[link]: ', link)
+        file_or_dic = first_page[i].find('svg').get('class')[1]
+        if file_or_dic == 'octicon-file':  # 是一个file
+            real_link = 'https://raw.githubusercontent.com' + link.replace('blob/','')
+            # https://raw.githubusercontent.com/xinhecuican/easy-capture/master/logo.aps
+            r_html = getHTML(real_link)  # str类型 包含内容
+            f_name = link.rpartition('/')[2].replace('.', '-')
+            save_file(branch_name, f_name, r_html)
+        elif file_or_dic == 'octicon-file-directory':  # 是一个dic
+            dic_name = link.partition(branch_name)[2]  # /Helper/Pool
+            real_link = url.partition(branch_name)[0] + branch_name + dic_name
+            # https://github.com/xinhecuican/easy-capture/tree/master/.github/ISSUE_TEMPLATE
+            get_f_dic(real_link, branch_name)
+        else:
+            print('ERROR!', file_or_dic)
 # ---------------------------------------------------------------------------------------------------------------------
 
 # get_user_info('liuyib')

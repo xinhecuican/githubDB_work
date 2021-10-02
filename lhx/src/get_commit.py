@@ -107,7 +107,7 @@ def get_commit(user_name, repo_name, branch_name):
 
 
             # commit_file_info表
-            commit_directory_address = {'file_name': {'dic_commit_id': commit_sha[:7], 'file_name': file_id}, 'file_name': file_id}
+            commit_directory_address = [{'file_name': {'dic_commit_id': commit_sha[:7], 'file_name': file_id}, 'file_name': file_id}]
             single_commit_file_info = [file_id, commit_directory_address, file_type, file_additions, file_deletions,
                                        file_changes_line_num]
             save_sth(single_commit_file_info, 'commit_file_info', 0)
@@ -157,6 +157,7 @@ def get_commit_comment(url): # 传入的是api url
         save_sth(each_comment, 'commit_comment', 0)
         print('[commit_comment]: ', each_comment)
     return res_comment
+
 
 # get_commit_comment('https://api.github.com/repos/xinhecuican/githubDB_work/commits/1d497a92a7a84a8a16cda830d0aa3319da74994e/comments')
 # get_all_adddel_lines('tonybaloney', 'wily' , 'e1bcd8dcc1823da3c1d9e4670e68550ac8ac5f77')

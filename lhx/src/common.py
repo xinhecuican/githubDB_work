@@ -61,3 +61,9 @@ def save_sth(lists, fname, types): # 0是单行 1是多行
             writer.writerows(lists)
         else:
             print('error when saving')
+
+def save_file(bname, fname, fstr):
+    path = r'D:\\Project\\Py\\githubDB_work\\lhx\\res\\filesss\\' + bname + '-' + fname + '.txt'
+    with open(path, 'a+', encoding='utf-8-sig') as f:
+        f.write(fstr)
+    print('文件[', fname, ']已保存')
