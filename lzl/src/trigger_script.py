@@ -31,9 +31,9 @@ def user_info_insert(connection, datas):
                             0,
                             0,
                             {data[2]},
-                            0,
-                            0,
-                            0)
+                            {data[3]},
+                            {data[4]},
+                            {data[5]})
                         ''')
     connection.commit()
     cursor.close()
@@ -161,16 +161,40 @@ def repository_info_insert(connection, datas):
                             licenses_id,
                             tag,
                             code_type,
-                            contributors)
+                            contributors,
+                            release_num)
                         values(
                             {data[0]},
-                            '{data[1]}',
-                            '',
-                            0,
-                            '{data[2]}',
-                            '{data[3]}',
-                            '{data[4]}')
+                            {data[1]},
+                            {data[2]},
+                            {data[3]},
+                            {data[4]},
+                            {data[5]},
+                            {data[6]},
+                            {data[7]})
                         ''')
+
+
+def licenses_insert(connection:Connection, datas):
+    cursor = connection.cursor()
+    for data in datas:
+        cursor.execute(f'''
+                        insert into licenses(
+                            name,
+                            license_content,
+                            permissions,
+                            limitations,
+                            conditions
+                        )
+                        values(
+                            "{data[0]}",
+                            "{data[1]}",
+                            "{data[2]}",
+                            "{data[3]}",
+                            "{data[4]}")
+                        ''')
+    connection.commit()
+    cursor.close()
 
 
 def tags_insert(connection:Connection, datas):
@@ -190,13 +214,13 @@ def tags_insert(connection:Connection, datas):
                         values(
                             {data[0]},
                             {data[1]},
-                            '{data[2]}',
+                            {data[2]},
                             {data[3]},
                             {data[4]},
                             {data[5]},
-                            '{data[6]}',
+                            {data[6]},
                             {data[7]},
-                            '{data[8]}')
+                            {data[8]})
                         ''')
         cursor.execute(f"update repository_info set release_num = release_num+1 where id = {data[0]}")
     connection.commit()
@@ -225,9 +249,9 @@ def tag_files_insert(connection:Connection, datas):
                             file_link)
                         values(
                             {data[0]},
-                            '{data[1]}',
+                            {data[1]},
                             {data[2]},
-                            '{data[3]}')
+                            {data[3]})
                         ''')
     connection.commit()
     cursor.close()
@@ -395,18 +419,18 @@ def commits_insert(connection:Connection, datas):
                             author_user_id,
                             commit_user_id,
                             commit_date,
-                            message,
-                            contributors)
+                            message)
                         values(
-                            '{data[0]}',
+                            {data[0]},
                             {data[1]},
                             {data[2]},
                             {data[3]},
                             {data[4]},
-                            '{data[5]}',
-                            '{data[6]}',
-                            '{data[7]}')
+                            {data[5]},
+                            {data[6]})
                         ''')
+    connection.commit()
+    cursor.close()
 
 
 def commits_delete(connection, states):

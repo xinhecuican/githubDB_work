@@ -1,7 +1,7 @@
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QWidget, QCommandLinkButton, QLabel, QVBoxLayout, QHBoxLayout
 
-from zzr.src.Helper import Widget_style
+from zzr.src.Helper import Widget_style, Window_manager
 from zzr.src.Widgets.Pic_label import Pic_label
 
 
@@ -12,6 +12,7 @@ class Repository_info_card(QWidget):
         self.setStyleSheet(Widget_style.commandlink_button_style)
         self.name = QCommandLinkButton()
         self.name.setText(data['name'])
+        self.name.clicked.connect(lambda: self.on_button_click())
 
         self.author = QLabel()
         self.author.setText("作者: " + data['author'])
@@ -23,11 +24,10 @@ class Repository_info_card(QWidget):
         self.description_layout.addWidget(self.name)
         self.description_layout.addWidget(self.author)
         self.base_layout.addLayout(self.description_layout)
-        self.base_layout.addSpacing(10
-                                    )
-        self.description = QLabel()
-        self.description.setText(data['description']['description'])
-        self.base_layout.addWidget(self.description)
+        self.base_layout.addSpacing(10)
+        # self.description = QLabel()
+        # self.description.setText(data['description']['description'])
+        # self.base_layout.addWidget(self.description)
         self.base_layout.addSpacing(10)
 
         self.star_num = Pic_label(pic=QPixmap("../resources/images/star.png"), text=str(data['star_num']))
@@ -44,6 +44,8 @@ class Repository_info_card(QWidget):
         self.base_layout.addLayout(self.sum_layout)
         self.setLayout(self.base_layout)
 
+    def on_button_click(self):
+        Window_manager.change_window("Repository_panel", [self.name.text()])
 
 
 

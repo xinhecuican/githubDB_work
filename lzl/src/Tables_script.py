@@ -126,10 +126,7 @@ create table repository_info(
     tag text,
     code_type text,
     contributors text,
-    release_num int default 0,
-    foreign key fk_repository_id(id) references repository(id)
-    on delete cascade
-    on update cascade
+    release_num int default 0
 );'''
 
 
@@ -137,7 +134,10 @@ table_licenses = '''
 create table licenses(
     id int primary key auto_increment,
     name varchar(100),
-    license_content longtext  
+    license_content longtext,
+    permissions text,
+    limitations text,
+    conditions text
 );'''
 
 
@@ -309,7 +309,6 @@ table_commit_file_info = '''
 create table commit_file_info(
     id int primary key,
     commit_directory_address varchar(255),
-    file_type varchar(255) default '',
     add_line int default 0,
     delete_line int default 0,
     change_file_num int default 0
@@ -335,7 +334,6 @@ table_commit_files = '''
 create table commit_files(
     id int not null primary key auto_increment,
     commit_id int,
-    commit_comment varchar(255) default '',
     from_file_id int,
     file_type char(20) default '',
     file_action int,

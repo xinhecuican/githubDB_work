@@ -3,7 +3,7 @@ from PyQt5.QtWidgets import QAction
 
 
 class Branch_card(QAction):
-    button_click = pyqtSignal([int], [int])
+    button_click = pyqtSignal([int], [int], name="button_click")
 
     def __init__(self, data):
         super().__init__()

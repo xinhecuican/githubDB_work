@@ -1,0 +1,51 @@
+{
+	"Apache License 2.0": {
+		"Permissions": ["Commercial use",
+			"Modification",
+			"Distribution",
+			"Patent use",
+			"Private use"
+		],
+		"Limitations": ["Trademark use",
+			"Liability",
+			"Warranty"],
+		"Conditions": ["License and copyright notice",
+			"State changes"],
+		"contents": "Apache License 2.0.txt"
+	},
+	"GNU Geneal Public License v3.0": {
+		"Permissions": [
+			"Commercial use",
+ 			"Modification",
+			"Distribution",
+ 			"Patent use",
+			"Private use"],
+		"Limitations": [
+			"Liability",
+ 			"Warranty"
+		],
+		"Conditions": [
+			"License and copyright notice",
+ 			"State changes",
+ 			"Disclose source",
+ 			"Same license"
+		],
+		"contents": "GNU Geneal Public License v3.0.txt"
+	},
+	"MIT License":{
+		"Permissions":[
+			"Commercial use",
+ 			"Modification",
+ 			"Distribution",
+ 			"Private use"
+		],
+		"Limitations": [
+			"Liability",
+ 			"Warranty"
+		],
+		"Conditions":[
+			"License and copyright notice"
+		],
+		"contents":"MIT License.txt"
+	}
+}

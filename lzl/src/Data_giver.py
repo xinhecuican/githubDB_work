@@ -283,7 +283,7 @@ class Data_giver:
                 select release_num, contributors, description, website, licenses.name, license_content, tag, code_type
                 from repository_info
                 join licenses
-                on repository_info.licenses_id = licenses
+                on repository_info.licenses_id = licenses.id
                 where repository_info.id = {id}
                 '''
         cursor = self.helper.connection.cursor()
