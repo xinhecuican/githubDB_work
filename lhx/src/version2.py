@@ -146,7 +146,11 @@ def get_repo_info(user_name, user_id):
 def get_issue(user_name, name, repo_id):
     url = 'https://github.com/' + user_name + '/' + name + '/issues'
     html = getHTML(url)
-    soup = BeautifulSoup(html, 'html.parser')
+    try:
+        soup = BeautifulSoup(html, 'html.parser')
+    except TypeError:
+        print('仓库', name, '没有issue')
+        return
 
     # start issue
     # TODO: 目前只有open部分 差close部分

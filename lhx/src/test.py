@@ -68,3 +68,8 @@ a = []
 get_commit('xinhecuican', 'easy-capture', 'master', a)
 get_commit('xinhecuican', 'easy-capture', 'add-license-1', a)
 get_commit('xinhecuican', 'easy-capture', 'main', a)
+# url = 'https://github.com/xinhecuican/githubDB_work/commits?author=xinhecuican&since=2021-09-30&until=2021-10-03'
+# html = getHTML(url)
+# soup = BeautifulSoup(html, 'html.parser')
+
+# print(html)

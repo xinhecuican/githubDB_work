@@ -1,7 +1,8 @@
+import re
 import time
 import json
 from bs4 import BeautifulSoup
-from common import getHTML, get_repo_id, save_sth, trans_date_format, save_file
+from common import getHTML, get_repo_id, save_sth, trans_date_format, save_file, get_user_id
 
 
 def get_commit(user_name, repo_name, branch_name, have_had_commit):
@@ -39,7 +40,7 @@ def get_commit(user_name, repo_name, branch_name, have_had_commit):
 
 
     # https://github.com/xinhecuican/githubDB_work/commits/master?before=62423802a3e629f2c738dca9201b1540b6dda8f1+35&branch=master
-    # 对于每次提交的详细信息
+    # 对于每次提交的详细信息 / 单个commit
     for i in range(len(each_date_commit)-1, -1, -1):
         commit_sha = each_date_commit[i].get('data-url').split('/')[4]
         # NEW 10.2 避免重复
@@ -48,9 +49,7 @@ def get_commit(user_name, repo_name, branch_name, have_had_commit):
             continue
         have_had_commit.append(commit_sha)
         # NEW END
-        short_id = commit_sha[:7]
         comi_url_api = 'https://api.github.com/repos/' + user_name + '/' + repo_name + '/commits/' + commit_sha
-        # print(comi_url_api)
         comi_html_api = getHTML(comi_url_api)
         comi_js = json.loads(comi_html_api)
 
@@ -60,8 +59,17 @@ def get_commit(user_name, repo_name, branch_name, have_had_commit):
         except:
             parent_commit = ''
 
-        author_user_id = comi_js['author']['id']
-        commit_user_id = comi_js['committer']['id']
+        try:
+            author_user_id = get_user_id(comi_js['commit']['author']['name'])
+        except TypeError as e:
+            print(repo_name, '的提交', commit_sha, '没有author的id')
+            author_user_id = ''
+        try:
+            commit_user_id = get_user_id(comi_js['commit']['committer']['name'])
+        except TypeError as e:
+            print(repo_name, '的提交', commit_sha, '没有commiter的id')
+            commit_user_id = ''
+
         commit_date = comi_js['commit']['committer']['date']
         message = comi_js['commit']['message']
 
@@ -90,6 +98,35 @@ def get_commit(user_name, repo_name, branch_name, have_had_commit):
             commit_comment = [] # 可能根本没有评论
 
 
+        # NEW: 10.3 改变 commit_file_info 表
+        single_commit_file_info = [commit_sha[:7], '', add_line_num, del_line_num, change_file_num]
+        save_sth(single_commit_file_info, 'commit_file_info', 0)
+        print('[commit_file_info]: ', single_commit_file_info)
+        # NEW END
+
+        # NEW: 10.3 获取 file_line
+        url = 'https://github.com/' + user_name + '/' + repo_name + '/commit/' + commit_sha
+        html = getHTML(url)
+        soup = BeautifulSoup(html, 'html.parser')
+        file_line_dic = {}
+        file_line_re = re.compile(r'file js-file js-details-container js-targetable-element Details.*')
+        all_files = soup.find_all('div', class_=file_line_re)
+        for i in range(len(all_files)):
+            f_name = all_files[i].find('a', class_='Link--primary').text
+            try: # add的最后一行
+                ad = all_files[i].find_all('td', class_='blob-num blob-num-addition js-linkable-line-number')
+                addl = int(ad[-1].get('data-line-number'))
+            except:
+                addl = 0
+            try: # 非add的最后一行
+                nad = all_files[i].find_all('td', class_='blob-num blob-num-context js-linkable-line-number')
+                nadl = int(nad[-1].get('data-line-number'))
+            except:
+                nadl = 0
+            one_file_line = max(addl, nadl)
+            file_line_dic[f_name] = one_file_line
+        # NEW END
+
         for each in range(change_file_num):  # 一个提交的每个改变文件
 
             file_path = change_files[each]['filename']
@@ -98,6 +135,9 @@ def get_commit(user_name, repo_name, branch_name, have_had_commit):
             change_file_names.append(file_name)
 
             file_type = change_files[each]['filename'].rpartition('.')[2]
+            if file_type == 'jpg' or file_type == 'png' or file_type == 'svg' or file_type == 'zip' or file_type == 'pdf':
+                continue
+
             if file_type == '':
                 file_type = file_name  # 比如Makefile
             file_id = change_files[each]['sha'][:7]
@@ -108,18 +148,20 @@ def get_commit(user_name, repo_name, branch_name, have_had_commit):
             # 若 status = removed 则 有行数量，但无具体行数值
             # 即file_additions != 0, 但all_add_lines中为空
 
+
             file_add_lines = []
             file_del_lines = []
             file_additions = change_files[each]['additions']  # 行数量
             file_deletions = change_files[each]['deletions']
             file_changes_line_num = change_files[each]['changes']  # 等于上面两个相加
+            '''
             for i in range(int(file_additions)):
                 if file_action == 'modified' or file_action == 'renamed' or file_action == 'added':
                     try:
                         file_add_lines.append(all_add_lines[all_add_lines_index])
                     except:
-                        pass  # 由于爬取的页面长度有限，对于长度夸张的commit没法全爬出来，上百个lines的话只能爬一部分
-                        # 或许？
+                        pass
+
                 all_add_lines_index += 1
             for i in range(int(file_deletions)):
                 if file_action == 'modified' or file_action == 'renamed' or file_action == 'added':
@@ -128,34 +170,36 @@ def get_commit(user_name, repo_name, branch_name, have_had_commit):
                     except:
                         pass  # 理由同上
                 all_del_lines_index += 1
-
+            '''
 
 
             # commit_file_info表
-            commit_directory_address = [{'file_name': {'dic_commit_id': commit_sha[:7], 'file_name': file_id}, 'file_name': file_id}]
+            '''
+            commit_directory_address = ''
             single_commit_file_info = [file_id, commit_directory_address, file_type, file_additions, file_deletions,
                                        file_changes_line_num]
             save_sth(single_commit_file_info, 'commit_file_info', 0)
             print('[commit_file_info]: ', single_commit_file_info)
+            '''
 
-
-# 'https://raw.githubusercontent.com/xinhecuican/easy-capture/d0ced639fc20c604c2b1c9994cf3d75cdd429ba2/capture_window.ui'
             # NEW 10.2 added文件的爬取
             if file_action == 'added':
-                path = r'D:\\21-22-1\\Database_Practice2\\new\\' + user_name + r'\\' + repo_name + r'\\' + commit_sha[:7]
+                path = r'D:\\21-22-1\\Database_Practice2\\files\\' + user_name + r'\\' + repo_name + r'\\' + commit_sha[:7]
                 real_link = 'https://raw.githubusercontent.com/' + user_name + '/' + repo_name + '/' + commit_sha + '/' + file_path
                 r_html = getHTML(real_link)
                 save_file(path, r_html, file_path)
             # NEW END
 
-            # TODO: commit_files表——file_line
-            file_line = 0
+            try:
+                file_line = file_line_dic[file_name]
+            except:
+                file_line = 0
             single_commit_files = [commit_sha[:7], commit_comment, file_name, file_type, file_action_num, file_line, file_additions, file_deletions, file_path]
 
             save_sth(single_commit_files, 'commit_files', 0)
             print('[commit_files]: ', single_commit_files)
-            time.sleep(1)
-
+            time.sleep(0.5)
+# -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 def get_all_adddel_lines(user_name, repo_name, sha):
     url = 'https://github.com/' + user_name + '/' + repo_name + '/commit/' + sha
@@ -173,7 +217,6 @@ def get_all_adddel_lines(user_name, repo_name, sha):
     # print([add_lines, del_lines])
     return [add_lines, del_lines]
 
-# NEW
 def get_commit_comment(url): # 传入的是api url
     html = getHTML(url)
     js = json.loads(html)
