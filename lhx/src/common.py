@@ -3,6 +3,9 @@ import json
 import csv
 import os
 
+import urllib3.exceptions
+
+
 def getHTML(url):
     headers = {
         'User-Agent': 'Mozilla/5.0',
@@ -14,7 +17,12 @@ def getHTML(url):
     if 'api' in url:
         r = requests.get(url, timeout=30, headers=headers)
     else:
-        r = requests.get(url, timeout=30)
+        try:
+            r = requests.get(url, timeout=30)
+        except (requests.exceptions.ConnectionError, urllib3.exceptions.MaxRetryError, urllib3.exceptions.NewConnectionError, TimeoutError):
+            print('get_HTML出现问题，睡眠 2 秒')
+            time.sleep(2)
+            r = requests.get(url, timeout=30)
     try:
         if r.status_code == 200:
             r.encoding = r.apparent_encoding
@@ -66,7 +74,13 @@ def save_sth(lists, fname, types): # 0是单行 1是多行
 def save_file(path, fstr, fname): # fname是x/x/x的形式
     if not os.path.exists(path):
         os.makedirs(path)
-    path = path + r'\\' + fname.replace('/', '&') + '.txt'
+    # end_type = fname.rpartition('.')[2]
+    if path.endswith('.jpg'):
+        path = path = path + r'\\' + fname.replace('/', '&') + '.jpg'
+    elif path.endswith('.png'):
+        path = path = path + r'\\' + fname.replace('/', '&') + '.png'
+    else:
+        path = path + r'\\' + fname.replace('/', '&') + '.txt'
     with open(path, 'a+', encoding='utf-8-sig') as f:
         try:
             f.write(fstr)

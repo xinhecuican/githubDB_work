@@ -46,8 +46,10 @@ def get_activity(user_name):
             print(['2', userid, repo_id, trans_date_format(each_time, 0)])
 
     # ----- following type = 3 ----- TODO: 暂未找到例子
+
+
 # ----------------------------------------------------------------------------------------------------
-def get_type_1(user_name, owner_name, repo_name, userid): # 对于commit 顺便保存了
+def get_type_1(user_name, owner_name, repo_name, userid):  # 对于commit 顺便保存了
     res_dates = []
     today = date.today()
     last_day_last_month = date(today.year, today.month, 1) - timedelta(1)
@@ -56,7 +58,7 @@ def get_type_1(user_name, owner_name, repo_name, userid): # 对于commit 顺便�
 
     html = getHTML(url)
     soup = BeautifulSoup(html, 'html.parser')
-
+    # print(html)
     repo_id = get_repo_id(owner_name, repo_name)
 
     dates1 = soup.find('div', class_='TimelineItem TimelineItem--condensed pt-0 pb-2')
@@ -68,12 +70,13 @@ def get_type_1(user_name, owner_name, repo_name, userid): # 对于commit 顺便�
     print(['1', userid, commit_id1, repo_id, trans_date_format(date1, 0)])
 
     dates2 = soup.find_all('div', class_='TimelineItem TimelineItem--condensed pt-2 pb-2')
+
     for i in range(len(dates2)):
         date2 = dates2[i].find('h2', class_='f5 text-normal').text[11:]
-        commit_id2 = dates2[i].find('a', class_='text-mono f6 btn btn-outline BtnGroup-item').text.replace('\n', '').strip()
+        commit_id2 = dates2[i].find('a', class_='text-mono f6 btn btn-outline BtnGroup-item').text.replace('\n',
+                                                                                                           '').strip()
         res_dates.append(date2)
         save_sth(['1', userid, commit_id2, repo_id, trans_date_format(date2, 0)], 'activity', 0)
         print(['1', userid, commit_id2, repo_id, trans_date_format(date2, 0)])
 
-
-# get_activity('tonybaloney')
+# get_activity('xinhecuican')
