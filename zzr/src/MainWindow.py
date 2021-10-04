@@ -62,6 +62,7 @@ class MainWindow(Base_window):
             info = m.giver.give_table_info(name)
             self.main_area.add_widget(Table_widget(info['name'], info['rows'], info['col_info']))
 
+
         data = m.helper.run(f"select id from repository where name = '{name}'")
         if data:
             self.main_area.add_widget(Repository_info_card(m.giver.give_repository_info(name)))

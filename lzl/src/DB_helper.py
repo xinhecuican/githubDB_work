@@ -67,7 +67,7 @@ class DB_helper():
             if not contains:
                 self.run(getattr(Tables_script, name), True)
 
-    def run(self, state, need_commit=False, need_print = False):
+    def run(self, state, need_commit=False, need_print=False):
         cursor = self.connection.cursor()
         try:
             cursor.execute(state)
@@ -101,7 +101,6 @@ class DB_helper():
             cursor = self.connection.cursor()
             for data in datas:
                 try:
-
                     cursor.execute("insert into " + table + " values(" + ','.join(data) + ")")
                 except:
                     Debug.print_traceback()
@@ -124,7 +123,6 @@ class DB_helper():
             cursor.close()
         return True
 
-
     def insert_all_trigger(self):
         trigger_name = [e for e in dir(trigger_script) if not e.startswith("_") and e.startswith("trigger")]
         for trigger in trigger_name:
@@ -136,8 +134,6 @@ class DB_helper():
             self.insert(data[:-5], getattr(test_data, data))
 
 
-
-
 def print_sql(datas, cols=None):
     header_name = []
     if cols:
@@ -145,7 +141,7 @@ def print_sql(datas, cols=None):
             header_name.append(col[0])
     print(("{:<15}" * len(header_name)).format(*header_name))
     for data in datas:
-        data =  [str(x) for x in data]
+        data = [str(x) for x in data]
         print(("{:<15}" * len(data)).format(*data))
 
 

@@ -8,6 +8,7 @@ def delete(connection, table, states):
     cursor.close()
     return True
 
+
 def user_info_insert(connection, datas):
     cursor = connection.cursor()
     for data in datas:
@@ -84,7 +85,7 @@ def followers_delete(connection, states):
     cursor.close()
 
 
-def user_description_insert(connection:Connection, datas):
+def user_description_insert(connection: Connection, datas):
     cursor = connection.cursor()
     for data in datas:
         cursor.execute(f"select id from user_info where id = {data[0]}")
@@ -96,7 +97,7 @@ def user_description_insert(connection:Connection, datas):
     cursor.close()
 
 
-def activity_insert(connection:Connection, datas):
+def activity_insert(connection: Connection, datas):
     cursor = connection.cursor()
     for data in datas:
         cursor.execute(f'''
@@ -114,7 +115,7 @@ def activity_insert(connection:Connection, datas):
                         ''')
 
 
-def activity_record_insert(connection:Connection, datas):
+def activity_record_insert(connection: Connection, datas):
     cursor = connection.cursor()
     for data in datas:
         cursor.execute(f'''
@@ -173,9 +174,11 @@ def repository_info_insert(connection, datas):
                             {data[6]},
                             {data[7]})
                         ''')
+    connection.commit()
+    cursor.close()
 
 
-def licenses_insert(connection:Connection, datas):
+def licenses_insert(connection: Connection, datas):
     cursor = connection.cursor()
     for data in datas:
         cursor.execute(f'''
@@ -197,7 +200,7 @@ def licenses_insert(connection:Connection, datas):
     cursor.close()
 
 
-def tags_insert(connection:Connection, datas):
+def tags_insert(connection: Connection, datas):
     cursor = connection.cursor()
     for data in datas:
         cursor.execute(f'''
@@ -238,7 +241,7 @@ def tags_delete(connection, states):
     cursor.close()
 
 
-def tag_files_insert(connection:Connection, datas):
+def tag_files_insert(connection: Connection, datas):
     cursor = connection.cursor()
     for data in datas:
         cursor.execute(f'''
@@ -257,7 +260,7 @@ def tag_files_insert(connection:Connection, datas):
     cursor.close()
 
 
-def issue_insert(connection:Connection, datas):
+def issue_insert(connection: Connection, datas):
     cursor = connection.cursor()
     for data in datas:
         cursor.execute(f'''
@@ -293,7 +296,7 @@ def issue_delete(connection, states):
     cursor.close()
 
 
-def issue_comment_insert(connection:Connection, datas):
+def issue_comment_insert(connection: Connection, datas):
     cursor = connection.cursor()
     for data in datas:
         cursor.execute(f'''
@@ -318,7 +321,7 @@ def issue_comment_insert(connection:Connection, datas):
     cursor.close()
 
 
-def labels_inset(connection:Connection, datas):
+def labels_inset(connection: Connection, datas):
     cursor = connection.cursor()
     for data in datas:
         cursor.execute(f'''
@@ -337,7 +340,7 @@ def labels_inset(connection:Connection, datas):
     cursor.close()
 
 
-def pull_request_insert(connection:Connection, datas):
+def pull_request_insert(connection: Connection, datas):
     cursor = connection.cursor()
     for data in datas:
         cursor.execute(f'''
@@ -370,7 +373,7 @@ def pull_request_delete(connection, states):
     cursor.close()
 
 
-def pull_request_action_insert(connection:Connection, datas):
+def pull_request_action_insert(connection: Connection, datas):
     cursor = connection.cursor()
     for data in datas:
         cursor.execute(f'''
@@ -389,7 +392,7 @@ def pull_request_action_insert(connection:Connection, datas):
     cursor.close()
 
 
-def branches_insert(connection:Connection, datas):
+def branches_insert(connection: Connection, datas):
     cursor = connection.cursor()
     for data in datas:
         cursor.execute(f'''
@@ -408,7 +411,7 @@ def branches_insert(connection:Connection, datas):
     cursor.close()
 
 
-def commits_insert(connection:Connection, datas):
+def commits_insert(connection: Connection, datas):
     cursor = connection.cursor()
     for data in datas:
         cursor.execute(f'''
@@ -447,14 +450,14 @@ def commits_delete(connection, states):
     cursor.close()
 
 
-def commit_files_insert(connection:Connection, datas):
+def commit_files_insert(connection: Connection, datas):
     cursor = connection.cursor()
     for data in datas:
         cursor.execute(f'''
                         insert into commit_files(
                             commit_id,
+                            file_name,
                             commit_comment,
-                            from_file_id,
                             file_type,
                             file_action,
                             file_line,
@@ -463,20 +466,20 @@ def commit_files_insert(connection:Connection, datas):
                             file_path)
                         values(
                             {data[0]},
-                            '{data[1]}',
+                            {data[1]},
                             {data[2]},
-                            '{data[3]}',
+                            {data[3]},
                             {data[4]},
                             {data[5]},
                             {data[6]},
                             {data[7]},
-                            '{data[8]}')
+                            {data[8]})
                         ''')
     connection.commit()
     cursor.close()
 
 
-def commit_comment_insert(connection:Connection, datas):
+def commit_comment_insert(connection: Connection, datas):
     cursor = connection.cursor()
     for data in datas:
         cursor.execute(f'''

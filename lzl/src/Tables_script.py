@@ -334,7 +334,8 @@ table_commit_files = '''
 create table commit_files(
     id int not null primary key auto_increment,
     commit_id int,
-    from_file_id int,
+    file_name varchar(255),
+    commit_comment varchar(255) default '',
     file_type char(20) default '',
     file_action int,
     file_line int default 0,

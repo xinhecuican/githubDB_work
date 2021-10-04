@@ -1,14 +1,17 @@
+import datetime
 from typing import Dict
 
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QSize
 from PyQt5.QtGui import QPixmap, QIcon
 from PyQt5.QtWidgets import QVBoxLayout, QLabel, QHBoxLayout, QWidget, QCommandLinkButton, QGridLayout, QLayout, \
-    QPushButton, QScrollArea, QTabWidget, QToolButton, QMenu, QWidgetAction, QLineEdit, QListWidget, QListWidgetItem
+    QPushButton, QScrollArea, QTabWidget, QToolButton, QMenu, QWidgetAction, QLineEdit, QListWidget, QListWidgetItem, \
+    QListView, QStackedWidget, QTextEdit
 
 from zzr.src.Helper.Base_window import Base_window
 from zzr.src.Helper.Register import Registers
 import lzl.src.main as m
 from zzr.src.Repository_info.Branch_card import Branch_card
+from zzr.src.Repository_info.File_item import File_item
 from zzr.src.Widgets.Pic_label import Pic_label
 import json
 
@@ -18,21 +21,28 @@ class Repository_panel(Base_window):
 
     def __init__(self, name):
         super().__init__()
+        self.user_data = {}
+        self.parent_dir = ''
+        self.directory = {}
+        self.now_dir = {}
         self.commit_info_layout = QHBoxLayout()
         self.commit_user_label = Pic_label()
         self.commit_message_label = QLabel()
         self.commit_date_label = QLabel()
-        self.commit_info_layout.addWidget(self.commit_user_label)
-        self.commit_info_layout.addWidget(self.commit_message_label)
-        self.commit_info_layout.addWidget(self.commit_date_label, alignment=Qt.AlignRight)
+
+        self.stack_widget = QStackedWidget()
         self.file_list = QListWidget()
-        self.file_list.itemClicked.connect(lambda: self.file_clicked)
+        self.file_list.itemClicked.connect(self.file_clicked)
+        self.code_text = QTextEdit()
+        self.stack_widget.addWidget(self.code_text)
+        self.stack_widget.addWidget(self.file_list)
+        self.stack_widget.setCurrentWidget(self.file_list)
         self.branch_data = []
         self.search_branch_line = QWidgetAction(self)
         self.search_line_edit = QLineEdit()
         self.search_line_edit.setPlaceholderText("请输入分支名")
         self.search_line_edit.returnPressed.connect(lambda: self.on_search_return_pressed())
-        self.search_branch_line.setDefaultWidget(QLineEdit())
+        self.search_branch_line.setDefaultWidget(self.search_line_edit)
         self.branch_menu = QMenu()
         self.branch_menu.addAction(self.search_branch_line)
         self.branch_button = QToolButton()
@@ -43,12 +53,16 @@ class Repository_panel(Base_window):
         self.code_area = QScrollArea()
         self.code_widget = QWidget()
         self.code_layout = QVBoxLayout()
-        self.code_layout.addWidget(self.branch_button)
+        self.commit_info_layout.addWidget(self.branch_button)
+        self.commit_info_layout.addWidget(self.commit_user_label)
+        self.commit_info_layout.addWidget(self.commit_message_label)
+        self.commit_info_layout.addWidget(self.commit_date_label, alignment=Qt.AlignRight)
         self.code_layout.addLayout(self.commit_info_layout)
-        self.code_layout.addWidget(self.file_list)
+        self.code_layout.addWidget(self.stack_widget)
         self.code_area.setWidget(self.code_widget)  # 设置视口
         self.code_area.setLayout(self.code_layout)
         self.code_area.setWidgetResizable(True)
+        self.code_area.setMinimumWidth(500)
         self.table_widget.addTab(self.code_area, "代码")
         self.contributors = []
         self.contributors_layout = QVBoxLayout()
@@ -66,6 +80,7 @@ class Repository_panel(Base_window):
         self.tag_label.setWordWrap(True)
         self.website_label = QLabel()
         self.description_label = QLabel()
+        self.description_label.setWordWrap(True)
         self.about = QLabel("关于")
         self.about_layout = QVBoxLayout()
         self.about_layout.addWidget(self.about)
@@ -82,14 +97,17 @@ class Repository_panel(Base_window):
         self.contributors_layout.addLayout(self.contributors_layout)
         self.description_layout.addSpacing(20)
         self.description_layout.addLayout(self.language_layout)
+        self.description_widget = QWidget()
+        self.description_widget.setMaximumWidth(200)
+        self.description_widget.setLayout(self.description_layout)
         self.base_layout.addWidget(self.table_widget)
-        self.base_layout.addLayout(self.description_layout)
+        self.base_layout.addWidget(self.description_widget)
         self.data = []
         self.name = name
 
     def init_description_panel(self):
         description_data = m.giver.give_repository_description(self.data['id'])
-        description = description_data['description']
+        description = description_data['about']
         if description['description'] == "" and description['website'] == "" and description['tag'][0] == "":
             self.description_label.setText("没有任何描述、网站或标签")
             self.website_label.setText("")
@@ -103,7 +121,8 @@ class Repository_panel(Base_window):
                 self.tag_label.setText(self.tag_label.text() + f'''<span style="font-size: 12px;font-color:#80ccff;
                 font-weight: 500;border-radius: 2em;padding-right: 10px;padding-left: 10px;
                 line-height: 22px;margin: 0 .125em .333em 0;">{tag}</span>''')
-            self.license_label.setText(description['license_name'])
+            if description['license_name'] is not None:
+                self.license_label.setText(description['license_name'])
 
         self.contributors = description_data['contributors']
         self.clear_layout(self.contributors_layout)
@@ -123,11 +142,11 @@ class Repository_panel(Base_window):
         self.clear_layout(self.language_layout)
         col = 0
         row = 0
-        for code in description_data['code_type']:
+        for (key, value) in description['code_type'].items():
             label = QLabel()
             label.linkActivated.connect(lambda: self.on_link_activated())
-            label.setText(code['code'] + ": " + code['percentage'])
-            self.language_layout.addWidget(label)
+            label.setText(key + ": " + value)
+            self.language_layout.addWidget(label, row, col)
             if col + 1 >= 2:
                 col = 0
                 row = row + 1
@@ -135,29 +154,31 @@ class Repository_panel(Base_window):
                 col = col + 1
 
     def init_code_layer(self):
-        self.code_layout.removeWidget(self.branch_button)
         self.branch_data = m.giver.give_repository_branches(self.data['id'])
-        self.branch_button.setText(self.branch_data['default_branch'])
+        self.branch_button.setText(self.branch_data['branches'][str(self.branch_data['default_branch'])]['name'])
         self.branch_menu.clear()
         self.branch_menu.addAction(self.search_branch_line)
-        for branch in self.branch_data['branches']:
+        for branch in self.branch_data['branches'].items():
             card = Branch_card(branch)
             card.button_click.connect(self.on_branch_card_click)
             self.branch_menu.addAction(Branch_card(branch))
-        self.code_layout.addWidget(self.branch_button)
 
-        file_data = m.giver.give_commit_file_info(self.data['latest_commit_id'])
-        commit_info = m.giver.give_commit_info(self.data['latest_commit_id'])
+        default_branch = self.branch_data['branches'][str(self.branch_data['default_branch'])]
+        file_data = m.giver.give_commit_file_info(default_branch['latest_commit_id'])
+        commit_info = m.giver.give_commit_info(default_branch['latest_commit_id'])
         commit_user_info = m.giver.give_user_info(commit_info['author'])
         self.commit_user_label.set_pic(QPixmap(commit_user_info['description']['avatar_url']))
         self.commit_user_label.set_text(commit_user_info['name'])
         self.commit_message_label.setText(commit_info['message'])
-        self.commit_date_label.setText(commit_info['commit_date'])
+        self.commit_date_label.setText(str(commit_info['commit_date'].date()))
 
-        directory = {}
-        with open(file_data['directory'], "r") as f:
-            directory = json.load(f)
-        self.set_files(directory)
+        self.parent_dir = ''
+        self.now_dir = ''
+        self.directory = {}
+        with open(file_data['directory_address'], "r") as f:
+            self.directory = json.load(f)
+        self.now_dir = self.directory
+        self.set_files(self.directory)
 
     def on_window_cancel(self, *args):
         pass
@@ -165,6 +186,7 @@ class Repository_panel(Base_window):
     def on_window_select(self, *args):
         self.name = args[0][0]
         self.data = m.giver.give_repository_info(self.name)
+        self.user_data = m.giver.give_user_info(self.data['user_id'])
         self.init_description_panel()
         self.init_code_layer()
 
@@ -191,19 +213,37 @@ class Repository_panel(Base_window):
         pass
 
     def file_clicked(self, item: QListWidgetItem):
-        if item.data(Qt.DisplayRole) == 0:
-            self.set_files(item.data(Qt.EditRole))
-        else:  # 如果是文件
-            pass
+        item_widget = self.file_list.itemWidget(item)
+        if type(item_widget) == File_item:
+            data = m.helper.run(f'''
+                                select commit_sha from commits 
+                                join commit_files 
+                                on commit_files.commit_id = commits.id 
+                                where commit_files.id = {item_widget.value}''')
+            with open(f"../../lhx/res/files/{self.user_data['name']}/{self.data['name']}/{data[0][0][0:7]}/{item_widget.key if self.parent_dir=='' else self.parent_dir.replace('/', '&') + '&' + item_widget.key}", 'r', encoding='utf-8') as f:
+                self.code_text.setText(f.read())
+            self.stack_widget.setCurrentWidget(self.code_text)
+        else:
+            self.parent_dir += item_widget.text + "/"
+            self.now_dir = self.now_dir[item_widget.text]
+            self.set_files(self.now_dir)
 
     def set_files(self, data: dict):
         self.file_list.clear()
-        for (key, value) in data:
-            if value is dict:
-                item = QListWidgetItem(QIcon("../resources/images/folder.png", key))
-                item.setData(Qt.EditRole, value)
-                item.setData(Qt.DisplayRole, 0)
+        for (key, value) in data.items():
+            if key == '__parent__':
+                continue
+            item = QListWidgetItem()
+            item.setSizeHint(QSize(100, 45))
+            self.file_list.addItem(item)
+            if type(value) is dict:
+                # item.setData(Qt.EditRole, value)
+                # item.setData(Qt.DisplayRole, 0)
+                label = Pic_label(QPixmap("../resources/images/folder.png"), key)
+                self.file_list.setItemWidget(item, label)
             else:
-                item = QListWidgetItem(key)
-                item.setData(Qt.EditRole, value)
-                item.setData(Qt.DisplayRole, 1)
+                list_widget = File_item(key, value)
+                # item.setData(Qt.EditRole, value)
+                # item.setData(Qt.DisplayRole, 1)
+                self.file_list.setItemWidget(item, list_widget)
+

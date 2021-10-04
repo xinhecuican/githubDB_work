@@ -114,7 +114,7 @@ class Data_giver:
                        star_num, repository_num from user_info where user_name = '{user_info}';''')
         elif type(user_info) is int:
             cursor.execute(f'''select id, user_name, follower_num, following_num,
-                                   star_num, repository_num from user_info where user_name = {user_info};''')
+                                   star_num, repository_num from user_info where id = {user_info};''')
         info = cursor.fetchall()
         if not info:
             return None
@@ -187,6 +187,7 @@ class Data_giver:
         :return: （Object){
             name (str): 仓库名
             id (int): 仓库id
+            user_id (int): 作者id
             author (str): 仓库创作者名字
             star_num (int)
             fork_num
@@ -198,7 +199,7 @@ class Data_giver:
         }
         """
         sql = f'''
-        select repository.name, repository.id, user_description.user_name, repository.star_num, 
+        select repository.name, repository.id, repository.user_id, user_description.user_name, repository.star_num, 
         repository.fork_num, repository.contributor_num
         from repository
         join user_description
@@ -211,10 +212,11 @@ class Data_giver:
         for data in datas:
             ans['name'] = data[0]
             ans['id'] = data[1]
-            ans['author'] = data[2]
-            ans['star_num'] = data[3]
-            ans['fork_num'] = data[4]
-            ans['contributor_num'] = data[5]
+            ans['user_id'] = data[2]
+            ans['author'] = data[3]
+            ans['star_num'] = data[4]
+            ans['fork_num'] = data[5]
+            ans['contributor_num'] = data[6]
         sql = f'''select code_type, description
         from repository_info
         where id = {ans['id']}'''
@@ -282,7 +284,7 @@ class Data_giver:
         sql = f'''
                 select release_num, contributors, description, website, licenses.name, license_content, tag, code_type
                 from repository_info
-                join licenses
+                left join licenses
                 on repository_info.licenses_id = licenses.id
                 where repository_info.id = {id}
                 '''
@@ -309,12 +311,11 @@ class Data_giver:
 
         :param id:
         :return: (Object){
-                            default_branch:
-                            branches[{
-                                        id:
+                            default_branch (int):
+                            branches{'id': {
                                         name:
                                         latest_commit_id
-                                    }]
+                                    }}
                         }
         """
         sql = f'''
@@ -323,24 +324,23 @@ class Data_giver:
         where repository.id = {id}'''
         cursor = self.helper.connection.cursor()
         cursor.execute(sql)
-        ans = {'default_branch': cursor.fetchall()[0][0], 'branches': []}
+        ans = {'default_branch': cursor.fetchall()[0][0], 'branches': {}}
         sql = f'''
         select branches.id, branch_name, latest_commit
         from branches
         where branches.repository_id = {id}
         '''
-        cursor.execute()
+        cursor.execute(sql)
         datas = cursor.fetchall()
         for data in datas:
-            ans['branches'].append({
-                'id': data[0],
+            ans['branches'][str(data[0])] = {
                 'name': data[1],
                 'latest_commit_id': data[2]
-            })
+            }
         cursor.close()
         return ans
 
-    def get_commit_file_info(self, id):
+    def give_commit_file_info(self, id):
         """
 
         :param id:
@@ -349,9 +349,10 @@ class Data_giver:
                             add_line:
                             delete_line:
                             change_file_num
+                        }
         """
         sql = f'''
-        select commit_file_address, add_line, delete_line, change_file_num
+        select commit_directory_address, add_line, delete_line, change_file_num
         from commit_file_info
         where id = {id}
         '''
@@ -367,7 +368,7 @@ class Data_giver:
         cursor.close()
         return ans
 
-    def get_commit_info(self, id):
+    def give_commit_info(self, id):
         """
 
         :param id:
