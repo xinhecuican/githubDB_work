@@ -49,6 +49,10 @@ if __name__ == '__main__':
     user_names = ['xinhecuican', 'romanofficial', 'umar-dev', 'subhadipp-cloud', 'navidR']
     done = []
 
+    with open('D:\\21-22-1\\Database_Practice\\done.txt', 'r') as f:
+        for line in f:
+            done.append(line.replace('\n', ''))
+
     for i in range(len(user_names)):
         if user_names[i] not in done:
             stime = time.time()
@@ -59,6 +63,8 @@ if __name__ == '__main__':
             minn = math.trunc(atime / 60)
             secc = math.trunc(atime % 60)
             print('用户', user_names[i], '共用时', minn, '分', secc, '秒')
-            done.append(user_names[i])
+
+            with open('D:\\21-22-1\\Database_Practice\\done.txt', 'a+') as f:
+                f.write('\n'+user_names[i])
         else:
             print('用户', user_names[i], '爬过了')

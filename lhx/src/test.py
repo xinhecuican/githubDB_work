@@ -64,10 +64,19 @@ def get_label_comment(url):
 # get_commit('xinhecuican', 'easy-capture', 'master', a)
 # get_commit('xinhecuican', 'easy-capture', 'add-license-1', a)
 # get_commit('xinhecuican', 'easy-capture', 'main', a)
-url = 'https://github.com/xinhecuican/easy-capture/blob/master/LICENSE'
-
-html = getHTML(url)
-soup = BeautifulSoup(html, 'html.parser')
+# url = 'https://github.com/xinhecuican/easy-capture/blob/master/LICENSE'
+#
+# html = getHTML(url)
+# soup = BeautifulSoup(html, 'html.parser')
 # a = soup.find('a', class_='text-small text-mono Link--secondary')
 # print(a.text)
-print(html)
+# print(html)
+# done = []
+# with open('D:\\21-22-1\\Database_Practice\\done.txt', 'r') as f:
+#     for line in f:
+#         done.append(line.replace('\n', ''))
+a = 'asdasd'
+with open('D:\\21-22-1\\Database_Practice\\done.txt', 'a+') as f:
+    f.write('\n' + a)
+
+# print(done)
