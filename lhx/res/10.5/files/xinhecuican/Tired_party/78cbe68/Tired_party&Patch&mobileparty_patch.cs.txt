@@ -1,0 +1,42 @@
+﻿﻿using HarmonyLib;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using TaleWorlds.CampaignSystem;
+
+namespace Tired_party.Patch
+{
+    [HarmonyPatch(typeof(MobileParty))]
+    class mobileparty_patch
+    {
+        [HarmonyPatch("OnAiTickInternal")]
+        [HarmonyPostfix]
+        public static void ai_tick_postfix(MobileParty __instance)
+        {
+            if(!Party_tired.Current.Party_tired_rate.ContainsKey(__instance))
+            {
+                return;
+            }
+            if(Party_tired.Current.Party_tired_rate.ContainsKey(__instance) && Party_tired.Current.Party_tired_rate[__instance].is_fleeing)
+            {
+                __instance.SetMoveModeHold();
+            }
+        }
+
+        [HarmonyPrefix]
+        [HarmonyPatch("OnAiTickInternal")]
+        public static void ai_tick_prefix(MobileParty __instance)
+        {
+            if (!Party_tired.Current.Party_tired_rate.ContainsKey(__instance))
+            {
+                return;
+            }
+            if (__instance.Army != null && Party_tired.Current.Party_tired_rate[__instance].reset_time > 0)
+            {
+                __instance.SetMoveModeHold();
+            }
+        }
+    }
+}

@@ -1,0 +1,44 @@
+﻿#!/bin/python3
+import socket
+import time
+import random
+import sys
+
+#ADDRESS = ('localhost', 8880)
+ADDRESS = ('', 8880)
+TEAM_NAME = "team-name.txt"
+TEAM_RESULT = "team-result.txt"
+
+s = socket.socket()
+s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+s.bind(ADDRESS)
+s.listen(0)
+
+team_name = open(TEAM_NAME)
+team_name_lines = team_name.readlines()
+
+print(time.strftime('%X %x %Z') + " => " + str(team_name_lines))
+
+conn, address = s.accept()
+for i in team_name_lines:
+    conn.send(str.encode(i))
+conn.close()
+team_name.close()
+
+while True:
+    team_result = open(TEAM_RESULT)
+    team_result_lines = team_result.readlines()
+
+    print(time.strftime('%X %x %Z') + " => " + str(team_result_lines))
+
+    conn, address = s.accept()
+    for i in team_result_lines:
+        conn.send(str.encode(i))
+
+    conn.close()
+    team_name.close()
+    team_result.close()
+
+
+
+

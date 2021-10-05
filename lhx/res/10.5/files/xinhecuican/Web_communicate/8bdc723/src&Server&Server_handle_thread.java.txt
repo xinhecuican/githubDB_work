@@ -1,0 +1,115 @@
+﻿package Server;
+
+import Main_window.Data.Login_data;
+import Main_window.Data.Send_data;
+import Server.Data.Login_back_data;
+import Server.Data.Search_back_data;
+
+import java.io.*;
+import java.net.Socket;
+import java.util.List;
+import java.util.Objects;
+
+/**
+ * @author: 李子麟
+ * @date: 2021/3/19 21:46
+ **/
+public class Server_handle_thread extends Thread
+{
+    private Socket socket;
+    private int mode;
+    public Server_handle_thread(Socket socket, int mode)
+    {
+        this.socket = socket;
+        this.mode = mode;
+    }
+    public void run()
+    {
+        ObjectInputStream input = null;
+        try
+        {
+            InputStream inputStream = socket.getInputStream();
+            input = new ObjectInputStream(inputStream);
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+        switch (mode)
+        {
+            case 0://登录信息
+                try
+                {
+                    assert input != null;
+                    Login_data data = (Login_data)input.readObject();
+                    int id = Server_main.Login(data);
+                    OutputStream outputStream = socket.getOutputStream();
+                    ObjectOutputStream out = new ObjectOutputStream(outputStream);
+                    if(id == -1) //出错
+                    {
+                        out.writeObject(new Login_back_data(true, null));
+                    }
+                    else if(id == 0)//正常登录
+                    {
+                        out.writeObject(new Login_back_data(false,
+                                Objects.requireNonNull(Server_main.search_user(data.id)).data));
+                    }
+                    else
+                    {
+                        Login_back_data login_back_data = new Login_back_data(false, null);
+                        login_back_data.id = id;
+                        out.writeObject(login_back_data);
+                    }
+                    break;
+                }
+                catch (IOException | ClassNotFoundException e)
+                {
+                    e.printStackTrace();
+                }
+            case 1: //单人发送信息
+                try
+                {
+                    assert input != null;
+                    Send_data data = (Send_data)input.readObject();
+                    if(data.send_to_id == 1)//搜索好友
+                    {
+                        List<User_message> send_data = Server_main.search_user(data.searched_user);
+                        if(send_data.size() > 0)
+                        {
+                            Search_back_data search_back_data = new Search_back_data();
+                            for(User_message message : send_data)
+                            {
+                                search_back_data.add(message.get_id(), message.user_name);
+                            }
+                            OutputStream outputStream = socket.getOutputStream();
+                            ObjectOutputStream out = new ObjectOutputStream(outputStream);
+                            out.writeObject(search_back_data);
+                        }
+                    }
+                    else if(data.send_to_id == 2)//请求添加好友，好友id在data.searched_user字段中
+                    {
+                        int friend_id = Integer.parseInt(data.searched_user);
+                        User_message message = Objects.requireNonNull(Server_main.search_user(data.my_id));
+                        data.searched_user = message.user_name;
+                        if(!Server_main.add_message(friend_id, data))
+                        {
+                            data.my_id = 2;
+                            data.searched_user = Objects.requireNonNull(Server_main.search_user(friend_id)).user_name;
+                            Socket socket = new Socket(message.host, message.port);
+                            OutputStream outputStream = socket.getOutputStream();
+                            ObjectOutputStream out = new ObjectOutputStream(outputStream);
+                            out.writeObject(data);
+                        }
+                    }
+                    else if(data.send_to_id == 3)//确认添加好友
+                    {
+
+                    }
+                }
+                catch (IOException | ClassNotFoundException e)
+                {
+                    e.printStackTrace();
+                }
+        }
+    }
+}

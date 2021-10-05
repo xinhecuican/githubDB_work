@@ -1,0 +1,52 @@
+﻿﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using TaleWorlds.CampaignSystem;
+using TaleWorlds.SaveSystem;
+
+namespace Tired_party.Mission_time
+{
+    class time_pass_behaviour : CampaignBehaviorBase
+    {
+        public override void RegisterEvents()
+        {
+            CampaignEvents.MapEventEnded.AddNonSerializedListener(this, new Action<MapEvent>(time_pass));
+            CampaignEvents.HourlyTickEvent.AddNonSerializedListener(this, new Action(end_time));
+        }
+
+        public override void SyncData(IDataStore dataStore)
+        {
+            dataStore.SyncData("tired_party_time_pass", ref pass_time);
+            dataStore.SyncData("tired_party_enable_pass", ref enable_pass);
+        }
+
+        private void time_pass(MapEvent mapevent)
+        {
+            enable_pass = true;
+            pass_time = (int)missiontime_data.pass_time;
+            Campaign.Current.SetTimeControlModeLock(false);
+            Campaign.Current.TimeControlMode = CampaignTimeControlMode.UnstoppableFastForward;
+            Campaign.Current.SetTimeControlModeLock(true);
+        }
+
+        private void end_time()
+        {
+            if (enable_pass)
+            {
+                pass_time--;
+                if (pass_time <= 0)
+                {
+                    Campaign.Current.SetTimeControlModeLock(false);
+                    Campaign.Current.TimeControlMode = CampaignTimeControlMode.Stop;
+                    enable_pass = false;
+                }
+            }
+        }
+        [SaveableField(1)]
+        float pass_time = 0f;
+        [SaveableField(2)]
+        public bool enable_pass = false;
+    }
+}

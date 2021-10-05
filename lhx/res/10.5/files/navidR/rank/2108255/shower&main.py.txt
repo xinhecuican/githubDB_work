@@ -1,0 +1,94 @@
+﻿#!/bin/python3
+from gi.repository import Gtk, GObject
+import socket
+import time, random, sys
+
+# Variable
+MAX_BUF = 100
+TIMER_INTERVAL = 1000
+UPDATER_INTERVAL = 5000
+HOUR = 5
+MIN = 0
+SEC = 0
+TIME_FORMAT = '%X %x %Z'
+
+# String For Glade
+BUILDER_FILE_STR = "shower.glade"
+TREEVIEW_STR = "treeview"
+WINDOW_STR = "window"
+LABEL_STR = "label"
+
+if len(sys.argv) < 2:
+    print("You should provide server IP addr")
+    sys.exit()
+ADDRESS = (sys.argv[1], 8880)
+TEAM_NAME = "team-name.txt"
+TEAM_RESULT = "team-result.txt"
+
+# Events
+DELETE_EVENT = "delete-event"
+
+def update_interval():
+    print("update_interval")
+    # Update The Timer
+    
+    return True
+
+def update_table(): 
+    print("update_table")
+    # Open Socket to Server and Read from Socket
+
+    team_result_str = ""
+    s = socket.socket()
+    s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    s.connect(ADDRESS)
+    while True:
+        t = bytes.decode(s.recv(MAX_BUF))
+        if len(t) != 0:
+            team_result_str += t
+        else:
+            break
+
+    print(time.strftime(TIME_FORMAT) + " => " + str(team_result_str))
+    s.close()
+    team_result = open(TEAM_RESULT, 'w')
+    team_result.write(team_result_str)
+    team_result.close()
+    return True
+
+
+team_name_str = ""
+s = socket.socket()
+s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+s.connect(ADDRESS)
+while True:
+    t = bytes.decode(s.recv(MAX_BUF))
+    if len(t) != 0:
+        team_name_str += t
+    else:
+        break
+print(time.strftime(TIME_FORMAT) + " => " + str(team_name_str))
+s.close()
+
+team_name = open(TEAM_NAME, 'w')
+team_name.write(team_name_str)
+team_name.close()
+
+builder = Gtk.Builder()
+builder.add_from_file(BUILDER_FILE_STR)
+
+# Loading Window
+window = builder.get_object(WINDOW_STR)
+window.connect(DELETE_EVENT, Gtk.main_quit)
+
+# Loading TreeView
+treeview = builder.get_object(WINDOW_STR)
+
+# Timer Label
+timer = builder.get_object(LABEL_STR)
+
+GObject.timeout_add(TIMER_INTERVAL, update_interval)
+GObject.timeout_add(UPDATER_INTERVAL, update_table)
+
+window.show_all()
+Gtk.main()

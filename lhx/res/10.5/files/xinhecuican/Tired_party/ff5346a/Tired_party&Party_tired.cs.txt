@@ -1,0 +1,24 @@
+﻿﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Text;
+using System.Threading.Tasks;
+using TaleWorlds.CampaignSystem;
+
+namespace Tired_party
+{
+    class Party_tired
+    {
+        public static Party_tired _current;
+        public static Dictionary<MobileParty, float> _partry_tired_rate;
+        public static Party_tired Current
+        {
+            get
+            {
+                return Party_tired._current;
+            }
+        }
+
+    }
+}

@@ -1,0 +1,62 @@
+﻿package Main_window.Separate_panel;
+
+import Main_window.Main;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+
+/**
+ * @author: 李子麟
+ * @date: 2021/3/18 18:49
+ **/
+public class Search_panel extends JPanel
+{
+    public JButton search_button;
+    public Search_panel()
+    {
+        setOpaque(false);
+        JTextField textField = new JTextField();
+        search_button = new JButton();
+        search_button.setToolTipText("搜索");
+
+        //search_button.setContentAreaFilled(true);
+        search_button.setBorderPainted(false);
+
+        GridBagLayout layout = new GridBagLayout();
+        GridBagConstraints constraints = new GridBagConstraints();
+        constraints.gridheight = 20;
+        constraints.weightx = 1;
+        constraints.weighty = 1;
+        constraints.fill = GridBagConstraints.BOTH;
+        layout.setConstraints(textField, constraints);
+        constraints.gridwidth = 5;
+        constraints.weightx = 0;
+        layout.setConstraints(search_button, constraints);
+        setLayout(layout);
+        add(textField);
+        add(search_button);
+        setPreferredSize(new Dimension(Main.LEFT_PANEL_WIDTH, 20));
+        search_button.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent)
+            {
+                System.out.println(search_button.getHeight() + " " + search_button.getWidth());
+            }
+        });
+
+
+        addComponentListener(new ComponentAdapter()
+        {
+            @Override
+            public void componentResized(ComponentEvent e)
+            {
+
+            }
+        });
+    }
+}

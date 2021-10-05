@@ -1,0 +1,39 @@
+﻿package Main_window.Data;
+
+import Main_window.User_Server.User_friend;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * @author: 李子麟
+ * @date: 2021/3/26 21:04
+ **/
+public class User_group implements Serializable
+{
+    private List<User_friend> group_friends;
+    private int group_id;
+    private String group_name;
+    public Message_data data;
+    public boolean is_group_in_list;
+    public User_group()
+    {
+        data = new Message_data();
+        group_friends = new ArrayList<>();
+    }
+
+    public User_group(int id, String name)
+    {
+        group_id = id;
+        group_name = name;
+        group_friends = new ArrayList<>();
+        data = new Message_data();
+    }
+
+    public int getGroup_id()
+    {
+        return group_id;
+    }
+    public String getGroup_name() { return group_name;}
+}

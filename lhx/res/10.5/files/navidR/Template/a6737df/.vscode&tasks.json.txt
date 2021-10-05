@@ -1,0 +1,194 @@
+﻿{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "0.1.0",
+    "command": "powershell.exe",
+    "suppressTaskName": true,
+    // "isShellCommand": true,
+    "showOutput": "always",
+    "echoCommand": false,
+    "tasks": [
+        {
+            "taskName": "CMake Debug",
+            "args": [
+                "Remove-Item",
+                "-Recurse",
+                "-Force",
+                "${workspaceRoot}/build",
+                ";",
+                "mkdir",
+                "${workspaceRoot}/build",
+                ";",
+                "cd",
+                "${workspaceRoot}/build",
+                ";",
+                "mcmake",
+                "-Wdev",
+                "-DCMAKE_BUILD_TYPE=Debug",
+                "..",
+                ";"
+            ],
+            "isShellCommand": true
+        },
+        {
+            "taskName": "CMake Release",
+            "args": [
+                "Remove-Item",
+                "-Recurse",
+                "-Force",
+                "${workspaceRoot}/build",
+                ";",
+                "mkdir",
+                "${workspaceRoot}/build",
+                ";",
+                "cd",
+                "${workspaceRoot}/build",
+                ";",
+                "mcmake",
+                "-Wdev",
+                "-DCMAKE_BUILD_TYPE=Release",
+                "..",
+                ";"
+            ],
+            "isShellCommand": true
+        },
+        {
+            "taskName": "CMake Debug Ninja",
+            "args": [
+                "Remove-Item",
+                "-Recurse",
+                "-Force",
+                "${workspaceRoot}/build",
+                ";",
+                "mkdir",
+                "${workspaceRoot}/build",
+                ";",
+                "cd",
+                "${workspaceRoot}/build",
+                ";",
+                "mcmake",
+                "-Wdev",
+                "-DCMAKE_BUILD_TYPE=Debug",
+                "-G",
+                "Ninja",
+                "..",
+                ";"
+            ],
+            "isShellCommand": true
+        },
+        {
+            "taskName": "CMake Release Ninja",
+            "args": [
+                "Remove-Item",
+                "-Recurse",
+                "-Force",
+                "${workspaceRoot}/build",
+                ";",
+                "mkdir",
+                "${workspaceRoot}/build",
+                ";",
+                "cd",
+                "${workspaceRoot}/build",
+                ";",
+                "mcmake",
+                "-Wdev",
+                "-DCMAKE_BUILD_TYPE=Release",
+                "-G",
+                "Ninja",
+                "..",
+                ";"
+            ],
+            "isShellCommand": true
+        },
+        {
+            "taskName": "Clean",
+            "args": [
+                "Remove-Item",
+                "-Recurse",
+                "-Force",
+                "${workspaceRoot}/build",
+                ";",
+                "mkdir",
+                "${workspaceRoot}/build",
+                "Remove-Item",
+                "-Recurse",
+                "-Force",
+                "${workspaceRoot}/out",
+                ";",
+                "mkdir",
+                "${workspaceRoot}/out"
+            ]
+        },
+        {
+            "taskName": "Build",
+            "args": [
+                "cmake",
+                "--build",
+                "${workspaceRoot}/build",
+                ";",
+                "if",
+                "(",
+                "$LASTEXITCODE",
+                "-ne",
+                "0",
+                ")",
+                "{",
+                "echo 'Run CMake before compilation step.'",
+                ";",
+                "[Environment]::Exit(1)",
+                "}",
+                ";"
+            ]
+        },
+        {
+            "taskName": "Run",
+            "args": [
+                "if([System.IO.File]::Exists('${workspaceRoot}/out/${workspaceRootFolderName}.exe')){",
+                "${workspaceRoot}/out/${workspaceRootFolderName}.exe",
+                "}",
+                "else{",
+                "echo 'No executable found'",
+                "}"
+                // args for executable
+            ],
+            "isShellCommand": true
+        },
+        {
+            "taskName": "Build & Run",
+            "isBuildCommand": true,
+            "args": [
+                "cmake",
+                "--build",
+                "${workspaceRoot}/build",
+                ";",
+                "if",
+                "(",
+                "$LASTEXITCODE",
+                "-ne",
+                "0",
+                ")",
+                "{",
+                "echo 'Run CMake before compilation step.'",
+                ";",
+                "[Environment]::Exit(1)",
+                "}",
+                ";",
+                "if",
+                "(",
+                "$LASTEXITCODE",
+                "-eq",
+                "0",
+                ")",
+                "{",
+                "${workspaceRoot}/out/${workspaceRootFolderName}.exe",
+                "}",
+                "else",
+                "{",
+                "echo 'Compilation was not successful'",
+                "}"
+                // args for executable
+            ],
+            "isShellCommand": true
+        }
+    ]
+}

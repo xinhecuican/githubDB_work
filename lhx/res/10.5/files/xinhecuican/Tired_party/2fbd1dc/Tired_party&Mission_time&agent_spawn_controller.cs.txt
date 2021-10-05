@@ -1,0 +1,139 @@
+﻿﻿using HarmonyLib;
+using MCM.Abstractions.Settings.Base.Global;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Management.Instrumentation;
+using System.Reflection;
+using System.Text;
+using System.Threading.Tasks;
+using TaleWorlds.CampaignSystem;
+using TaleWorlds.Core;
+using TaleWorlds.Library;
+using TaleWorlds.Localization;
+using TaleWorlds.MountAndBlade;
+using Tired_party.Helper;
+
+namespace Tired_party.Mission_time
+{
+    class agent_spawn_controller : MissionLogic
+    {
+        private MapEvent mapEvent;
+        private MissionAgentSpawnLogic missionAgentSpawnLogic;
+        public MissionTimer check_time = null;
+        public int defend_initial_num;
+        public int attacker_initial_num;
+        public List<arrive_time_data> ready_to_place;
+        private TextObject text1 = new TextObject("{=m3sLthymyB}is going to arrive in half an hour", null);
+        private TextObject text2 = new TextObject("{=1yoGH2Ud8A} seconds)", null);
+        public override void OnBehaviourInitialize()
+        {
+            missionAgentSpawnLogic = base.Mission.GetMissionBehaviour<MissionAgentSpawnLogic>();
+            mapEvent = MapEvent.PlayerMapEvent;
+            ready_to_place = new List<arrive_time_data>();
+        }
+        public override void AfterStart()
+        {
+            base.AfterStart();
+            missionAgentSpawnLogic.SetSpawnHorses(TaleWorlds.Core.BattleSideEnum.Attacker, mapEvent.IsSiegeAssault);
+            missionAgentSpawnLogic.SetSpawnHorses(TaleWorlds.Core.BattleSideEnum.Defender, mapEvent.IsSiegeAssault);
+            missionAgentSpawnLogic.InitWithSinglePhase(missiontime_data.current.initial_num[0], missiontime_data.current.initial_num[1], 
+                missiontime_data.current.initial_num[0], missiontime_data.current.initial_num[1], true, true, 1);
+            int num = MBMath.Floor((float)this.mapEvent.GetNumberOfInvolvedMen(BattleSideEnum.Defender));
+            int num2 = MBMath.Floor((float)this.mapEvent.GetNumberOfInvolvedMen(BattleSideEnum.Attacker));
+            int battle_size = (int)AccessTools.Field(typeof(MissionAgentSpawnLogic), "_battleSize").GetValue(missionAgentSpawnLogic);
+            defend_initial_num = MBMath.Ceiling(battle_size * num / (num + num2));
+            attacker_initial_num = battle_size - defend_initial_num;
+            check_time = new MissionTimer(GlobalSettings<mod_setting>.Instance.time_lapse_ratio);
+        }
+
+        public override void OnPreMissionTick(float dt)
+        {
+            try
+            {
+                base.OnPreMissionTick(dt);
+                Type t = typeof(MissionAgentSpawnLogic).Assembly.
+                        GetType("TaleWorlds.MountAndBlade.MissionAgentSpawnLogic+SpawnPhase");
+                if (check_time != null && check_time.Check(true))
+                {
+                    missiontime_data.pass_time += 0.5f;
+                    for (int i = 0; i < 2; i++)
+                    {
+                        for (int k = 0; k < missiontime_data.current.time_and_direction[i].Count; k++)
+                        {
+                            missiontime_data.current.time_and_direction[i][k].arrive_time -= 0.5f;
+                            if(missiontime_data.current.time_and_direction[i][k].arrive_time <= 0.5f && missiontime_data.current.time_and_direction[i][k].arrive_time > 0)
+                            {
+
+                                message_helper.TechnicalMessage(missiontime_data.current.time_and_direction[i][k].party.Party.MobileParty.Name.ToString() +
+                                     text1.ToString() + "(" + (GlobalSettings<mod_setting>.Instance.time_lapse_ratio / 2).ToString() + text2 + ")");
+                            }
+                            if (missiontime_data.current.time_and_direction[i][k].arrive_time <= 0)
+                            {
+                                if (!Mission.Current.IsMissionEnding)
+                                {
+                                    missiontime_data.current.time_and_direction[i][k].arrive_time = 10000f;
+                                    if (i == 0)
+                                    {
+                                        object o = AccessTools.Property(typeof(MissionAgentSpawnLogic), "DefenderActivePhase").GetValue(missionAgentSpawnLogic);
+                                        int add_num = missiontime_data.current.time_and_direction[i][k].party.Party.NumberOfHealthyMembers;
+                                        int total_spawn = (int)AccessTools.Field(t, "TotalSpawnNumber").GetValue(o);
+                                        total_spawn += add_num;
+                                        AccessTools.Field(t, "TotalSpawnNumber").SetValue(o, total_spawn);
+                                        int remain_number = (int)AccessTools.Field(t, "RemainingSpawnNumber").GetValue(o);
+                                        remain_number += add_num;
+                                        AccessTools.Field(t, "RemainingSpawnNumber").SetValue(o, remain_number);
+                                        int initial_num = (int)AccessTools.Field(t, "InitialSpawnedNumber").GetValue(o);
+                                        if (initial_num < defend_initial_num)
+                                        {
+                                            if (initial_num + add_num > defend_initial_num)
+                                            {
+                                                initial_num = defend_initial_num;
+                                            }
+                                            else
+                                            {
+                                                initial_num += add_num;
+                                            }
+                                            AccessTools.Field(t, "InitialSpawnedNumber").SetValue(o, initial_num);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        object o = AccessTools.Property(typeof(MissionAgentSpawnLogic), "AttackerActivePhase").GetValue(missionAgentSpawnLogic);
+                                        int add_num = missiontime_data.current.time_and_direction[i][k].party.Party.NumberOfHealthyMembers;
+                                        int total_spawn = (int)AccessTools.Field(t, "TotalSpawnNumber").GetValue(o);
+                                        total_spawn += add_num;
+                                        AccessTools.Field(t, "TotalSpawnNumber").SetValue(o, total_spawn);
+                                        int remain_number = (int)AccessTools.Field(t, "RemainingSpawnNumber").GetValue(o);
+                                        remain_number += add_num;
+                                        AccessTools.Field(t, "RemainingSpawnNumber").SetValue(o, remain_number);
+                                        int initial_num = (int)AccessTools.Field(t, "InitialSpawnedNumber").GetValue(o);
+                                        if (initial_num < attacker_initial_num)
+                                        {
+                                            if (initial_num + add_num > attacker_initial_num)
+                                            {
+                                                initial_num = attacker_initial_num;
+                                            }
+                                            else
+                                            {
+                                                initial_num += add_num;
+                                            }
+                                            AccessTools.Field(t, "InitialSpawnedNumber").SetValue(o, initial_num);
+                                        }
+                                    }
+                                    InformationManager.AddQuickInformation(i == (int)mapEvent.PlayerSide ? GameTexts.FindText("str_new_reinforcements_have_arrived_for_ally_side", null) : GameTexts.FindText("str_new_reinforcements_have_arrived_for_enemy_side", null), 0, null, "");
+                                }
+                                ready_to_place.Add(missiontime_data.current.time_and_direction[i][k]);
+                            }
+                        }
+                    }
+                }
+            }
+            catch(Exception e)
+            {
+                MethodInfo methodInfo = MethodBase.GetCurrentMethod() as MethodInfo;
+                debug_helper.HandleException(e, methodInfo, "submodule load error");
+            }
+        }
+    }
+}

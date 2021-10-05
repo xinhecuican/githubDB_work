@@ -1,0 +1,54 @@
+﻿package Main_window.User_Server;
+import Main_window.Data.Send_data;
+import Main_window.Data.Message_data;
+import Main_window.Main;
+import Main_window.Separate_panel.Friend_confirm_card;
+import Main_window.Separate_panel.Left_button;
+import Main_window.Window;
+
+import javax.swing.*;
+import java.io.*;
+import java.net.InetAddress;
+import java.net.Socket;
+import java.util.ArrayList;
+
+/**
+ * @author: 李子麟
+ * @date: 2021/3/18 12:32
+ **/
+public class User_Server_handle_thread extends Thread
+{
+    private Socket socket;
+    public User_Server_handle_thread(Socket socket)
+    {
+        this.socket = socket;
+    }
+    @Override
+    public void run()
+    {
+        super.run();
+        Send_data input_data = new Send_data();
+        try
+        {
+            InputStream stream = socket.getInputStream();
+            ObjectInputStream inputStream = new ObjectInputStream(stream);
+            input_data = (Send_data)inputStream.readObject();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        if(input_data.send_to_id == 2)//请求添加好友
+        {
+            if(input_data.my_id == 2)//未搜索到好友的返回信息
+            {
+                Main.main_user.add_confirmed_card(new Friend_confirm_card(0, input_data.searched_user, 1));
+            }
+            else//给好友的信息
+            {
+                Main.main_user.add_confirmed_card(new Friend_confirm_card(input_data.my_id, input_data.searched_user, 0));
+            }
+        }
+    }
+}

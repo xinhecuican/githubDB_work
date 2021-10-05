@@ -1,0 +1,43 @@
+﻿package Server;
+
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
+
+/**
+ * @author: 李子麟
+ * @date: 2021/3/19 17:09
+ **/
+public class Server extends Thread
+{
+    public static String host = "192.168.137.1";
+    public static int[] port = new int[]{10087, 10088, 10089};
+    private int mode;
+
+    /**
+     *
+     * @param mode: mode = 0为登录信息，mode为1是单发消息，mode为2是群发消息
+     */
+    public Server(int mode)
+    {
+        this.mode = mode;
+    }
+
+    public void run()
+    {
+        try
+        {
+            ServerSocket socket = new ServerSocket(port[mode]);
+            while(true)
+            {
+                Socket rec_socket = socket.accept();
+                new Server_handle_thread(rec_socket, mode).start();
+            }
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+}

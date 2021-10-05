@@ -1,11 +1,13 @@
 import requests
+from retrying import retry
+import time
 import json
 import csv
 import os
 
 import urllib3.exceptions
 
-
+@retry(wait_fixed=2000)
 def getHTML(url):
     headers = {
         'User-Agent': 'Mozilla/5.0',
@@ -17,19 +19,10 @@ def getHTML(url):
     if 'api' in url:
         r = requests.get(url, timeout=30, headers=headers)
     else:
-        try:
-            r = requests.get(url, timeout=30)
-        except (requests.exceptions.ConnectionError, urllib3.exceptions.MaxRetryError, urllib3.exceptions.NewConnectionError, TimeoutError):
-            print('get_HTML出现问题，睡眠 2 秒')
-            time.sleep(2)
-            r = requests.get(url, timeout=30)
-    try:
-        if r.status_code == 200:
-            r.encoding = r.apparent_encoding
-            return r.text
-    except:
-        print('conn failed')
-        return None
+        r = requests.get(url, timeout=30)
+    return r.text
+
+
 
 def get_user_id(user_name):
     url = 'https://api.github.com/users/' + user_name

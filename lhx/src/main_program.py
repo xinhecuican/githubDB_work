@@ -1,6 +1,7 @@
 import threading
 import json
 import time
+import math
 from version2 import get_user_info, get_issue, get_branches
 from get_activity import get_activity
 from get_pull_requests import get_open_pulls
@@ -10,7 +11,9 @@ from common import getHTML
 # from common import get_user_id
 
 def get_all(user_name):
-    get_user_info(user_name)
+    nick_login = {}
+    get_user_info(user_name, nick_login)
+    print('[nick_login]: ', nick_login)
     # 包括 user_info followers description repository repository_info tags tag_files
     get_activity(user_name)
     # 包括 activity
@@ -21,7 +24,7 @@ def get_all(user_name):
         get_open_pulls(user_name, a_repos[i][0], a_repos[i][1])
         # 包括 pull_request pull_request_info pull_request_action
         try:
-            get_branches(user_name, a_repos[i][0], a_repos[i][1], a_repos[i][2])
+            get_branches(user_name, a_repos[i][0], a_repos[i][1], a_repos[i][2], nick_login)
         except UnboundLocalError as e:
             print('仓库里没东西呀')
         # 包括 branches commits commit_file_info commit_files commit_comment
@@ -33,18 +36,29 @@ def get_user_all_repos(user_name):
     html = getHTML(url)
     js = json.loads(html)
     for i in range(len(js)):
-        res_repo.append([js[i]['name'], js[i]['id'], js[i]['default_branch']])
+        if not js[i]['fork']:
+            res_repo.append([js[i]['name'], js[i]['id'], js[i]['default_branch']])  # 暂时不爬fork的，防止数据量太夸张跑一半挂了
+        else:
+            print('仓库', js[i]['name'], '是fork别人的')
     # print(len(res_repo))
+    print(res_repo)
     return res_repo
 
 
 if __name__ == '__main__':
-    stime = time.time()
-    user_name = 'NavaneethDhruvsoft'
-    get_all(user_name)
-    etime = time.time()
+    user_names = ['xinhecuican', 'romanofficial', 'umar-dev', 'subhadipp-cloud', 'navidR']
+    done = []
 
-    atime = etime - stime
-    minn = atime % 60
-    secc = atime / 60
-    print('用户', user_name, '共用时', minn, '分', secc, '秒')
+    for i in range(len(user_names)):
+        if user_names[i] not in done:
+            stime = time.time()
+            get_all(user_names[i])
+            etime = time.time()
+
+            atime = etime - stime
+            minn = math.trunc(atime / 60)
+            secc = math.trunc(atime % 60)
+            print('用户', user_names[i], '共用时', minn, '分', secc, '秒')
+            done.append(user_names[i])
+        else:
+            print('用户', user_names[i], '爬过了')

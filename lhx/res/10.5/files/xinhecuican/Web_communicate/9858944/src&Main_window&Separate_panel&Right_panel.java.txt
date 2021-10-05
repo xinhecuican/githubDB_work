@@ -1,0 +1,129 @@
+﻿package Main_window.Separate_panel;
+
+import Main_window.Data.Message_data;
+import Main_window.Data.message_rightdata;
+import Main_window.Window;
+
+import javax.swing.*;
+import javax.swing.border.Border;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.io.File;
+
+public class Right_panel extends JPanel
+{
+    JTextArea message_area;
+    private JScrollPane message_panel ;
+    private JToolBar message_toolbar ;
+    private JPanel enter_panel;
+    private JPanel message_inner_panel;
+
+
+    public Right_panel()
+    {
+        message_panel = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        message_toolbar = new JToolBar();
+        enter_panel = new JPanel();
+        message_area = new JTextArea(20, 20);
+        message_area.setLineWrap(true);
+
+        GridBagLayout layout = new GridBagLayout();
+        GridBagConstraints constraints = new GridBagConstraints();
+        add(message_panel);
+        add(message_toolbar);
+        add(enter_panel);
+
+        constraints.gridwidth = 0;
+        constraints.gridheight = 10;
+        constraints.weightx = 1;
+        constraints.weighty = 1;
+        constraints.fill = GridBagConstraints.BOTH;
+        layout.setConstraints(message_panel, constraints);
+        constraints.gridheight = 1;
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.weighty = 0;
+        layout.setConstraints(message_toolbar, constraints);
+        constraints.gridheight = 4;
+
+        layout.setConstraints(enter_panel, constraints);
+        setLayout(layout);
+
+        enter_panel.setPreferredSize(new Dimension(600, 200));
+        //message_panel.setPreferredSize(new Dimension(600, 400));
+        //setPreferredSize(new Dimension(600, 800));
+
+
+
+        set_message_panel();
+        set_message_toolbar();
+        set_enter_panel();
+        setEnabled(true);
+        setVisible(true);
+    }
+
+    public void add_piece_message(message_rightdata data)
+    {
+        message_area.append(data.time + "\n" + data.message);
+    }
+
+    private void set_enter_panel()
+    {
+        GridBagLayout layout = new GridBagLayout();
+        enter_panel.setLayout(layout);
+        TextArea textArea = new TextArea("", 10, 20, TextArea.SCROLLBARS_HORIZONTAL_ONLY);
+        GridBagConstraints constraints = new GridBagConstraints();
+        constraints.fill = GridBagConstraints.BOTH;
+        constraints.weightx = 1;
+        constraints.weighty = 1;
+        enter_panel.add(textArea, constraints);
+    }
+
+    private void set_message_panel()
+    {
+        message_panel.setViewportView(message_area);
+    }
+
+    private void set_message_toolbar()
+    {
+        BorderLayout layout = new BorderLayout();
+        message_toolbar.setLayout(layout);
+        JButton button_file_choose = new JButton("打开");
+        button_file_choose.setToolTipText("发送文件");
+
+        message_toolbar.add(button_file_choose, BorderLayout.WEST);
+        message_toolbar.addSeparator();
+        message_toolbar.setFloatable(false);
+        button_file_choose.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent)
+            {
+                JFileChooser file_chooser = new JFileChooser();
+                file_chooser.setDialogTitle("打开");
+                int mode;
+                if((mode = file_chooser.showSaveDialog(button_file_choose)) == JFileChooser.APPROVE_OPTION)
+                {
+                    File files = file_chooser.getSelectedFile();
+                }
+                else if(mode == JFileChooser.ERROR_OPTION)
+                {
+                    JOptionPane.showMessageDialog(file_chooser, "打开文件失败", "错误", JOptionPane.ERROR_MESSAGE, null);
+                }
+
+            }
+        });
+        JButton button_send_message = new JButton("发送");
+        message_toolbar.add(button_send_message, BorderLayout.EAST);
+        button_send_message.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent)
+            {
+
+            }
+        });
+    }
+}

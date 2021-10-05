@@ -1,0 +1,9 @@
+﻿<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="web_communicate:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/web_communicate_jar</output-path>
+    <root id="archive" name="web_communicate.jar">
+      <element id="module-output" name="web_communicate" />
+      <element id="directory" name="lib" />
+    </root>
+  </artifact>
+</component>

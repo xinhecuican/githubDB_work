@@ -1,0 +1,2 @@
+﻿server.port= 8085
+server.compression.enabled=true

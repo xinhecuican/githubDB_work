@@ -16,6 +16,7 @@ from get_commit import get_commit
 # q = queue.Queue(maxsize=0)
 
 
+
 def getHTML(url):
     headers = {
         'User-Agent': 'Mozilla/5.0',
@@ -28,12 +29,7 @@ def getHTML(url):
         r = requests.get(url, timeout=30, headers=headers)
     else:
         r = requests.get(url, timeout=30)
-    try:
-        if r.status_code == 200:
-            return r.text
-    except:
-        print('conn failed')
-        return None
+    return r.text
 
 
 def get_label_comment(url):
@@ -64,12 +60,14 @@ def get_label_comment(url):
 
 # https://github.com/xinhecuican/easy-capture/tree/master/Helper/Pool
 # https://github.com/xinhecuican/easy-capture/tree/master/Helper/Helper/Pool
-a = []
-get_commit('xinhecuican', 'easy-capture', 'master', a)
-get_commit('xinhecuican', 'easy-capture', 'add-license-1', a)
-get_commit('xinhecuican', 'easy-capture', 'main', a)
-# url = 'https://github.com/xinhecuican/githubDB_work/commits?author=xinhecuican&since=2021-09-30&until=2021-10-03'
-# html = getHTML(url)
-# soup = BeautifulSoup(html, 'html.parser')
+# a = []
+# get_commit('xinhecuican', 'easy-capture', 'master', a)
+# get_commit('xinhecuican', 'easy-capture', 'add-license-1', a)
+# get_commit('xinhecuican', 'easy-capture', 'main', a)
+url = 'https://github.com/xinhecuican/easy-capture/blob/master/LICENSE'
 
-# print(html)
+html = getHTML(url)
+soup = BeautifulSoup(html, 'html.parser')
+# a = soup.find('a', class_='text-small text-mono Link--secondary')
+# print(a.text)
+print(html)

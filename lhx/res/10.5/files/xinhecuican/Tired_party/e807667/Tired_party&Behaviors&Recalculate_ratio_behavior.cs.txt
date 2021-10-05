@@ -1,0 +1,98 @@
+﻿﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Text;
+using System.Threading.Tasks;
+using TaleWorlds.CampaignSystem;
+using TaleWorlds.Core;
+using TaleWorlds.Library;
+using Tired_party.Helper;
+
+namespace Tired_party.Behaviors
+{
+    class Recalculate_ratio_behavior : CampaignBehaviorBase
+    {
+        public override void RegisterEvents()
+        {
+            CampaignEvents.OnPartySizeChangedEvent.AddNonSerializedListener(this, new Action<PartyBase>(on_party_size_changed));
+            CampaignEvents.MobilePartyDestroyed.AddNonSerializedListener(this, new Action<MobileParty, PartyBase>(on_mobile_party_destroyed));
+            CampaignEvents.WeeklyTickEvent.AddNonSerializedListener(this, new Action(weekly_tick));
+        }
+
+        public override void SyncData(IDataStore dataStore)
+        {
+        }
+
+        private void visibility_change(PartyBase party)
+        {
+            if(party != null && SubModule.Current != null && party.IsMobile)
+            {
+                MobileParty mobile = party.MobileParty;
+                if(mobile != null && Party_tired.Current.Party_tired_rate.ContainsKey(mobile))
+                {
+                    if(!mobile.IsVisible)
+                    {
+                        Party_tired.Current.Party_tired_rate.Remove(mobile);
+                    }
+                }
+            }
+        }
+
+        private void weekly_tick()
+        {
+            MBReadOnlyList<MobileParty> parties = Campaign.Current.MobileParties;
+            for(int i=0; i<parties.Count; i++)
+            {
+                if(parties[i] == null || parties[i].IsCaravan || parties[i].IsVillager)
+                {
+                    continue;
+                }
+                if(!Party_tired.Current.Party_tired_rate.ContainsKey(parties[i]))
+                {
+                    Party_tired.add_to_dict(parties[i]);
+                }
+                
+            }
+            var keys = new List<MobileParty>(Party_tired.Current.Party_tired_rate.Keys);
+            for(int i=0; i<keys.Count; i++)
+            {
+                if(!keys[i].IsActive)
+                {
+                    Party_tired.Current.Party_tired_rate.Remove(keys[i]);
+                }
+            }
+            InformationManager.DisplayMessage(new InformationMessage("weeklyTick", Colors.Yellow));
+        }
+
+        private void on_mobile_party_destroyed(MobileParty mobile, PartyBase destroyerparty)
+        {
+            if(mobile != null && Party_tired.Current.Party_tired_rate.ContainsKey(mobile))
+            {
+                Party_tired.Current.Party_tired_rate.Remove(mobile);
+            }
+        }
+
+        private void on_party_size_changed(PartyBase party)
+        {
+            try
+            {
+                if (party == null || SubModule.Current == null || !party.IsMobile)
+                {
+                    return;
+                }
+                if (party.MobileParty != null && Party_tired.Current.Party_tired_rate.ContainsKey(party.MobileParty))
+                {
+                    tired_party_data data = Party_tired.Current.Party_tired_rate[party.MobileParty];
+                    data.Reduce_rate = Calculate_party_tired.calculate_ratio(party.MobileParty);
+                    Party_tired.Current.Party_tired_rate[party.MobileParty] = data;
+                }
+            }
+            catch(Exception e)
+            {
+                MethodInfo methodInfo = MethodBase.GetCurrentMethod() as MethodInfo;
+                debug_helper.HandleException(e, methodInfo, "hourly event error");
+            }
+        }
+    }
+}

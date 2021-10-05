@@ -1,0 +1,14 @@
+﻿_*
+*.o
+*.d
+*.asm
+*.sym
+*.img
+vectors.S
+bootblock
+bootother
+bootother.out
+initcode
+initcode.out
+kernel
+mkfs

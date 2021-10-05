@@ -1,0 +1,152 @@
+﻿package Server;
+
+import Main_window.Data.Login_data;
+import Main_window.Data.Send_data;
+import Main_window.Tools;
+import Main_window.User_Server.User;
+
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
+import java.net.Socket;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * @author: 李子麟
+ * @date: 2021/3/20 7:27
+ **/
+public class Server_main
+{
+    private static List<User_message> all_users;
+
+    public static int Login(Login_data data)
+    {
+        if(data.is_regesiter)
+        {
+            int id = regesiter_new_user(data);
+            return id;
+        }
+        User_message user;
+        if((user = search_user(data.id)) != null && user.compare(get_password(data.password)))
+        {
+            user.is_online = true;
+            user.host = data.host;
+            user.port = data.port;
+            user.user_name = data.name;
+            return 0;
+        }
+        return -1;
+    }
+
+    private static int regesiter_new_user(Login_data data)
+    {
+
+        String s = get_password(data.password);
+        int id = all_users.size() + 1 + 10000;
+        synchronized(Server_main.class)
+        {
+            all_users.add(new User_message(id, data.name, s,true, data.host, data.port));
+        }
+        return id;
+    }
+
+    private static String get_password(String MD5)
+    {
+        char[] a = MD5.toCharArray();
+        for (int i = 0; i < a.length; i++)
+        {
+            a[i] = (char) (a[i] ^ 't');
+        }
+        String s = new String(a);
+        return s;
+    }
+
+    public static User_message search_user(int id)
+    {
+        int low = 0;
+        int high = all_users.size() - 1;
+        while(low <= high)
+        {
+            int mid = (low + high) / 2;
+            int compare_id = all_users.get(mid).get_id();
+            if(compare_id == id)
+            {
+                return all_users.get(mid);
+            }
+            else if(compare_id < id)
+            {
+                high = mid - 1;
+            }
+            else
+            {
+                low = mid + 1;
+            }
+        }
+        return null;
+    }
+
+    public static List<User_message> search_user(String name)
+    {
+        List<User_message> messages = new ArrayList<User_message>();
+        if(!Tools.isNumeric(name))
+        {
+            for (User_message message : all_users)
+            {
+                if(message.user_name.equals(name))
+                {
+                    messages.add(message);
+                }
+            }
+        }
+        else
+        {
+            for(User_message message : all_users)
+            {
+                if(message.user_name.equals(name) || message.get_id() == Integer.parseInt(name))
+                {
+                    messages.add(message);
+                }
+            }
+        }
+        return messages;
+    }
+
+    /**
+     * 如果没登录则记录信息，如果登录则发送
+     * @param id
+     * @param data
+     * @return
+     */
+    public static boolean add_message(int id, Send_data data)
+    {
+        User_message user;
+        if((user = search_user(id)) == null)
+        {
+            return false;
+        }
+        if(!user.is_online)
+        {
+            user.data.add(data);
+        }
+        else
+        {
+            try
+            {
+                Socket socket = new Socket(user.host, user.port);
+                OutputStream outputStream = socket.getOutputStream();
+                ObjectOutputStream out = new ObjectOutputStream(outputStream);
+                out.writeObject(data);
+                socket.close();
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+
+        }
+        return true;
+    }
+}

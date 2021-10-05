@@ -1,0 +1,36 @@
+﻿create schema test;
+CREATE TABLE test.members (
+    firstname VARCHAR(25) NOT NULL,
+    lastname VARCHAR(25) NOT NULL,
+    cnic VARCHAR(13) NOT NULL,
+    username VARCHAR(16) NOT NULL,
+    email VARCHAR(35),
+    joined DATE NOT NULL DEFAULT '1970-01-01',
+    district_id INT,
+    age INT,
+    salary INT,
+    bank_id INT
+)
+PARTITION BY RANGE( YEAR(joined) ) (
+    PARTITION p0 VALUES LESS THAN (1960),
+    PARTITION p1 VALUES LESS THAN (1970),
+    PARTITION p2 VALUES LESS THAN (1980),
+    PARTITION p3 VALUES LESS THAN (1990),
+    PARTITION p4 VALUES LESS THAN MAXVALUE
+);
+
+ALTER TABLE test.members  PARTITION BY LIST(district_id) (
+    PARTITION punjab VALUES IN (3,5,6,9,17),
+    PARTITION sindh VALUES IN (1,2,10,11,19,20),
+    PARTITION kpk VALUES IN (4,12,13,14,18),
+    PARTITION boluchistan VALUES IN (7,8,15,16)
+);
+ALTER TABLE test.members PARTITION BY RANGE COLUMNS(age,salary) (
+       PARTITION p0 VALUES LESS THAN (25,10000),
+       PARTITION p1 VALUES LESS THAN (30, 100000)
+);
+ALTER TABLE test.members PARTITION BY HASH( YEAR(joined))
+PARTITIONS 4;
+
+ALTER TABLE test.members PARTITION BY KEY(s1)
+PARTITIONS 10;

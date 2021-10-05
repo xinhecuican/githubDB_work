@@ -1,0 +1,25 @@
+﻿﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using TaleWorlds.CampaignSystem;
+using TaleWorlds.Library;
+
+namespace Tired_party.Mission_time
+{
+    class arrive_time_data
+    {
+        public Vec2 enter_direction;
+        public float arrive_time;
+        public MapEventParty party;
+        public int number;
+        public arrive_time_data(Vec2 enter_direction, float arrive_time, MapEventParty party)
+        {
+            this.enter_direction = enter_direction;
+            this.arrive_time = arrive_time;
+            this.party = party;
+            number = party.Party.NumberOfHealthyMembers;
+        }
+    }
+}

@@ -7,7 +7,7 @@ from get_tags import get_tags
 from get_commit import get_commit
 
 
-def get_user_info(user_name):
+def get_user_info(user_name, dic):
     url1 = 'https://api.github.com/users/' + user_name
     url2 = 'https://github.com/' + user_name
     html1 = getHTML(url1)
@@ -34,6 +34,7 @@ def get_user_info(user_name):
 
         # start user_description
         nick_name = js_res['name']
+        dic[nick_name] = user_name
         try:
             status = str(soup.find('div', class_='user-status-message-wrapper f6 color-text-primary no-wrap').find('div')).replace('<div>', '').replace('</div>', '')
         except:
@@ -116,11 +117,14 @@ def get_repo_info(user_name, user_id):
             contributors.append(con_js[i]['login'])
 
         licenses_url = 'https://github.com/' + user_name + '/' + name + '/blob/' + default_branch + '/LICENSE'
-        lic_url = getHTML(licenses_url)
-        try:
-            lic_bs = BeautifulSoup(lic_url, 'html.parser')
-            licenses_id = lic_bs.find('a', class_='https://github.com/tonybaloney/wily/blob/master/LICENSE').text
-        except:
+        lic_html = getHTML(licenses_url)
+        if lic_html is not None:
+            lic_bs = BeautifulSoup(lic_html, 'html.parser')
+            try:
+                licenses_id = lic_bs.find('a', class_='text-small text-mono Link--secondary').text
+            except:
+                licenses_id = ''
+        else:
             licenses_id = ''
 
         # NEW
@@ -224,10 +228,13 @@ def get_issue(user_name, name, repo_id):
             print('[label]: ', single_label)
 
 
-def get_branches(user_name, repo_name, repo_id, default_branch):
+def get_branches(user_name, repo_name, repo_id, default_branch, nick_login):
     url = 'https://github.com/' + user_name + '/' + repo_name + '/branches'
     html = getHTML(url)
-    soup = BeautifulSoup(html, 'html.parser')
+    try:
+        soup = BeautifulSoup(html, 'html.parser')
+    except:
+        print(html)
     all_b = soup.find_all('branch-filter-item') # 需要get('branch')
 
     have_had_commit = []
@@ -242,8 +249,10 @@ def get_branches(user_name, repo_name, repo_id, default_branch):
         save_sth(single_branch, 'branches', 0)
         print('[branch]: ', single_branch)
 
-
-        get_commit(user_name, repo_name, all_b[i].get('branch'), have_had_commit)
+        if '.github.io' not in repo_name:
+            get_commit(user_name, repo_name, all_b[i].get('branch'), have_had_commit, nick_login)
+        else:
+            print('我们不爬', repo_name, '了')
         # get_f(user_name, repo_name, all_b[i].get('branch'))
 
     get_tags(user_name, repo_name, repo_id, default_branch, last_commit)

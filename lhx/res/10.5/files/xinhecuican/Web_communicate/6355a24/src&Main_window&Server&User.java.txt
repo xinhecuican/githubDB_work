@@ -1,0 +1,73 @@
+﻿package Main_window.Server;
+
+import Main_window.Data.Message_data;
+import Main_window.Data.Send_data;
+import Main_window.Data.message_rightdata;
+import Main_window.Separate_panel.Right_piece_message;
+import javafx.animation.ScaleTransition;
+
+import java.io.*;
+import java.net.Socket;
+
+/**
+ * @author: 李子麟
+ * @date: 2021/3/18 9:24
+ **/
+public class User
+{
+    public static int send_port;
+    public static String send_host;
+    private String name;
+    private Socket client;
+    public User(String name)
+    {
+        this.name = name;
+        send_host = "127.0.0.1";
+        send_port = 5730;
+    }
+
+    public void send_message(Send_data message)
+    {
+        try
+        {
+
+            client = new Socket(message.send_host, message.send_port);
+            OutputStream outToServer = client.getOutputStream();
+            ObjectOutputStream out = new ObjectOutputStream(outToServer);
+            out.writeObject(message);
+            client.close();
+            //out.writeUTF("Hello from " + client.getLocalSocketAddress());
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    /*public void first_send(Send_data message)
+    {
+
+        new Thread(()->
+        {
+            try
+            {
+                client = new Socket(send_host, send_port);
+                OutputStream outToServer = client.getOutputStream();
+                ObjectOutputStream out = new ObjectOutputStream(outToServer);
+                out.writeObject(message);
+                client.s
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }).start();
+
+    }*/
+
+    public String get_name()
+    {
+        return name;
+    }
+    public void set_name(String name) {this.name = name; }
+}

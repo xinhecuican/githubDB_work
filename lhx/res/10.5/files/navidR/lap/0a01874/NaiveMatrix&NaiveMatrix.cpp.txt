@@ -1,0 +1,87 @@
+﻿
+
+/*
+n is number of row
+m is number of column
+[0 1 2 3 
+ 4 5 6 7
+ 8 9 a b
+ c d e f]
+ 
+ turns to :
+ vector of : [0, 1, 2, 4, 5, 6, 7, 8, 9, a, b, c, d, e, f];
+
+*/
+
+template <typename Element>
+NaiveMatrix<Element>::NaiveMatrix(const int _n, const int _m) : n(_n), m(_m), isDiagonallydominant(false)
+{
+    internal.resize(n * m);
+};
+
+
+template <typename Element>
+Element& NaiveMatrix<Element>::operator()(const int in, const int im)
+{
+    if(in >= n || im >= m)
+    {
+        throw 0;
+    }
+    return internal[index(in, im)];
+}
+
+template <typename Element>
+void NaiveMatrix<Element>::print()
+{
+    cout << "[";
+    for(int i = 0; i < n; ++i)
+    {
+        if (i != 0)
+            cout << " " ;
+        for(int j = 0; j < m; ++j)
+        {
+            cout << internal[index(i, j)] ;
+            if ((j + 1) != m)
+                cout << ", ";
+        }
+        if ((i + 1) != n)
+            cout << endl;
+    }
+    cout << "]" << endl;
+}
+
+template <typename Element>
+unsigned int NaiveMatrix<Element>::index(unsigned int i, unsigned int j) const
+{
+    return (i * this->m) + j;
+}
+
+template <typename Element>
+const int NaiveMatrix<Element>::get_row() const
+{
+    return this->n;
+}
+
+template <typename Element>
+const int NaiveMatrix<Element>::get_column() const
+{
+    return this->m;
+}
+
+template <typename Element>
+const bool NaiveMatrix<Element>::checkDiagonallydominant() const
+{
+    for(int i = 0; i < n; ++i)
+    {
+        Element sum = 0;
+        for(int j = 0; j < m; ++j)
+        {
+            if(j == i)
+                continue;
+            sum += abs(internal[index(i, j)]);
+        }
+        if(abs(internal[index(i, i)]) <= sum)
+            return false;
+    }
+    return true;
+}
