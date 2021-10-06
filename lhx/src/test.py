@@ -17,7 +17,7 @@ from get_commit import get_commit
 
 
 
-def getHTML(url):
+def getHTML(url, t):
     headers = {
         'User-Agent': 'Mozilla/5.0',
         'Authorization': 'token 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',
@@ -29,7 +29,10 @@ def getHTML(url):
         r = requests.get(url, timeout=30, headers=headers)
     else:
         r = requests.get(url, timeout=30)
-    return r.text
+    if t == 0:
+        return r.text
+    else:
+        return r.content
 
 
 def get_label_comment(url):
@@ -54,29 +57,38 @@ def get_label_comment(url):
             print('[label_comment]: ', single_label_comment)
 
 
-# get_f('xinhecuican', 'easy-capture', 'master')
-# get_f('xinhecuican', 'easy-capture', 'add-license-1')
-# get_f('xinhecuican', 'easy-capture', 'main')
+# a = 'eigen/.hgtags'
+# aa = '.gitnone/.asd.md'
+# aaa = 'asd/asd.md'
+# c = 'asd.md'
+# b = c.split('/')
+# print(b)
 
-# https://github.com/xinhecuican/easy-capture/tree/master/Helper/Pool
-# https://github.com/xinhecuican/easy-capture/tree/master/Helper/Helper/Pool
-# a = []
-# get_commit('xinhecuican', 'easy-capture', 'master', a)
-# get_commit('xinhecuican', 'easy-capture', 'add-license-1', a)
-# get_commit('xinhecuican', 'easy-capture', 'main', a)
-# url = 'https://github.com/xinhecuican/easy-capture/blob/master/LICENSE'
-#
-# html = getHTML(url)
-# soup = BeautifulSoup(html, 'html.parser')
-# a = soup.find('a', class_='text-small text-mono Link--secondary')
-# print(a.text)
-# print(html)
-# done = []
-# with open('D:\\21-22-1\\Database_Practice\\done.txt', 'r') as f:
-#     for line in f:
-#         done.append(line.replace('\n', ''))
-a = 'asdasd'
-with open('D:\\21-22-1\\Database_Practice\\done.txt', 'a+') as f:
-    f.write('\n' + a)
 
-# print(done)
+fname = 'asdasdasd/.ni/.hello'
+temp = fname.split('/')
+ends = temp[-1]
+outp = ''
+if ends.startswith('.'):  # gitnone/ [.asd.md]
+    if ends.count('.') >= 2:
+        for each in range(len(temp) - 1):
+            outp = outp + temp[each] + '&'
+        outp = outp + ends
+        print(outp)
+
+    else:
+        for each in range(len(temp) - 1):
+            outp = outp + temp[each] + '&'
+        outp = outp + ends + '.txt'
+        print(outp)
+else:
+    if ends.count('.') >= 1:
+        for each in range(len(temp) - 1):
+            outp = outp + temp[each] + '&'
+        outp = outp + ends
+        print(outp)
+    else:
+        for each in range(len(temp) - 1):
+            outp = outp + temp[each] + '&'
+        outp = outp + ends + '.txt'
+        print(outp)

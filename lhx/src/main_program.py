@@ -26,7 +26,7 @@ def get_all(user_name):
         try:
             get_branches(user_name, a_repos[i][0], a_repos[i][1], a_repos[i][2], nick_login)
         except UnboundLocalError as e:
-            print('仓库里没东西呀')
+            print('仓库', a_repos[i][0], '里没东西呀')
         # 包括 branches commits commit_file_info commit_files commit_comment
 
 
@@ -46,7 +46,7 @@ def get_user_all_repos(user_name):
 
 
 if __name__ == '__main__':
-    user_names = ['xinhecuican', 'romanofficial', 'umar-dev', 'subhadipp-cloud', 'navidR']
+    user_names = ['sydneyhen', 'ExpectozJJ', 'wangru25', 'ChenDdon', 'Jiahuic']
     done = []
 
     with open('D:\\21-22-1\\Database_Practice\\done.txt', 'r') as f:

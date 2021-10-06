@@ -1,0 +1,309 @@
+MSMS 2.6.1 started on ChenJiahuis-MacBook-Pro.local
+Copyright M.F. Sanner (1994)
+Compilation flags -O3 -DVERBOSE -DTIMING -DFUNCPROTO -force_cpusubtype_ALL  -arch ppc -arch i686
+Atom 9 ignored, radius = 0.000000
+Atom 10 ignored, radius = 0.000000
+Atom 11 ignored, radius = 0.000000
+Atom 12 ignored, radius = 0.000000
+Atom 13 ignored, radius = 0.000000
+Atom 14 ignored, radius = 0.000000
+Atom 15 ignored, radius = 0.000000
+Atom 16 ignored, radius = 0.000000
+Atom 17 ignored, radius = 0.000000
+Atom 18 ignored, radius = 0.000000
+Atom 19 ignored, radius = 0.000000
+Atom 20 ignored, radius = 0.000000
+Atom 21 ignored, radius = 0.000000
+Atom 28 ignored, radius = 0.000000
+Atom 29 ignored, radius = 0.000000
+Atom 30 ignored, radius = 0.000000
+Atom 31 ignored, radius = 0.000000
+Atom 38 ignored, radius = 0.000000
+Atom 39 ignored, radius = 0.000000
+Atom 40 ignored, radius = 0.000000
+Atom 41 ignored, radius = 0.000000
+Atom 49 ignored, radius = 0.000000
+Atom 50 ignored, radius = 0.000000
+Atom 51 ignored, radius = 0.000000
+Atom 52 ignored, radius = 0.000000
+Atom 53 ignored, radius = 0.000000
+Atom 54 ignored, radius = 0.000000
+Atom 56 ignored, radius = 0.000000
+Atom 57 ignored, radius = 0.000000
+Atom 65 ignored, radius = 0.000000
+Atom 66 ignored, radius = 0.000000
+Atom 67 ignored, radius = 0.000000
+Atom 76 ignored, radius = 0.000000
+Atom 77 ignored, radius = 0.000000
+Atom 78 ignored, radius = 0.000000
+Atom 79 ignored, radius = 0.000000
+Atom 80 ignored, radius = 0.000000
+Atom 81 ignored, radius = 0.000000
+Atom 83 ignored, radius = 0.000000
+Atom 84 ignored, radius = 0.000000
+Atom 94 ignored, radius = 0.000000
+Atom 95 ignored, radius = 0.000000
+Atom 96 ignored, radius = 0.000000
+Atom 103 ignored, radius = 0.000000
+Atom 105 ignored, radius = 0.000000
+Atom 106 ignored, radius = 0.000000
+Atom 114 ignored, radius = 0.000000
+Atom 115 ignored, radius = 0.000000
+Atom 116 ignored, radius = 0.000000
+Atom 127 ignored, radius = 0.000000
+Atom 128 ignored, radius = 0.000000
+Atom 129 ignored, radius = 0.000000
+Atom 131 ignored, radius = 0.000000
+Atom 132 ignored, radius = 0.000000
+Atom 145 ignored, radius = 0.000000
+Atom 151 ignored, radius = 0.000000
+Atom 152 ignored, radius = 0.000000
+Atom 160 ignored, radius = 0.000000
+Atom 161 ignored, radius = 0.000000
+Atom 162 ignored, radius = 0.000000
+Atom 163 ignored, radius = 0.000000
+Atom 164 ignored, radius = 0.000000
+Atom 165 ignored, radius = 0.000000
+Atom 166 ignored, radius = 0.000000
+Atom 176 ignored, radius = 0.000000
+Atom 177 ignored, radius = 0.000000
+Atom 178 ignored, radius = 0.000000
+Atom 179 ignored, radius = 0.000000
+Atom 180 ignored, radius = 0.000000
+Atom 183 ignored, radius = 0.000000
+Atom 184 ignored, radius = 0.000000
+Atom 186 ignored, radius = 0.000000
+Atom 187 ignored, radius = 0.000000
+Atom 195 ignored, radius = 0.000000
+Atom 196 ignored, radius = 0.000000
+Atom 197 ignored, radius = 0.000000
+Atom 198 ignored, radius = 0.000000
+Atom 199 ignored, radius = 0.000000
+Atom 200 ignored, radius = 0.000000
+Atom 201 ignored, radius = 0.000000
+Atom 208 ignored, radius = 0.000000
+Atom 209 ignored, radius = 0.000000
+Atom 210 ignored, radius = 0.000000
+Atom 211 ignored, radius = 0.000000
+Atom 218 ignored, radius = 0.000000
+Atom 220 ignored, radius = 0.000000
+Atom 221 ignored, radius = 0.000000
+Atom 229 ignored, radius = 0.000000
+Atom 230 ignored, radius = 0.000000
+Atom 231 ignored, radius = 0.000000
+Atom 233 ignored, radius = 0.000000
+Atom 234 ignored, radius = 0.000000
+Atom 244 ignored, radius = 0.000000
+Atom 245 ignored, radius = 0.000000
+Atom 246 ignored, radius = 0.000000
+Atom 247 ignored, radius = 0.000000
+Atom 248 ignored, radius = 0.000000
+Atom 249 ignored, radius = 0.000000
+Atom 251 ignored, radius = 0.000000
+Atom 252 ignored, radius = 0.000000
+Atom 262 ignored, radius = 0.000000
+Atom 263 ignored, radius = 0.000000
+Atom 264 ignored, radius = 0.000000
+Atom 266 ignored, radius = 0.000000
+Atom 267 ignored, radius = 0.000000
+Atom 280 ignored, radius = 0.000000
+Atom 286 ignored, radius = 0.000000
+Atom 287 ignored, radius = 0.000000
+Atom 299 ignored, radius = 0.000000
+Atom 300 ignored, radius = 0.000000
+Atom 301 ignored, radius = 0.000000
+Atom 305 ignored, radius = 0.000000
+Atom 306 ignored, radius = 0.000000
+Atom 309 ignored, radius = 0.000000
+Atom 310 ignored, radius = 0.000000
+Atom 318 ignored, radius = 0.000000
+Atom 319 ignored, radius = 0.000000
+Atom 320 ignored, radius = 0.000000
+Atom 321 ignored, radius = 0.000000
+Atom 322 ignored, radius = 0.000000
+Atom 323 ignored, radius = 0.000000
+Atom 324 ignored, radius = 0.000000
+Atom 333 ignored, radius = 0.000000
+Atom 334 ignored, radius = 0.000000
+Atom 335 ignored, radius = 0.000000
+Atom 337 ignored, radius = 0.000000
+Atom 338 ignored, radius = 0.000000
+Atom 339 ignored, radius = 0.000000
+Atom 340 ignored, radius = 0.000000
+Atom 341 ignored, radius = 0.000000
+Atom 342 ignored, radius = 0.000000
+Atom 343 ignored, radius = 0.000000
+Atom 350 ignored, radius = 0.000000
+Atom 352 ignored, radius = 0.000000
+Atom 353 ignored, radius = 0.000000
+Atom 359 ignored, radius = 0.000000
+Atom 360 ignored, radius = 0.000000
+Atom 368 ignored, radius = 0.000000
+Atom 369 ignored, radius = 0.000000
+Atom 370 ignored, radius = 0.000000
+Atom 381 ignored, radius = 0.000000
+Atom 382 ignored, radius = 0.000000
+Atom 383 ignored, radius = 0.000000
+Atom 390 ignored, radius = 0.000000
+Atom 392 ignored, radius = 0.000000
+Atom 393 ignored, radius = 0.000000
+Atom 407 ignored, radius = 0.000000
+Atom 408 ignored, radius = 0.000000
+Atom 409 ignored, radius = 0.000000
+Atom 410 ignored, radius = 0.000000
+Atom 411 ignored, radius = 0.000000
+Atom 414 ignored, radius = 0.000000
+Atom 415 ignored, radius = 0.000000
+Atom 417 ignored, radius = 0.000000
+Atom 418 ignored, radius = 0.000000
+Atom 426 ignored, radius = 0.000000
+Atom 427 ignored, radius = 0.000000
+Atom 428 ignored, radius = 0.000000
+Atom 430 ignored, radius = 0.000000
+Atom 431 ignored, radius = 0.000000
+Atom 445 ignored, radius = 0.000000
+Atom 451 ignored, radius = 0.000000
+Atom 452 ignored, radius = 0.000000
+Atom 458 ignored, radius = 0.000000
+Atom 459 ignored, radius = 0.000000
+Atom 466 ignored, radius = 0.000000
+Atom 468 ignored, radius = 0.000000
+Atom 469 ignored, radius = 0.000000
+Atom 483 ignored, radius = 0.000000
+Atom 484 ignored, radius = 0.000000
+Atom 485 ignored, radius = 0.000000
+Atom 486 ignored, radius = 0.000000
+Atom 487 ignored, radius = 0.000000
+Atom 490 ignored, radius = 0.000000
+Atom 491 ignored, radius = 0.000000
+Atom 493 ignored, radius = 0.000000
+Atom 494 ignored, radius = 0.000000
+Atom 501 ignored, radius = 0.000000
+Atom 503 ignored, radius = 0.000000
+Atom 504 ignored, radius = 0.000000
+Atom 513 ignored, radius = 0.000000
+Atom 517 ignored, radius = 0.000000
+Atom 518 ignored, radius = 0.000000
+Atom 531 ignored, radius = 0.000000
+Atom 537 ignored, radius = 0.000000
+Atom 538 ignored, radius = 0.000000
+Atom 545 ignored, radius = 0.000000
+Atom 547 ignored, radius = 0.000000
+Atom 548 ignored, radius = 0.000000
+Atom 555 ignored, radius = 0.000000
+Atom 557 ignored, radius = 0.000000
+Atom 558 ignored, radius = 0.000000
+Atom 569 ignored, radius = 0.000000
+Atom 570 ignored, radius = 0.000000
+Atom 571 ignored, radius = 0.000000
+Atom 572 ignored, radius = 0.000000
+Atom 580 ignored, radius = 0.000000
+Atom 581 ignored, radius = 0.000000
+Atom 582 ignored, radius = 0.000000
+Atom 583 ignored, radius = 0.000000
+Atom 584 ignored, radius = 0.000000
+Atom 585 ignored, radius = 0.000000
+Atom 587 ignored, radius = 0.000000
+Atom 588 ignored, radius = 0.000000
+Atom 596 ignored, radius = 0.000000
+Atom 597 ignored, radius = 0.000000
+Atom 598 ignored, radius = 0.000000
+Atom 599 ignored, radius = 0.000000
+Atom 600 ignored, radius = 0.000000
+Atom 601 ignored, radius = 0.000000
+Atom 603 ignored, radius = 0.000000
+Atom 604 ignored, radius = 0.000000
+Atom 614 ignored, radius = 0.000000
+Atom 615 ignored, radius = 0.000000
+Atom 616 ignored, radius = 0.000000
+Atom 618 ignored, radius = 0.000000
+Atom 619 ignored, radius = 0.000000
+Atom 627 ignored, radius = 0.000000
+Atom 628 ignored, radius = 0.000000
+Atom 629 ignored, radius = 0.000000
+Atom 637 ignored, radius = 0.000000
+Atom 639 ignored, radius = 0.000000
+Atom 640 ignored, radius = 0.000000
+Atom 650 ignored, radius = 0.000000
+Atom 651 ignored, radius = 0.000000
+Atom 659 ignored, radius = 0.000000
+Atom 660 ignored, radius = 0.000000
+Atom 661 ignored, radius = 0.000000
+Atom 663 ignored, radius = 0.000000
+Atom 664 ignored, radius = 0.000000
+Atom 674 ignored, radius = 0.000000
+Atom 675 ignored, radius = 0.000000
+Atom 676 ignored, radius = 0.000000
+Atom 678 ignored, radius = 0.000000
+Atom 679 ignored, radius = 0.000000
+Atom 680 ignored, radius = 0.000000
+Atom 681 ignored, radius = 0.000000
+Atom 682 ignored, radius = 0.000000
+Atom 683 ignored, radius = 0.000000
+Atom 684 ignored, radius = 0.000000
+Atom 692 ignored, radius = 0.000000
+Atom 693 ignored, radius = 0.000000
+Atom 694 ignored, radius = 0.000000
+Atom 696 ignored, radius = 0.000000
+Atom 697 ignored, radius = 0.000000
+Atom 707 ignored, radius = 0.000000
+Atom 708 ignored, radius = 0.000000
+Atom 709 ignored, radius = 0.000000
+Atom 711 ignored, radius = 0.000000
+Atom 712 ignored, radius = 0.000000
+Atom 713 ignored, radius = 0.000000
+Atom 714 ignored, radius = 0.000000
+Atom 715 ignored, radius = 0.000000
+Atom 716 ignored, radius = 0.000000
+Atom 717 ignored, radius = 0.000000
+Atom 725 ignored, radius = 0.000000
+Atom 726 ignored, radius = 0.000000
+Atom 727 ignored, radius = 0.000000
+Atom 736 ignored, radius = 0.000000
+Atom 737 ignored, radius = 0.000000
+Atom 738 ignored, radius = 0.000000
+Atom 758 ignored, radius = 0.000000
+Atom 764 ignored, radius = 0.000000
+Atom 765 ignored, radius = 0.000000
+Atom 771 ignored, radius = 0.000000
+Atom 772 ignored, radius = 0.000000
+Atom 782 ignored, radius = 0.000000
+Atom 783 ignored, radius = 0.000000
+Atom 784 ignored, radius = 0.000000
+Atom 785 ignored, radius = 0.000000
+Atom 786 ignored, radius = 0.000000
+Atom 789 ignored, radius = 0.000000
+Atom 790 ignored, radius = 0.000000
+Atom 792 ignored, radius = 0.000000
+Atom 793 ignored, radius = 0.000000
+Atom 801 ignored, radius = 0.000000
+Atom 803 ignored, radius = 0.000000
+Atom 804 ignored, radius = 0.000000
+INPUT  test_proteins/2ovo_all_mute.xyzr 619 spheres 0 collision only, radii  1.000 to  2.000
+PARAM  Probe_radius  1.400 density  1.000 hdensity  3.000
+REDUCED SURFACE ...
+    RS component 0 identified 534 532 533
+    0 free edge(s) found in component 0
+    RS component  #faces  #edges #free_edges  #vertices   genus
+         0         780     1170          0        365      13.5
+    Time Reduced Surface real: 0.01 user: 0.02 sys: 0.00
+ANALYTICAL SOLVENT EXCLUDED SURFACE...
+    Component   0
+        Time Surface real: 0.01 user: 0.00 sys: 0.00
+        Time Singularities real: 0.00 user: 0.00 sys: 0.00
+    SES comp.  #fac.  #edg. #s_edg. #vert. #s_vert. R_h C_h genus
+         0     2388   4818     54    2432       88   0   0    0
+ANALYTICAL SURFACE AREA :
+    Comp. probe_radius,   reent,    toric,   contact    SES       SAS
+      0       1.400     800.077  1317.241  1204.062  3321.380  4323.907
+TRIANGULATION...
+    Component 0
+    component#, vertices,  edges,  faces, genus, density
+        0           3983   11943    7962    0     1.199
+        Time Triangulation real: 0.02 user: 0.01 sys: 0.00
+NUMERICAL VOLUMES AND AREA
+    Comp. probe_radius SES_volume SES_area)
+       0      1.40     7064.208   3143.703
+    Total ses_volume:  7064.208
+MSMS terminated normally
+Total Time real: 0.10 user: 0.05 sys: 0.00

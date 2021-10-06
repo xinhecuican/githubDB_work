@@ -157,12 +157,17 @@ def get_commit(user_name, repo_name, branch_name, have_had_commit, nick_login):
             change_file_names.append(file_name)
 
             file_type = change_files[each]['filename'].rpartition('.')[2]
-            if file_type == 'jpg' or file_type == 'png' or file_type == 'svg' or file_type == 'zip' or file_type == 'pdf':
-                continue
+            # if file_type == 'jpg' or file_type == 'png' or file_type == 'svg' or file_type == 'zip' or file_type == 'pdf':
+            #     continue
 
             if file_type == '':
                 file_type = file_name  # 比如Makefile
-            file_id = change_files[each]['sha'][:7]
+            try:
+                file_id = change_files[each]['sha'][:7]
+            except:
+                print(change_files[each])
+                sleep(1)
+                file_id = 'wrong_because_crawl_too_much'
 
             act_map = {'added': '0', 'modified': '1', 'removed': '2', 'renamed': '3'}
             file_action = change_files[each]['status']
@@ -206,9 +211,9 @@ def get_commit(user_name, repo_name, branch_name, have_had_commit, nick_login):
 
             # NEW 10.2 added文件的爬取
             if file_action == 'added':
-                path = r'D:\\21-22-1\\Database_Practice2\\files\\' + user_name + r'\\' + repo_name + r'\\' + commit_sha[:7]
+                path = r'D:\\21-22-1\\Database_Practice2\\files\\' + user_name + r'\\' + repo_name + r'\\' + commit_sha[:7] + r'\\'
                 real_link = 'https://raw.githubusercontent.com/' + user_name + '/' + repo_name + '/' + commit_sha + '/' + file_path
-                r_html = getHTML(real_link)
+                r_html = getHTML(real_link, 2)
                 save_file(path, r_html, file_path)
             # NEW END
 

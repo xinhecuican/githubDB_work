@@ -1,0 +1,17 @@
+﻿263441588,"Implementation of the Paper ""Learning Continuous and Data-Driven Molecular Descriptors by Translating Equivalent Chemical Representations"" by Robin Winter, Floriane Montanari, Frank Noe and Djork-Arne Clevert.",,,[],"{'Python': '99.7', 'Shell': '0.3'}","['jrwnter', 'cthoyt']",0
+320322317,HERMES: A software package for simultaneous topological data analysis (persistent Betti numbers) and geometric data analysis (persistent eigenvalues). ,,,[],"{'Fortran': '11.8', 'CMake': '2.9', 'C': '1.7', 'Cuda': '1.2', 'Shell': '0.2', 'Other': '0.2'}",['wangru25'],0
+277563073,Website Design,,,[],{},['wangru25'],0
+387301560,"A beautiful, simple, clean, and responsive Jekyll theme for academics",,,[],"{'JavaScript': '94.4', 'HTML': '3.3', 'SCSS': '1.6', 'Other': '0.7'}","['alshedivat', 'samfearn', 'monkeywithacupcake', 'adunning', 'g-oikonomou', 'junghans', 'dag7dev', 'rogerthat94', 'ziruizhuang', 'AbstractGeek', 'huyen-nguyen', 'mvdoc', 'neerajgangwar', 'swabhs', 'jkmacc-LANL', 'afonsocraposo', 'DSoko2', 'ivanpuhachov', 'jasongfleischer', 'krrish94', 'LoryPack', 'mpmdean', 'kakodkar', 'pazz', 'sahirbhatnagar', 'seanpquinn', 'shpark', 'tdsimao', 'tresoldi', 'Ireneruru']",0
+310482226,,,,[],"{'Python': '97.7', 'Other': '2.3'}",['ChenDdon'],1
+322486588,,,,[],{},['ChenDdon'],0
+174296957,mechie learning practice,,,[],{'Python': '2.8'},['ChenDdon'],0
+233991664,Learning Reinforcement Learning algorithms one by one.,,,[],{'Python': '63.2'},['ChenDdon'],0
+394726366,Source code for all published work.,,,[],"{'Python': '97.6', 'Other': '2.4'}",['ChenDdon'],0
+62741330,APBS Rewrite,,,[],"{'Python': '9.9', 'C': '1.3', 'CMake': '0.3'}","['keith923', 'uberFoo', 'Jiahuic', 'erikjensen']",0
+402601711,"A beautiful, simple, clean, and responsive Jekyll theme for academics",,,[],"{'JavaScript': '92.9', 'HTML': '3.3', 'TeX': '1.8', 'SCSS': '1.7', 'Other': '0.3'}","['alshedivat', 'samfearn', 'monkeywithacupcake', 'adunning', 'g-oikonomou', 'Jiahuic', 'junghans', 'dag7dev', 'rogerthat94', 'ziruizhuang', 'AbstractGeek', 'huyen-nguyen', 'mvdoc', 'neerajgangwar', 'swabhs', 'jkmacc-LANL', 'afonsocraposo', 'DSoko2', 'ivanpuhachov', 'jasongfleischer', 'JulianStreyczek', 'krrish94', 'LoryPack', 'mpmdean', 'kakodkar', 'pazz', 'adib2149', 'rohandebsarkar', 'sahirbhatnagar', 'seanpquinn']",0
+95310835,,,,[],"{'Fortran': '97.2', 'Python': '2.3', 'Makefile': '0.5'}",['Jiahuic'],0
+94700189,,,,[],"{'Fortran': '98.6', 'Other': '1.4'}",['Jiahuic'],0
+60548647,,,,[],"{'C': '99.0', 'Makefile': '1.0'}",['Jiahuic'],0
+61310317,,,,[],"{'C': '99.2', 'Makefile': '0.8'}",['Jiahuic'],0
+84520000,Rewrite treecode c version in a faster and decent way,,,[],"{'C': '98.1', 'Makefile': '1.2', 'Shell': '0.7'}",['Jiahuic'],0
+61404061,,,,[],"{'C': '98.6', 'Other': '1.4'}",['Jiahuic'],0

@@ -1,15 +1,15 @@
 table_user_info = '''create table User_info{
-    user_id int primary key,
-    user_name varchar(100),
-    follower_num int default 0,
-    following_num int default 0,
-    star_num int default 0,
-    repository_num int default 0，
-    project_num int default 0,
-    package_num int default 0
+    user_id int primary key,                    done
+    user_name varchar(100),                     done
+    follower_num int default 0,                 done
+    following_num int default 0,                done
+    star_num int default 0,                     done
+    repository_num int default 0,               done
+    project_num int default 0,                  done
+    package_num int default 0                   ----
 };'''
 
-table_followers = '''create table Followers{
+table_followers = '''create table Followers{        done 重构    
     follower_id int primary key,
     following_id int,
     foreign key fk_follower(follower_id) references User_info(user_id)
@@ -22,13 +22,13 @@ table_followers = '''create table Followers{
 
 table_repository = '''
 create table Repository(
-    repository_id int primary key auto_increment,
-    owner_id int check(owner_id in (select user_id from User_info.user_id),
-    default_branch varchar(255),
-    contributor_num int,
-    watch_num int,
-    star_num int,
-    fork_num int,
+    repository_id int primary key auto_increment,                               done
+    owner_id int check(owner_id in (select user_id from User_info.user_id),     ----
+    default_branch varchar(255),                                                done
+    contributor_num int,                                                        done
+    watch_num int,                                                              ----
+    star_num int,                                                               done
+    fork_num int,                                                               done
 );'''
 
 # 需要在repository上建立索引
@@ -43,7 +43,7 @@ create table Contributors(
 # latest_commit是最近相关的提交，使用函数进行修改
 # parent_branch需要进行检查
 # file_structure_address是保存文件结构的文件地址，可通过下载整个代码后通过程序解析获得
-table_branches = '''
+table_branches = '''                # todo.......
 create table Branches(
     branch_id int primary key auto_increment,
     branch_name varchar(255),

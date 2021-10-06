@@ -1,0 +1,243 @@
+MSMS 2.6.1 started on mfc0151.hpc.smu.edu
+Copyright M.F. Sanner (1994)
+Compilation flags -O2 -DVERBOSE -DTIMING
+INPUT  test_proteins/1a63.xyzr 2065 spheres 0 collision only, radii  0.225 to  2.275
+PARAM  Probe_radius  1.400 density 20.000 hdensity  3.000
+REDUCED SURFACE ...
+    RS component 0 identified 367 366 360
+    0 free edge(s) found in component 0
+    RS component  #faces  #edges #free_edges  #vertices   genus
+         0        2262     3393          0        984      74.5
+    Time Reduced Surface real: 0.06 user: 0.06 sys: 0.00
+ANALYTICAL SOLVENT EXCLUDED SURFACE...
+    Component   0
+        Time Surface real: 0.00 user: 0.00 sys: 0.00
+        Time Singularities real: 0.00 user: 0.01 sys: 0.00
+    SES comp.  #fac.  #edg. #s_edg. #vert. #s_vert. R_h C_h genus
+         0     6904  13894    126    6992      206   0   0    0
+ANALYTICAL SURFACE AREA :
+    Comp. probe_radius,   reent,    toric,   contact    SES       SAS
+      0       1.400    1579.307  2816.573  2607.352  7003.231  8515.815
+TRIANGULATION...
+    Component 0
+WARNING: geodesic which intersects odd number of edges
+WARNING: geodesic which intersects odd number of edges
+    component#, vertices,  edges,  faces, genus, density
+        0         132502  397500  265000    0    18.920
+        Time Triangulation real: 0.83 user: 0.82 sys: 0.01
+NUMERICAL VOLUMES AND AREA
+    Comp. probe_radius SES_volume SES_area)
+       0      1.40    18125.201   6989.133
+    Total ses_volume: 18125.201
+MSMS terminated normally
+Total Time real: 1.56 user: 1.38 sys: 0.02
+msms -if test_proteins/1a63.xyzr -prob 1.4 -de 20 -of test_proteins/1a63 
+test_proteins/1a63.vert
+finish reading vertices file
+finish reading face file
+Number of surfaces = 265000
+Number of surface points = 132502
+total area = 6989.438916
+total MSMS post-processing time = 0.000000
+
+ <<< 1a63 den=20 nPnts=264928 >>>
+
+--- Theta=0.4 No.=200 ord=1
+Treecode time 44 sec 250 msec
+the relative err: 0.005993367569297
+
+Number points=264928
+Memory: Total                 2.22517 MB
+        Positions/Charges     14.152 MB
+        Tree                  1.21423 MB
+        System                1.01093 MB
+
+--- Theta=0.4 No.=200 ord=3
+Treecode time 51 sec 690 msec
+the relative err: 0.010682614787404
+
+Number points=264928
+Memory: Total                 2.92045 MB
+        Positions/Charges     14.152 MB
+        Tree                  1.90808 MB
+        System                1.01237 MB
+
+--- Theta=0.4 No.=200 ord=5
+Treecode time 75 sec 490 msec
+the relative err: 0.000018109261013
+
+Number points=264928
+Memory: Total                 4.48505 MB
+        Positions/Charges     14.152 MB
+        Tree                  3.46924 MB
+        System                1.01582 MB
+
+--- Theta=0.4 No.=200 ord=7
+Treecode time 118 sec 240 msec
+the relative err: 0.010677713772510
+
+Number points=264928
+Memory: Total                 7.26682 MB
+        Positions/Charges     14.152 MB
+        Tree                  6.24463 MB
+        System                1.02219 MB
+
+--- Theta=0.4 No.=200 ord=9
+Treecode time 189 sec 290 msec
+the relative err: 0.000000095992366
+
+Number points=264928
+Memory: Total                 11.6136 MB
+        Positions/Charges     14.152 MB
+        Tree                  10.5812 MB
+        System                1.03242 MB
+
+--- Theta=0.4 No.=400 ord=1
+Treecode time 75 sec 330 msec
+the relative err: 0.002857276597244
+
+Number points=264928
+Memory: Total                 1.46638 MB
+        Positions/Charges     14.152 MB
+        Tree                  0.455444 MB
+        System                1.01093 MB
+
+--- Theta=0.4 No.=400 ord=3
+Treecode time 81 sec 490 msec
+the relative err: 0.009015875093693
+
+Number points=264928
+Memory: Total                 1.72807 MB
+        Positions/Charges     14.152 MB
+        Tree                  0.715698 MB
+        System                1.01237 MB
+
+--- Theta=0.4 No.=400 ord=5
+Treecode time 101 sec 390 msec
+the relative err: 0.000016506283356
+
+Number points=264928
+Memory: Total                 2.31709 MB
+        Positions/Charges     14.152 MB
+        Tree                  1.30127 MB
+        System                1.01582 MB
+
+--- Theta=0.4 No.=400 ord=7
+Treecode time 137 sec 470 msec
+the relative err: 0.009012426726701
+
+Number points=264928
+Memory: Total                 3.36448 MB
+        Positions/Charges     14.152 MB
+        Tree                  2.34229 MB
+        System                1.02219 MB
+
+--- Theta=0.4 No.=400 ord=9
+Treecode time 197 sec 420 msec
+the relative err: 0.000000093850403
+
+Number points=264928
+Memory: Total                 5.00129 MB
+        Positions/Charges     14.152 MB
+        Tree                  3.96887 MB
+        System                1.03242 MB
+
+--- Theta=0.4 No.=600 ord=1
+Treecode time 100 sec 690 msec
+the relative err: 0.002549121909694
+
+Number points=264928
+Memory: Total                 1.41212 MB
+        Positions/Charges     14.152 MB
+        Tree                  0.401184 MB
+        System                1.01093 MB
+
+--- Theta=0.4 No.=600 ord=3
+Treecode time 106 sec 330 msec
+the relative err: 0.008452867713278
+
+Number points=264928
+Memory: Total                 1.6428 MB
+        Positions/Charges     14.152 MB
+        Tree                  0.630432 MB
+        System                1.01237 MB
+
+--- Theta=0.4 No.=600 ord=5
+Treecode time 125 sec 70 msec
+the relative err: 0.000015347224290
+
+Number points=264928
+Memory: Total                 2.16206 MB
+        Positions/Charges     14.152 MB
+        Tree                  1.14624 MB
+        System                1.01582 MB
+
+--- Theta=0.4 No.=600 ord=7
+Treecode time 159 sec 120 msec
+the relative err: 0.008449826987509
+
+Number points=264928
+Memory: Total                 3.08543 MB
+        Positions/Charges     14.152 MB
+        Tree                  2.06323 MB
+        System                1.02219 MB
+
+--- Theta=0.4 No.=600 ord=9
+Treecode time 215 sec 780 msec
+the relative err: 0.000000091375895
+
+Number points=264928
+Memory: Total                 4.52845 MB
+        Positions/Charges     14.152 MB
+        Tree                  3.49603 MB
+        System                1.03242 MB
+
+--- Theta=0.4 No.=800 ord=1
+Treecode time 128 sec 940 msec
+the relative err: 0.002109188387782
+
+Number points=264928
+Memory: Total                 1.35316 MB
+        Positions/Charges     14.152 MB
+        Tree                  0.342224 MB
+        System                1.01093 MB
+
+--- Theta=0.4 No.=800 ord=3
+Treecode time 134 sec 230 msec
+the relative err: 0.008182351331090
+
+Number points=264928
+Memory: Total                 1.55015 MB
+        Positions/Charges     14.152 MB
+        Tree                  0.537781 MB
+        System                1.01237 MB
+
+--- Theta=0.4 No.=800 ord=5
+Treecode time 151 sec 690 msec
+the relative err: 0.000013963278095
+
+Number points=264928
+Memory: Total                 1.9936 MB
+        Positions/Charges     14.152 MB
+        Tree                  0.977783 MB
+        System                1.01582 MB
+
+--- Theta=0.4 No.=800 ord=7
+Treecode time 183 sec 720 msec
+the relative err: 0.008180029011037
+
+Number points=264928
+Memory: Total                 2.7822 MB
+        Positions/Charges     14.152 MB
+        Tree                  1.76001 MB
+        System                1.02219 MB
+
+--- Theta=0.4 No.=800 ord=9
+Treecode time 236 sec 960 msec
+the relative err: 0.000000090062847
+
+Number points=264928
+Memory: Total                 4.01466 MB
+        Positions/Charges     14.152 MB
+        Tree                  2.98224 MB
+        System                1.03242 MB
