@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>水平垂直居中的n种方法</title>
+    <link type="text/css" rel="stylesheet" href="../box/assets/taolaui/taolaui.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        html,
+        body {
+            height: 100%;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: rgb(243, 243, 243);
+        }
+
+        #app {
+            width: 100%;
+            height: 100%;
+            box-sizing: border-box;
+        }
+
+        .box {
+            width: 400px;
+            height: 400px;
+            background-color: #ff9595;
+            border: 10px solid #342b38;
+            box-sizing: border-box;
+        }
+
+        .box-position {
+            position: relative;
+        }
+
+        .box-old {
+            display: -webkit-box;
+            -webkit-box-pack: center;
+            -webkit-box-align: center;
+        }
+
+        .box-font{
+            line-height: 400px;
+            text-align: center;
+        }
+
+        .box-son {
+            width: 200px;
+            height: 200px;
+            background-color: #80bdab;
+            background-image: url('../box/assets/images/ataola128.png');
+            background-repeat: no-repeat;
+            background-position: 50% 50%;
+        }
+
+        .box-example1 {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            margin: auto;
+        }
+
+        .box-example2 {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin-left: -100px;
+            margin-top: -100px;
+        }
+
+        .box-example3 {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+ 
+
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <div class="container-fluid">
+            <div class="flex flex-center padding">
+                <div class="section padding">
+                    <h2>考点</h2>
+                    <p>position</p>
+                    <p>display: flex | -webkit-box</p>
+                    <p>文字居中</p>
+                    <p>背景图片垂直居中</p>
+                </div>
+            </div>
+            <div class="flex flex-center padding">
+                <div class="section padding flex flex-center">
+                    <div class="box box-position">
+                        <div class="box-son box-example1"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="flex flex-center padding">
+                <div class="section padding flex flex-center">
+                    <div class="box box-position">
+                        <div class="box-son box-example2"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="flex flex-center padding">
+                <div class="section padding flex flex-center">
+                    <div class="box box-position">
+                        <div class="box-son box-example3"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="flex flex-center padding">
+                <div class="section padding flex flex-center">
+                    <div class="box flex flex-center flex-middle">
+                        <div class="box-son"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex flex-center padding">
+                <div class="section padding flex flex-center">
+                    <div class="box box-old">
+                        <div class="box-son"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex flex-center padding">
+                <div class="section padding flex flex-center">
+                    <div class="box box-font">
+                        hello world
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

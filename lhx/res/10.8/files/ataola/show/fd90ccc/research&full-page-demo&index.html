@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>full page demo</title>
+  <link rel="stylesheet" href="../../libs/fullpage/fullpage.min.css">
+  <style>
+    .section {
+      text-align: center;
+      font-size: 3em;
+      color: #fff;
+    }
+
+    .s1 {
+      background-color: #FF5F45;
+    }
+
+    .s2 {
+      background-color: #0798EC;
+    }
+
+    .s3 {
+      background-color: #FC6C7C;
+    }
+
+    .s4 {
+      background-color: #FEC401;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="fullpage">
+    <div class="section s1">苦茶</div>
+    <div class="section s2">
+      <div class="slide">逝水</div>
+      <div class="slide">禅香</div>
+      <div class="slide">赤夜</div>
+    </div>
+    <div class="section s3">新月</div>
+    <div class="section s4">繁星</div>
+  </div>
+</body>
+<script src="../../libs/fullpage/fullpage.min.js"></script>
+<script>
+new fullpage('#fullpage', {
+  navigation: true,
+  responsiveWidth: 700,
+  anchor: ['home', 'about-us', 'contcat'],
+  parallax: true,
+  onLeave: function(origin, destination, direction) {
+    console.log('Leaving Section: ', origin.index);
+  }
+})
+</script>
+
+</html>

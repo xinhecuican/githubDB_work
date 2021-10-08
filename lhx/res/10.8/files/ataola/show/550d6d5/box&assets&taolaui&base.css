@@ -1,0 +1,40 @@
+/*
+ * @Author: ataola 
+ * @Date: 2020-04-19 12:29:26 
+ * @Last Modified by: ataola
+ * @Last Modified time: 2020-04-19 13:54:04
+ */
+
+
+
+.img-auto {
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.overflow-hide {
+    overflow: hidden;
+}
+
+.circle {
+    border-radius: 50%;
+}
+
+.round {
+    border-radius: 5px;
+}
+
+.thumbnail {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.shadow-gray {
+    box-shadow: 0 0 10px 0 rgba(155, 155, 155, 0.5)
+}
+
+.shadow-black {
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5)
+}

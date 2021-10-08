@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>表单元素-多选框</title>
+</head>
+<body>
+  <div class="check-items">
+    <label for="">what's your favorite language?</label><br/><br/>
+    <input type="checkbox" name="language" id="">C++
+    <input type="checkbox" name="language" id="">JAVA
+    <input type="checkbox" name="language" id="">PHP
+    <input type="checkbox" name="language" id="">Javascript
+    <input type="checkbox" name="language" id="">ruby
+    <input type="checkbox" name="language" id="">golang
+    <input type="checkbox" name="language" id="">python
+    <input type="checkbox" name="language" id="">Typescript
+    <input type="checkbox" name="language" id="">C#<br/><br/>
+    <button onclick="selectAll()">全选</button>
+    <button onclick="selectReverse()">反选</button>
+    <button onclick="selectNone()">取消</button>
+  </div>
+</body>
+<script>
+
+  const languages =  document.querySelectorAll('input[name = language]');
+  function selectAll() {
+    for (const language of languages) {
+      language.checked = true;
+    }
+  }
+
+  function selectNone() {
+    for (const language of languages) {
+      language.checked = false;
+    }
+  }
+
+  function selectReverse() {
+    for (const language of languages) {
+      language.checked = !language.checked;
+    }
+  }
+</script>
+</html>

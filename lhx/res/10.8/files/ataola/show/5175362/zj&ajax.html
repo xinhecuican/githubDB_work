@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>手写Ajax</title>
+</head>
+
+<body>
+    <div id="show"></div>
+</body>
+<script>
+    // 创建xhr对象
+    function createXhr() {
+        let xhr = null;
+        if (window.ActiveXObject) {
+            xhr = new ActiveXObject('Microsoft.XMLHTTP');
+        } else {
+            xhr = new XMLHttpRequest();
+        }
+        return xhr;
+    }
+
+    //判断是否为对象
+    function isObject(obj) {
+        const type = typeof obj;
+        return type === 'function' || type === 'object' && !!obj;
+    }
+
+    //发送请求
+    function sendRequest(url, method, data = '', headers = {}, type = 'async') {
+        if (!url || !method) return;
+        const xhr = createXhr();
+        if (type === 'sync') {
+            xhr.open(method, url)
+        } else {
+            xhr.open(method, url, true);
+        }
+
+        if (isObject(headers) && headers.keys && headers.keys.length > 0) {
+            for (const header in headers) {
+                xhr.setRequestHeader(header, headers[header]);
+            }
+        }
+
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 0) {
+                console.log('readyState === 0, 请求未初始化');
+            } else if (xhr.readyState === 1) {
+                console.log('readyState === 1, 服务器连接已建立');
+            } else if (xhr.readyState === 2) {
+                console.log('readyState === 2, 请求已接收');
+            } else if (xhr.readyState === 3) {
+                console.log('readyState === 3, 请求处理中');
+            } else if (xhr.readyState === 4) {
+                console.log('readyState === 4, 请求已完成，且响应已就绪');
+                let show = document.getElementById('show');
+                if (xhr.status === 200) {
+                    show.innerText = xhr.responseText;
+                } else {
+                    show.innerText = '';
+                }
+            }
+        }
+
+        if (data) {
+            xhr.send(data);
+        } else {
+            xhr.send(null);
+        }
+
+    }
+
+    sendRequest('https://v1.hitokoto.cn/', 'GET');
+</script>
+
+</html>

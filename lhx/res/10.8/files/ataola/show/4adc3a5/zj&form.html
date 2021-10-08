@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>原生方法获取表单元素</title>
+</head>
+
+<body>
+    <form action="" onsubmit="return false">
+        username: <input type="text" name="uname" id="username" placeholder="please input username" /><br /><br />
+        password: <input type="password" name="passwd" id="password" placeholder="please input password" /><br /><br />
+        <input type="radio" name="hobby" value="running" />running
+        <input type="radio" name="hobby" value="playing">playing
+        <input type="radio" name="hobby" value="writing">writing<br /><br />
+        <input type="submit" id="btn" onclick="showSelect()" />
+    </form>
+</body>
+<script>
+    function showSelect() {
+        const username = document.getElementById('username');
+        const password = document.getElementById('password');
+        const hobby = document.getElementsByName('hobby');
+        let hobbyConfirm = '';
+        for (const h of hobby) {
+            if (h.checked) hobbyConfirm = h;
+        }
+        let res = '';
+        res = res + 'name: ' + username.name + ', value: ' + username.value + '\n';
+        res = res + 'name: ' + password.name + ', value: ' + password.value + '\n';
+        res = res + 'name: ' + hobbyConfirm.name + ', value: ' + hobbyConfirm.value;
+
+        alert(res);
+
+    }
+</script>
+
+</html>

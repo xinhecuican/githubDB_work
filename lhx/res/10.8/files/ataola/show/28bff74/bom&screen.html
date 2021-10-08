@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>screen</title>
+</head>
+<body>
+    
+</body>
+<script>
+    let str = '';
+    for (const key in screen) {
+        const type = typeof screen[key];
+        if (['string', 'number', 'boolean'].includes(type)) {
+            str = str + `${key}: ${screen[key]}\n\n`;
+        } else {
+            str = str + `${key}: ${type}\n\n`;
+        }
+    }
+    const p = document.createElement('p');
+    p.innerText = str;
+    document.body.append(p);
+</script>
+</html>

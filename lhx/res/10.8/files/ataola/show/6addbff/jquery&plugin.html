@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>jquery 插件</title>
+	<style>
+		#plugin {
+			width: 200px;
+			height: 200px;
+			line-height: 200px;
+			margin: 0 auto;
+			color: #fff;
+			font-size: 32px;
+			font-weight: bold;
+			background-color: salmon;
+			text-align: center;
+			border: 1px solid #ccc;
+			box-shadow: 0 1px 8px 1px #000;
+		}
+
+		button {
+			position: fixed;
+			top: 20px;
+			right: 20px;
+		}
+	</style>
+</head>
+<body>
+	<div id="plugin">
+		Hello World
+	</div>
+	<button>show style</button>
+</body>
+<script src="../libs/jquery/jquery-3.3.1-.min.js"></script>
+<script src="./jquery.plugin.js"></script>
+<script>
+$(document).ready(function () {
+	$('button').click(function() {
+		$('#plugin').printStyle();
+	})
+});
+</script>
+</html>

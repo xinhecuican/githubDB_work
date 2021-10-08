@@ -46,7 +46,7 @@ def get_user_all_repos(user_name):
 
 
 if __name__ == '__main__':
-    user_names = ['sydneyhen', 'ExpectozJJ', 'wangru25', 'ChenDdon', 'Jiahuic']
+    user_names = ['sydneyhen', 'ExpectozJJ', 'wangru25', 'ChenDdon', 'Jiahuic', 'dululu', 'L-Focus', 'nickzyang', 'ataola', 'yangshihao-arron', 'Bowinthecloud', 'weteghter', 'LGSKOKO']
     done = []
 
     with open('D:\\21-22-1\\Database_Practice\\done.txt', 'r') as f:

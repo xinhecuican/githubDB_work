@@ -1,0 +1,19 @@
+{
+  "name": "@ataola/zjt",
+  "version": "1.0.0",
+  "description": "zjt tools",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ataola/zjt.git"
+  },
+  "author": "ataola <zjt613@gmail.com> (https://github.com/ataola)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ataola/zjt/issues"
+  },
+  "homepage": "https://github.com/ataola/zjt#readme"
+}

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>禁止键盘一些按键</title>
+</head>
+<body>
+    Disable some keys on the keyboard
+</body>
+<script>
+document.onkeydown = function() {
+    let e = window.event || arguments[0];
+    // 当用户按下F12调控制台
+    if (e.keyCode === 123) {
+        window.location.href = 'http://baidu.physton.com/?q=%E4%BD%A0%E4%B8%8D%E4%BC%9A%E8%B0%83%E8%AF%95%E5%90%97'
+        return false;
+    }
+    //当用户按下CTRL+SHIFT+I调出控制台
+    if ((e.ctrlKey) && (e.shiftKey) && (e.keyCode === 73)) {
+        window.location.href='http://baidu.physton.com/?q=CTRL%2BSHIFT%2BI';
+        return false;
+    }
+
+    // 当用户按下CTRL + U 查看源码
+    if ((e.ctrlKey) && (e.keyCode === 85)) {
+        window.location.href = 'http://baidu.physton.com/?q=CTRL%2BU';
+        return false;
+    }
+
+    // 当用户按下CTRL + S保存源码时
+    if ((e.ctrlKey) && (e.keyCode === 83)) {
+        window.location.href = 'http://baidu.physton.com/?q=CTRL%2BS';
+        return false;
+    }
+
+    // 当用户按下CTRL + C复制时
+    if ((e.ctrlKey) && (e.keyCode === 67)) {
+        window.location.href = 'http://baidu.physton.com/?q=CTRL%2BC';
+        return false;
+    }
+
+    // 当用户按下CTRL + V粘贴时
+    if ((e.ctrlKey) && (e.keyCode === 86)) {
+        window.location.href = 'http://baidu.physton.com/?q=CTRL%2BV';
+        return false;
+    }
+
+     // 当用户按下CTRL + X剪切时
+     if ((e.ctrlKey) && (e.keyCode === 88)) {
+        window.location.href = 'http://baidu.physton.com/?q=CTRL%2BX';
+        return false;
+    }
+
+    // 当用户按了回车
+    if (e.keyCode === 13) {
+        alert('Enter is keyDown!');
+    }
+
+     // 当用户按了BackSpace
+     if (e.keyCode === 8) {
+        alert('BackSpace is keyDown!');
+    }
+
+     // 当用户按了F11
+     if (e.keyCode === 122) {
+        alert('FullScreen!');
+    }
+
+    //规则
+    //字母A-Z就是65-90
+    //数字0-9就是48-57
+    //功能键F1-F12就是112-123
+    //BackSpace	8
+    //Tab	9
+    //Enter	13
+    //Shift	16
+    //Control	17
+    //Alt	18
+    //Esc	27
+    //Delete	46
+}
+</script>
+</html>

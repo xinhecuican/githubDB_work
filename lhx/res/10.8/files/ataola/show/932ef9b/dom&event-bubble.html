@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>事件冒泡</title>
+  <style>
+    html,
+    body {
+      height: 100%;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: rgb(243, 243, 243);
+    }
+
+    #app {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #grandfather {
+      width: 400px;
+      height: 400px;
+      background-color: #aacfcf;
+    }
+
+    #father {
+      width: 300px;
+      height: 300px;
+      background-color: #d291bc;
+    }
+
+    #son {
+      width: 200px;
+      height: 200px;
+      background-color: #ffcbcb;
+    }
+
+    #father,
+    #son {
+      position: relative;
+      top: 42px;
+      left: 50px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <div id="grandfather">
+      <span>grandfather</span>
+      <div id="father">
+        <span>father</span>
+        <div id="son"><span>son</span></div>
+      </div>
+    </div>
+  </div>
+</body>
+<script>
+  function grandfather() {
+    alert('grandfather clicked!');
+  }
+
+  function father() {
+    alert('father clicked');
+  }
+
+  function son(e) {
+    alert('son clicked!');
+    e = e || window.event;
+    if (e.stopPropagation) {
+      e.stopPropagation();
+    } else {
+      e.cancelBubble = true;
+    }
+  }
+
+
+  const obj = {
+    grandfather,
+    father,
+    son
+  };
+  for (const val in obj) {
+    const elem = document.getElementById(val);
+    if (elem.addEventListener) {
+      elem.addEventListener('click', obj[val]);
+    } else {
+      elem.attachEvent('onclick', obj[val]);
+    }
+  }
+</script>
+
+</html>
