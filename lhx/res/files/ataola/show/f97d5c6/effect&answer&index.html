@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8" />
+	<title>河南省电信条例在线答题送流量</title>
+	<meta name="viewport"
+		content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+	<link rel="stylesheet" href="./assets/css/base.css">
+	<link rel="stylesheet" href="./assets/css/answer.css">
+	<style>
+		body {
+			margin: 0 auto;
+			min-width: 320px;
+			max-width: 1024px;
+			background: #6075e2;
+			position: relative;
+		}
+
+		@media screen and (min-width:1000px) {
+			body {
+				height: 2000px;
+			}
+		}
+
+		.imgcode {
+			width: 2.0rem;
+			height: .88rem;
+			line-height: .88rem;
+			background-size: 100% 100%;
+			padding-left: .2rem;
+		}
+
+		.indexcon p {
+			letter-spacing: .03rem;
+		}
+	</style>
+</head>
+
+<body>
+
+	<!-- wrap start -->
+	<div class="wrap indexbox">
+		<div class="flink">
+			<a href="rule.html">活动规则</a>
+			<a href="record.html">答题记录</a>
+			<a href="https://www.henanrd.gov.cn/2020/06-08/14310.html">条例原文</a>
+		</div>
+		<div class="indexcon">
+			<img src="./assets/img/20201114bchimg4.png" alt="" style="width: 70%;display: block;margin:0 auto">
+			<p class="fsize28 gfff text-center padd30">《条例》自2021年1月1日起施行。为使广大</p>
+			<p class="fsize28 gfff text-center padd30">电信用户了解法条，依法维权，我们通过</p>
+			<p class="fsize28 gfff text-center padd30">《条例》答题送流量活动，帮助广大电信用户</p>
+			<p class="fsize28 gfff text-center padd30">学习熟悉《条例》知识，保护自身合法权益。</p>
+		</div>
+		<div class="indexfoot">
+			<p class="fsize26 gfff mbottom10 text-center">活动主办单位：河南省通信管理局</p>
+			<a class="loginbtn" href="javascript:startAnswer()">开始答题</a>
+		</div>
+	</div>
+	<!-- wrap end -->
+	<div class="login">
+		<div class="mask"></div>
+		<a class="closebtn" href="javascript:void(0)"></a>
+		<div class="loginbox">
+			<div class="logintit"><img src="./assets/img/20201114bchimg16.png" alt="" style="width:2.9rem;height:1.4rem;">
+			</div>
+			<div class="loginform">
+				<div class="login-item">
+					<span class="fsize28 g999 display-b">请选择运营商</span>
+					<div class="clearfix mtop30">
+						<a class="yunbtn yunbtn-on" href="javascript:void(0)" a-type="yd">中国移动</a>
+						<a class="yunbtn" href="javascript:void(0)" a-type="lt">中国联通</a>
+						<a class="yunbtn" href="javascript:void(0)" a-type="dx">中国电信</a>
+					</div>
+				</div>
+				<div class="login-item mtop30">
+					<input type="text" placeholder="请输入手机号" id="phone">
+				</div>
+				<div class="login-item mtop30 display-f">
+					<input type="text" placeholder="请输入验证码" id="captcha">
+					<a href="javascript:void(0);" title="点击刷新" class="imgcode">
+						<img src="http://dt.haisc.org.cn/captcha/captchaImage?type=math" id="ycode"
+							style="width:100%;height:100%;" />
+					</a>
+				</div>
+			</div>
+			<a class="loginanswer" href="javascript:goAnswer()">登录答题</a>
+		</div>
+	</div>
+</body>
+<script type="text/javascript" src="./assets/js/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="./assets/js/layer/layer.min.js"></script>
+<script type="text/javascript">
+
+	$(function () {
+		/*var useragent = navigator.userAgent;
+	if (useragent.match(/MicroMessenger/i) != 'MicroMessenger') {
+		window.location.href = "500";//若不是微信浏览器，跳转到温馨error页面
+	}*/
+		$('#ycode').click(function () {
+			var url = "http://dt.haisc.org.cn/captcha/captchaImage?type=math&s=" + Math.random();
+			$("#ycode").attr("src", url);
+		});
+	});
+	// window.addEventListener("beforeunload",function (ev) {
+	// 	$.ajax({
+	// 		url: "answer/closeWeb",
+	// 		type: "POST",
+	// 		dataType: "JSON"
+	// 	});
+	// });
+	//登录状态
+	var loginStatus = false;
+
+	function isLogin() {
+		$.ajax({
+			url: "http://dt.haisc.org.cn/answer/isLogin",
+			type: "POST",
+			dataType: "JSON",
+			async: false,
+			success: function (data) {
+				console.log(data);
+				if (data.code === 200) {
+					activeTimeAuth();
+					loginStatus = false;
+					$(".login").fadeOut();
+				} else if (data.code === 210) {
+					layer.msg(data.msg);
+					$(".login").fadeOut();
+					loginStatus = true;
+					window.location.href = "answer/isLoading";
+				} else {
+					layer.msg(data.msg);
+					loginStatus = true;
+				}
+			},
+			error: function (XMLHttpRequest, textStatus, errorThrown) {
+				layer.msg("网络异常！");
+			}
+		});
+	}
+
+	//开始答题
+	function startAnswer() {
+		loginStatus = !loginStatus// isLogin();
+		if (loginStatus) {
+			//打开弹窗
+			$(".login").fadeIn();
+		} else {
+			// $.ajax({
+			// 	url: "/answer/check",
+			// 	type: "post",
+			// 	success: function (result) {
+			// 		result = eval(result);
+			// 		if (result.msg == 'yes') {
+			// 			// 保存开始时间
+			// 			if (!window.localStorage) {
+			// 				alert("浏览器支持localstorage");
+			// 			} else {
+			// 				var data = {
+			// 					startDate: new Date
+			// 				};
+			// 				var d = JSON.stringify(data);
+			// 				var storage = window.localStorage;
+			// 				storage.setItem("data", d);
+			// 				if (!!storage.answerResult) {
+			// 					storage.removeItem('answerResult');
+			// 				}
+			// 			}
+			// 			window.location.href = "answer/startAnswer?d=" + new Date().getTime() + "&v=" + Math.random()
+			// 		} else {
+			// 			layer.msg("答题次数已用完，无法再次答题");
+			// 		}
+			// 	}
+			// });
+			window.location.href = "problem.html";
+		}
+	}
+	//答题记录
+	function answerRecord() {
+		// isLogin();
+		if (loginStatus) {
+			//打开弹窗
+			$(".login").fadeIn();
+		} else {
+			window.location.href = "answer/record?d=" + new Date().getTime() + "&v=" + Math.random();
+		}
+	}
+
+	function goAnswer() {
+		console.log("go!!")
+		var phone = $("#phone").val();
+		var captcha = $("#captcha").val();
+		if (phone === "" || phone === undefined) {
+			layer.msg("请输入手机号码！");
+			return;
+		}
+		if (captcha === "" || captcha === undefined) {
+			layer.msg("请输入验证码！");
+			return;
+		}
+		if (!(/^1[3456789]\d{9}$/.test(phone))) {
+			layer.msg("请输入正确的手机号码！");
+			return;
+		}
+		var mobileType = $(".yunbtn-on").attr("a-type");
+		var data_ = { phone: phone, operationKey: mobileType, captcha: captcha };
+		loginAuth(data_);
+	}
+
+	function loginAuth(data_) {
+		console.log("login");
+		// $.ajax({
+		// 	url: "http://dt.haisc.org.cn/answer/login",
+		// 	type: "POST",
+		// 	dataType: "JSON",
+		// 	data: data_,
+		// 	success: function (data) {
+		// 		console.log(data);
+		// 		if (data.code === 200) {
+		// 			// activeTimeAuth();
+		// 			loginStatus = false;
+		// 			$(".login").fadeOut();
+		// 		} else {
+		// 			layer.msg(data.msg);
+		// 			loginStatus = true;
+		// 		}
+		// 	},
+		// 	error: function (XMLHttpRequest, textStatus, errorThrown) {
+		// 		layer.msg("网络异常！");
+		// 	}
+		// });
+		$(".login").fadeOut();
+	}
+
+	/**
+	 * 检测是否在活动期内
+	 */
+	function activeTimeAuth() {
+		$.ajax({
+			url: "answer/authActive",
+			type: "POST",
+			dataType: "JSON",
+			success: function (data) {
+				if (data.code === 200) {
+					var msg = JSON.parse(data.msg);
+					if (msg.code === "0") {
+						layer.msg(msg.message);
+						$(".loginbtn").attr("href", "javascript:void(0)");
+						$(".loginanswer").attr("href", "javascript:void(0)");
+					}
+					loginStatus = false;
+				} else {
+					loginStatus = true;
+				}
+			},
+			error: function (XMLHttpRequest, textStatus, errorThrown) {
+				layer.msg("网络异常！");
+			}
+		});
+	}
+
+	//打开弹窗
+	// $(".loginbtn").on("click",function(){
+	// 	$(".login").fadeIn();
+	// })
+	//关闭弹窗
+	$(".closebtn,.mask").click(function () {
+		$(".login").fadeOut();
+	})
+
+
+	//选择运营商
+	$(".yunbtn").click(function () {
+		$(".yunbtn").removeClass("yunbtn-on");
+		$(this).addClass("yunbtn-on");
+	})
+
+</script>
+
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>获取网页宽高</title>
+</head>
+
+<body>
+
+</body>
+<script>
+    function getPageInfo() {
+        // 网页可见区域
+        const clientWidth = document.body.clientWidth;
+        const clientHeight = document.body.clientHeight;
+        const clientLeft = document.body.clientLeft;
+        const clientTop = document.body.clientTop;
+
+        const offsetWidth = document.body.offsetWidth;
+        const offsetHeight = document.body.offsetHeight;
+        const offsetLeft = document.body.offsetLeft;
+        const offsetTop = document.body.offsetTop;
+
+        // 网页正文全文
+        const scrollWidth = document.body.scrollWidth;
+        const scrollHeight = document.body.scrollHeight;
+        const scrollLeft = document.body.scrollLeft;
+        const scrollTop = document.body.scrollTop;
+
+        //网页正文部分
+        const screenTop = window.screenTop;
+        const screenLeft = window.screenLeft;
+
+        //屏幕分辨率
+        const screenWidth = window.screen.width;
+        const screenHeight = window.screen.height;
+
+        //屏幕可用工作区
+        const availWidth = window.screen.availWidth;
+        const availHeight = window.screen.availHeight;
+
+        const page = {
+            clientWidth,
+            clientHeight,
+            clientLeft,
+            clientTop,
+            offsetWidth,
+            offsetHeight,
+            offsetLeft,
+            offsetTop,
+            scrollWidth,
+            scrollHeight,
+            scrollLeft,
+            scrollTop,
+            screenTop,
+            screenLeft,
+            screenWidth,
+            screenHeight,
+            availWidth,
+            availHeight
+        }
+        
+        let res = '';
+        for (const key in page) {
+            res = res + key + ': ' + page[key] + '\n';
+        }
+        const p = document.createElement('p');
+        p.innerText = res;
+        document.body.appendChild(p);
+    }
+
+    for (let i = 0; i < 10; i++) {
+        setTimeout(() => {
+            const start = document.createElement('p');
+            start.innerText = `====第${i + 1}次开始了====`;
+            document.body.appendChild(start);
+            getPageInfo();
+            const end = document.createElement('p');
+            end.innerText = `====第${i + 1}次结束了====`;
+            document.body.appendChild(end);
+        }, i * 1000);
+    }
+    
+</script>
+
+</html>

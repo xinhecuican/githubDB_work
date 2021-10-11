@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>传统页面布局 + css 旋转动画 + css轮播图</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      width: 960px;
+      margin: 10px auto;
+    }
+
+    .header, .main, .footer {
+      background-color: #f4f4f4;
+      margin: 10px;
+    }
+
+    .logo-box {
+      text-align: center;
+      padding: 5px;
+    }
+
+    .img-logo {
+      width: 60px;
+      height: 60px;
+      border: 2px solid #3f3f44;
+      border-radius: 50%;
+      animation: spin 2s linear infinite;
+    }
+
+    @keyframes spin {
+      0% {-webkit-transform: rotate(0deg);}
+      25% {-webkit-transform: rotate(90deg);}
+      50% {-webkit-transform: rotate(180deg);}
+      75% {-webkit-transform: rotate(270deg);}
+      100% {-webkit-transform: rotate(360deg);}
+    }
+
+    .nav ul {
+      text-align: center;
+    }
+
+    .nav ul li {
+      width: 100px;
+      margin: 10px;
+      list-style: none;
+      display: inline-block;
+    }
+
+    .nav ul li a {
+      text-decoration: none;
+      color: #000;
+      font-weight: bold;
+    }
+
+    .nav ul li a:hover {
+      border-bottom: 4px solid #f54291;
+    }
+
+    .slide-item {
+      height: 250px;
+    }
+
+    .slide-animation {
+      height: 250px;
+      animation: slide 10s 2s infinite;
+    }
+
+    .slide-item1 {
+      background-color: #ffc4a3;
+    }
+
+    .slide-item2 {
+      background-color: #ff9a76;
+    }
+    .slide-item3 {
+      background-color: #f96d80;
+    }
+
+    .slide-item4 {
+      background-color: #bb596b;
+    }
+
+    .slide-item5 {
+      background-color: #ff9595;
+    }
+
+    @keyframes slide {
+      0% {
+        background-color: red;
+      }
+
+      20% {
+        background-color: red;
+      }
+
+      21% {
+        background-color: yellow;
+      }
+
+      50% {
+        background-color: yellow;
+      }
+
+      51% {
+        background-color: green;
+      }
+
+      75% {
+        background-color: green;
+      }
+
+      76% {
+        background-color: pink;
+      }
+
+      100% {
+        background-color: pink;
+      }
+    }
+
+    .post-box {
+      width: 300px;
+      height: 150px;
+      float: left;
+    }
+
+    .post-box1 {
+      background-color: #63b7af;
+      margin: 10px 10px 0 0;
+    }
+
+    .post-box2 {
+      background-color: #abf0e9;
+      margin: 10px 10px;
+    }
+
+    .post-box3 {
+      background-color: #d4f3ef;
+      margin: 10px 0 0 10px;
+    }
+
+    .clearfix {
+      clear: left;
+    }
+
+    .footer {
+      height: 40px;
+      line-height: 40px;
+      font-weight: bold;
+      text-align: center;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="logo-box">
+      <img class="img-logo" src="./assets/images/ataola128.png" alt="">
+    </div>
+    <div class="nav">
+      <ul>
+        <li><a href="">Javascript</a></li>
+        <li><a href="">CSS</a></li>
+        <li><a href="">Vue.JS</a></li>
+        <li><a href="">Node.JS</a></li>
+        <li><a href="">小程序</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="main">
+    <div class="slide">
+      <div class="slide-animation"></div>
+      <!-- <div class="slide-item slide-item1"></div> -->
+      <!-- <div class="slide-item slide-item2"></div>
+      <div class="slide-item slide-item3"></div>
+      <div class="slide-item slide-item4"></div>
+      <div class="slide-item slide-item5"></div> -->
+    </div>
+    <div class="post">
+      <div class="post-box post-box1"></div>
+      <div class="post-box post-box2"></div>
+      <div class="post-box post-box3"></div>
+      <div class="clearfix"></div>
+    </div>
+  </div>
+  <div class="footer">Copyright © 2020 丰臣正一 Powered by github page</div>
+</body>
+</html>

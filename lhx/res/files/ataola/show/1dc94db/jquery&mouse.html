@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>鼠标操作</title>
+    <style>
+        #box {
+            position: relative;
+        }
+    </style>
+    <script src="../libs/jquery/jquery-2.0.3-min .js"></script>
+</head>
+
+<body>
+    <div id="box"><a href="" class="tip">鼠标靠近提示离开消失</a></div>
+</body>
+<script>
+    $('.tip').mouseover((e) => {
+        console.log('event: ', e);
+        const showtip = "<div id='showtip'>Hello World</div>";
+        $('#box').append(showtip);
+        $('#showtip').css({
+                "width": "100px",
+                "height": "100px",
+                "line-height": "100px",
+                "text-align": "center",
+                "border": "1px solid red",
+                "position": "absolute",
+                "top": "20px",
+                "left": "20px",
+            })
+            .show('fast');
+    }).mouseout(() => {
+        $('#showtip').remove();
+    });
+
+    //https://api.jquery.com/mouseover/
+    //https://developer.mozilla.org/zh-CN/docs/Web/API/MouseEvent
+</script>
+
+</html>

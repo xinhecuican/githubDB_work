@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>jquery.exportword</title>
+	<link rel="stylesheet" href="../libs/font-awesome-4.7.0/css/font-awesome.min.css">
+	<style>
+		#page-content {
+			width: 1120px;
+			height: auto;
+			margin: 0 auto;
+		}
+		.word-export {
+			background-color: #4CAF50;
+			border: none;
+			color: white;
+			padding: 15px 32px;
+			text-align: center;
+			text-decoration: none;
+			display: inline-block;
+			font-size: 16px;
+			outline: none;
+			cursor: pointer;
+			position: fixed;
+			top: 20px;
+			right: 30px;
+		}
+	</style>
+</head>
+
+<body>
+	<button class="word-export" href="#"><i class="fa fa-file-word-o" aria-hidden="true"></i>导出word</button>
+	<div id="page-content">
+		<table style="width: 620px; margin: 0 auto; border: 1px solid #000; border-collapse: collapse; text-align: center; height: 60px;">
+			<thead>
+				<tr>
+					<th rowspan="2" style="border: 1px solid #000; border-collapse: collapse; text-align: center; height: 60px;">
+						<div class="type-area-box">
+							<div class="type">
+								类别
+							</div>
+							<div class="area">
+								辖区
+							</div>
+						</div>
+					</th>
+					<th colspan="4" style="border: 1px solid #000; border-collapse: collapse; text-align: center; height: 60px;">
+						刑事类
+					</th>
+					<th colspan="5" style="border: 1px solid #000; border-collapse: collapse; text-align: center; height: 60px;">
+						治安类
+					</th>
+					<th rowspan="2" style="border: 1px solid #000; border-collapse: collapse; text-align: center; height: 60px;">
+						合计
+					</th>
+				</tr>
+				<tr>
+					<th style="border: 1px solid #000; border-collapse: collapse; text-align: center; height: 60px;">
+						盗窃
+					</th>
+					<th style="border: 1px solid #000; border-collapse: collapse; text-align: center; height: 60px;">
+						两抢
+					</th>
+					<th style="border: 1px solid #000; border-collapse: collapse; text-align: center; height: 60px;">
+						诈骗
+					</th>
+					<th style=" border: 1px solid #000; border-collapse: collapse; text-align: center; height: 60px;">
+						其他
+					</th>
+					<th style=" border: 1px solid #000; border-collapse: collapse; text-align: center; height: 60px;">
+						盗窃
+					</th>
+					<th style=" border: 1px solid #000; border-collapse: collapse; text-align: center; height: 60px;">
+						诈骗
+					</th>
+					<th style=" border: 1px solid #000; border-collapse: collapse; text-align: center; height: 60px;">
+						殴打他人
+					</th>
+					<th style=" border: 1px solid #000; border-collapse: collapse; text-align: center; height: 60px;">
+						纠纷
+					</th>
+					<th style=" border: 1px solid #000; border-collapse: collapse; text-align: center; height: 60px;">
+						其他
+					</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td style=" border: 1px solid #000; border-collapse: collapse; text-align: center; height: 60px;">
+						杨凌所
+					</td>
+					<td style=" border: 1px solid #000; border-collapse: collapse; text-align: center; height: 60px;">
+						22
+					</td>
+					<td style=" border: 1px solid #000; border-collapse: collapse; text-align: center; height: 60px;">
+						33
+					</td>
+					<td style=" border: 1px solid #000; border-collapse: collapse; text-align: center; height: 60px;">
+						44
+					</td>
+					<td style=" border: 1px solid #000; border-collapse: collapse; text-align: center; height: 60px;">
+						55
+					</td>
+					<td style=" border: 1px solid #000; border-collapse: collapse; text-align: center; height: 60px;">
+						66
+					</td>
+					<td style=" border: 1px solid #000; border-collapse: collapse; text-align: center; height: 60px;">
+						77
+					</td>
+					<td style=" border: 1px solid #000; border-collapse: collapse; text-align: center; height: 60px;">
+						88
+					</td>
+					<td style=" border: 1px solid #000; border-collapse: collapse; text-align: center; height: 60px;">
+						99
+					</td>
+					<td style=" border: 1px solid #000; border-collapse: collapse; text-align: center; height: 60px;">
+						10
+					</td>
+					<td style=" border: 1px solid #000; border-collapse: collapse; text-align: center; height: 60px;">
+						11
+					</td>
+				</tr>
+				<tr>
+					<td style=" border: 1px solid #000; border-collapse: collapse; text-align: center; height: 60px;">
+						李台所
+					</td>
+					<td style=" border: 1px solid #000; border-collapse: collapse; text-align: center; height: 60px;">
+						22
+					</td>
+					<td style=" border: 1px solid #000; border-collapse: collapse; text-align: center; height: 60px;">
+						33
+					</td>
+					<td style=" border: 1px solid #000; border-collapse: collapse; text-align: center; height: 60px;">
+						44
+					</td>
+					<td style=" border: 1px solid #000; border-collapse: collapse; text-align: center; height: 60px;">
+						55
+					</td>
+					<td style=" border: 1px solid #000; border-collapse: collapse; text-align: center; height: 60px;">
+						66
+					</td>
+					<td style=" border: 1px solid #000; border-collapse: collapse; text-align: center; height: 60px;">
+						77
+					</td>
+					<td style=" border: 1px solid #000; border-collapse: collapse; text-align: center; height: 60px;">
+						88
+					</td>
+					<td style=" border: 1px solid #000; border-collapse: collapse; text-align: center; height: 60px;">
+						99
+					</td>
+					<td style=" border: 1px solid #000; border-collapse: collapse; text-align: center; height: 60px;">
+						10
+					</td>
+					<td style=" border: 1px solid #000; border-collapse: collapse; text-align: center; height: 60px;">
+						11
+					</td>
+				</tr>
+				<tr>
+					<td style=" border: 1px solid #000; border-collapse: collapse; text-align: center; height: 60px;">
+						揉谷所
+					</td>
+					<td style=" border: 1px solid #000; border-collapse: collapse; text-align: center; height: 60px;">
+						22
+					</td>
+					<td style=" border: 1px solid #000; border-collapse: collapse; text-align: center; height: 60px;">
+						33
+					</td>
+					<td style=" border: 1px solid #000; border-collapse: collapse; text-align: center; height: 60px;">
+						44
+					</td>
+					<td style=" border: 1px solid #000; border-collapse: collapse; text-align: center; height: 60px;">
+						55
+					</td>
+					<td style=" border: 1px solid #000; border-collapse: collapse; text-align: center; height: 60px;">
+						66
+					</td>
+					<td style=" border: 1px solid #000; border-collapse: collapse; text-align: center; height: 60px;">
+						77
+					</td>
+					<td style=" border: 1px solid #000; border-collapse: collapse; text-align: center; height: 60px;">
+						88
+					</td>
+					<td style=" border: 1px solid #000; border-collapse: collapse; text-align: center; height: 60px;">
+						99
+					</td>
+					<td style=" border: 1px solid #000; border-collapse: collapse; text-align: center; height: 60px;">
+						10
+					</td>
+					<td style=" border: 1px solid #000; border-collapse: collapse; text-align: center; height: 60px;">
+						11
+					</td>
+				</tr>
+				<tr>
+					<td style=" border: 1px solid #000; border-collapse: collapse; text-align: center; height: 60px;">
+						杨村所
+					</td>
+					<td style=" border: 1px solid #000; border-collapse: collapse; text-align: center; height: 60px;">
+						22
+					</td>
+					<td style=" border: 1px solid #000; border-collapse: collapse; text-align: center; height: 60px;">
+						33
+					</td>
+					<td style=" border: 1px solid #000; border-collapse: collapse; text-align: center; height: 60px;">
+						44
+					</td>
+					<td style=" border: 1px solid #000; border-collapse: collapse; text-align: center; height: 60px;">
+						55
+					</td>
+					<td style=" border: 1px solid #000; border-collapse: collapse; text-align: center; height: 60px;">
+						66
+					</td>
+					<td style=" border: 1px solid #000; border-collapse: collapse; text-align: center; height: 60px;">
+						77
+					</td>
+					<td style=" border: 1px solid #000; border-collapse: collapse; text-align: center; height: 60px;">
+						88
+					</td>
+					<td style=" border: 1px solid #000; border-collapse: collapse; text-align: center; height: 60px;">
+						99
+					</td>
+					<td style=" border: 1px solid #000; border-collapse: collapse; text-align: center; height: 60px;">
+						10
+					</td>
+					<td style=" border: 1px solid #000; border-collapse: collapse; text-align: center; height: 60px;">
+						11
+					</td>
+				</tr>
+				<tr>
+					<td style=" border: 1px solid #000; border-collapse: collapse; text-align: center; height: 60px;">
+						大寨所
+					</td>
+					<td style=" border: 1px solid #000; border-collapse: collapse; text-align: center; height: 60px;">
+						22
+					</td>
+					<td style=" border: 1px solid #000; border-collapse: collapse; text-align: center; height: 60px;">
+						33
+					</td>
+					<td style=" border: 1px solid #000; border-collapse: collapse; text-align: center; height: 60px;">
+						44
+					</td>
+					<td style=" border: 1px solid #000; border-collapse: collapse; text-align: center; height: 60px;">
+						55
+					</td>
+					<td style=" border: 1px solid #000; border-collapse: collapse; text-align: center; height: 60px;">
+						66
+					</td>
+					<td style=" border: 1px solid #000; border-collapse: collapse; text-align: center; height: 60px;">
+						77
+					</td>
+					<td style=" border: 1px solid #000; border-collapse: collapse; text-align: center; height: 60px;">
+						88
+					</td>
+					<td style=" border: 1px solid #000; border-collapse: collapse; text-align: center; height: 60px;">
+						99
+					</td>
+					<td style=" border: 1px solid #000; border-collapse: collapse; text-align: center; height: 60px;">
+						10
+					</td>
+					<td style=" border: 1px solid #000; border-collapse: collapse; text-align: center; height: 60px;">
+						11
+					</td>
+				</tr>
+				<tr>
+					<td style=" border: 1px solid #000; border-collapse: collapse; text-align: center; height: 60px;">
+						五泉所
+					</td>
+					<td style=" border: 1px solid #000; border-collapse: collapse; text-align: center; height: 60px;">
+						22
+					</td>
+					<td style=" border: 1px solid #000; border-collapse: collapse; text-align: center; height: 60px;">
+						33
+					</td>
+					<td style=" border: 1px solid #000; border-collapse: collapse; text-align: center; height: 60px;">
+						44
+					</td>
+					<td style=" border: 1px solid #000; border-collapse: collapse; text-align: center; height: 60px;">
+						55
+					</td>
+					<td style=" border: 1px solid #000; border-collapse: collapse; text-align: center; height: 60px;">
+						66
+					</td>
+					<td style=" border: 1px solid #000; border-collapse: collapse; text-align: center; height: 60px;">
+						77
+					</td>
+					<td style=" border: 1px solid #000; border-collapse: collapse; text-align: center; height: 60px;">
+						88
+					</td>
+					<td style=" border: 1px solid #000; border-collapse: collapse; text-align: center; height: 60px;">
+						99
+					</td>
+					<td style=" border: 1px solid #000; border-collapse: collapse; text-align: center; height: 60px;">
+						10
+					</td>
+					<td style=" border: 1px solid #000; border-collapse: collapse; text-align: center; height: 60px;">
+						11
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	<div>
+</body>
+<script src="../libs/jquery/jquery-3.3.1-.min.js"></script>
+<script src="../libs/FileSaver/FileSaver.min.js"></script>
+<script src="../libs/jQuery-Word-Export/jquery.wordexport.js"></script>
+<script type="text/javascript">
+	$(document).ready(function ($) {
+		$(".word-export").click(function (event) {
+			$("#page-content").wordExport("警情研判");
+		});
+	});
+</script>
+</html>

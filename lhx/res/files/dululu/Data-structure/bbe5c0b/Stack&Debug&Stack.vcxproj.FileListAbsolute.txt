@@ -1,0 +1,2 @@
+D:\C\C\Data Structure\Stack\Debug\Stack.exe
+D:\C\C\Data Structure\Stack\Debug\Stack.pdb

@@ -1,0 +1,69 @@
+// DefPoly.java: Drawing a polygon.
+
+// Copied from Section 1.5 of
+//    Ammeraal, L. and K. Zhang (2007). Computer Graphics for Java Programmers, 2nd Edition,
+//       Chichester: John Wiley.
+
+// Uses: CvDefPoly (discussed below).
+import java.awt.*;
+import java.awt.event.*;
+
+public class DefPoly extends Frame {
+
+	public static void main(String[] args) {
+		new DefPoly();
+	}
+
+	DefPoly() {
+		super("LiliCad");
+
+		addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				System.exit(0);
+			}
+		});
+
+		ActionListener action = new MyActionListener();
+		Button botaoRotacao = new Button("Rotação");
+		Button botaoTranslacao = new Button("Translação");
+		Button botaoCisalhamento = new Button("Cisalhamento");
+		Button botaoEscalonamento = new Button("Escalonamento");
+		Button botaoEspelhamento = new Button("Espelhamento");
+		
+		add(BorderLayout.EAST, botaoRotacao);
+		add(BorderLayout.EAST, botaoTranslacao);
+		add(BorderLayout.EAST, botaoCisalhamento);
+		add(BorderLayout.EAST, botaoEscalonamento);
+		add(BorderLayout.EAST, botaoEspelhamento);
+
+		botaoRotacao.addActionListener(action);
+		botaoTranslacao.addActionListener(action);
+		botaoCisalhamento.addActionListener(action);
+		botaoEscalonamento.addActionListener(action);
+		botaoEspelhamento.addActionListener(action);
+
+		setSize(500, 300);
+		add(BorderLayout.WEST, new CvDefPoly());
+		setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
+		//show();
+	}
+
+	public String teste() {
+		System.out.print("teste");
+		return "teste";
+	}
+
+}
+
+class MyActionListener implements ActionListener {
+	public void actionPerformed(ActionEvent ae) {
+		String s = ae.getActionCommand();
+		if (s.equals("Exit")) {
+			System.exit(0);
+		} else if (s.equals("Rotação")) {
+			System.out.println("Good Morning");
+		} else {
+			System.out.println(s + " clicked");
+		}
+	}
+}

@@ -1,0 +1,92 @@
+/*
+ * @Author: ataola 
+ * @Date: 2020-04-19 00:02:57 
+ * @Last Modified by: ataola
+ * @Last Modified time: 2020-04-19 00:27:55
+ */
+
+ /* padding */
+.padding-large {
+    padding: 40px;
+}
+
+.padding-large-horizontal {
+    padding: 0 40px 0 40px; 
+}
+
+.padding-large-vertical {
+    padding: 40px 0 40px 0;
+}
+
+.padding-parent {
+    padding: 30px;
+}
+
+.padding-parent-horizontal {
+    padding: 0 30px 0 30px;
+}
+
+.padding-parent-vertical {
+    padding: 30px 0 30px 0;
+}
+
+.padding {
+    padding: 20px;
+}
+
+.padding-horizontal {
+    padding: 0 20px 0 20px;
+}
+
+.padding-vertical {
+    padding: 20px 0 20px 0;
+}
+
+
+.padding-normal {
+    padding:15px;
+}
+
+.padding-normal-horizontal {
+    padding: 0 15px 0 15px;
+}
+
+.padding-normal-vertical {
+    padding: 15px 0 15px 0;
+}
+
+.padding-child {
+    padding: 10px;
+}
+
+.padding-child-horizontal {
+    padding: 0 10px 0 10px;
+}
+
+.padding-child-vertical {
+    padding: 10px 0 10px 0;
+}
+
+.padding-small {
+    padding: 5px;
+}
+
+.padding-small-horizontal {
+    padding: 0 5px 0 5px;
+}
+
+.padding-small-vertical {
+    padding: 5px 0 5px 0;
+}
+
+.padding-micro {
+    padding: 2px;
+}
+
+.padding-micro-horizontal {
+    padding: 0 2px 0 2px;
+}
+
+.padding-micro-vertical {
+    padding: 2px 0 2px 0;
+}

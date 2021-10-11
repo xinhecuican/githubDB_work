@@ -1,0 +1,65 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>答题完成</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+<link rel="stylesheet" href="./assets/css/base.css">
+<link rel="stylesheet" href="./assets/css/answer.css">
+</head>
+<body>
+<!-- wrap start -->
+<div class="wrap">
+	<div class="head">
+		<a class="back" href="index.html"></a>
+		<div class="title">挑战答题</div>
+	</div>
+	<div class="answer-end-content">
+		<div class="conbox">
+			<!-- 注：0分时 是 再接再厉 -->
+			<div class="answer-end-tit">答题完成<!-- 再接再厉 --></div>
+			<div class="gifimg"></div>
+			<div class="mark">答题获得了0分</div>
+			<!-- 第一次答题 -->
+			<div class="fsize24 g666 text-center lin40">
+				<span>15715860123</span>，本次答题，赠送<span class="gfc9836"><span>1</span>GB流量</span>。<br>流量将在活动结束后<span class="gfc9836">7个工作日</span>内进行赠送。
+			</div>
+			<!-- 非第一次答题超过历史最高分 -->
+
+			<!-- 非第一次答题未超过历史最高分 -->
+
+
+			<div class="fsize28 g3679fc text-center mtop90">答题用时：<span>5分00秒</span></div>
+		</div>
+		<div class="display-f">
+			<a class="answer-more" onclick="next()">
+				再答一次<span style="font-size:.20rem;">(剩余4次)</span>
+			</a>
+			<a class="backindex" href="index.html">返回首页</a>
+		</div>
+	</div>
+</div>
+<!-- wrap end -->
+
+
+<script>
+function next(){
+	if (!window.localStorage) {
+		alert("浏览器支持localstorage");
+	} else {
+		var data = {
+			startDate: new Date
+		};
+		var d = JSON.stringify(data);
+		var storage = window.localStorage;
+		storage.setItem("data", d);
+		if(!!storage.answerResult){
+			storage.removeItem('answerResult');
+		}
+	}
+	window.location.href = "/answer/startAnswer";
+}
+</script>
+</body>
+</html>

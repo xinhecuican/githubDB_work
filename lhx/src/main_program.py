@@ -2,11 +2,12 @@ import threading
 import json
 import time
 import math
-from version2 import get_user_info, get_issue, get_branches
+from get_basic_info import get_user_info, get_issue, get_branches
 from get_activity import get_activity
 from get_pull_requests import get_open_pulls
 from common import getHTML
 
+from multiprocessing.pool import ThreadPool
 
 # from common import get_user_id
 
@@ -46,7 +47,9 @@ def get_user_all_repos(user_name):
 
 
 if __name__ == '__main__':
-    user_names = ['sydneyhen', 'ExpectozJJ', 'wangru25', 'ChenDdon', 'Jiahuic', 'dululu', 'L-Focus', 'nickzyang', 'ataola', 'yangshihao-arron', 'Bowinthecloud', 'weteghter', 'LGSKOKO']
+    user_names = ['sydneyhen', 'ExpectozJJ', 'wangru25', 'ChenDdon', 'Jiahuic', 'dululu', 'L-Focus', 'nickzyang',
+                  'ataola', 'yangshihao-arron', 'Bowinthecloud', 'weteghter', 'LGSKOKO',
+                  'medariox', 'astdarkness', 'victorhos', 'WAHsss']
     done = []
 
     with open('D:\\21-22-1\\Database_Practice\\done.txt', 'r') as f:

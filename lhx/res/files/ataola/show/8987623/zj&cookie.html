@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cookie</title>
+  <style>
+    .box {
+      display: block;
+      margin: 10px;
+    }
+
+    #count {
+      position: fixed;
+      top: 0;
+      right: 0;
+      padding: 20px;
+      font-size: 24px;
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <div id="edit">
+     <hr/>
+     <cookie-input class="box" name="name: " v-model="name"></cookie-input>
+     <cookie-input class="box" name="value: " v-model="value"></cookie-input>
+     <button @click="addCookie">Add Cookie</button>
+     <button @click="addRandomCookie">Add Random Cookie</button>
+     <hr/>
+    </div>
+    <div id="show">
+      <div v-for="(value, key) in content">
+        {{ key }} : {{ value }}
+      </div>
+    </div>
+    <div id="result">
+      经过ataola童鞋测试：
+      <pre>
+        Google Chrome Cookie数，上限180个，当到达180个以后，会降至150个，然后往上至180个再掉下来。file Size 近似 6KB.
+      </pre>
+    </div>
+    <div id="count">
+      {{ count }}
+    </div>
+  </div>
+</body>
+<script src="../libs/jquery/jquery-2.0.3-min .js"></script>
+<script src="../libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<script src="../libs/vue/2.6.12/vue.min.js"></script>
+<script>
+// Name、Value、Domain、Path、Expires/Max-Age、Size、HttpOnly、Secure、SameSite、Priority
+// $.cookie('the_cookie', 'the_value', { expires: 7, path: '/', domain: '' });
+
+  Vue.component('cookie-input', {
+    props: ['value', 'name'],
+    methods: {
+      handleInput (e) {
+        this.$emit('input', e.target.value);
+      }
+    },
+    template: '<label>{{ name }}<input type="text" :value="value" @input="handleInput"/></label>'
+  });
+  new Vue({
+    el: '#app',
+    data: {
+      content: null,
+      name: '',
+      value: '',
+    },
+    created () {
+      const cookie = $.cookie();
+      this.content = cookie;
+      this.count = Object.entries(cookie).length;
+    },
+    computed: {
+      count () {
+        return Object.entries(this.content).length;
+      }
+    },
+    methods: {
+      addCookie () {
+        if (this.name && this.value) {
+          $.cookie(this.name, this.value);
+          this.content = $.cookie();
+        }
+      },
+      addRandomCookie () {
+        $.cookie(Math.random().toString(16).substring(2), Math.random().toString(16).substring(2));
+        this.content = $.cookie();
+      }
+    }
+  })
+
+</script>
+
+</html>

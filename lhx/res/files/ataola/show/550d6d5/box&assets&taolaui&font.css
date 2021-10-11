@@ -1,0 +1,35 @@
+/*
+ * @Author: ataola 
+ * @Date: 2020-04-19 13:54:36 
+ * @Last Modified by: ataola
+ * @Last Modified time: 2020-04-19 21:20:41
+ */
+
+
+ .text-headline {
+     font-size: 24px;
+ }
+
+ .text {
+
+ }
+
+ .text-micro {
+     font-size: 12px;
+ }
+
+ .a {
+
+ }
+
+.font-white {
+    color: #FFF;
+}
+
+.font-gray {
+    color:rgba(127,127,127,1);
+}
+ 
+.font-blod {
+    font-weight: bold;
+}

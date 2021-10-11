@@ -1,0 +1,37 @@
+version: "3.5"
+services:
+  database:
+    image: postgres:10.1-alpine
+  web:
+    build:
+      context: .
+      dockerfile: DockerfileDev
+    env_file:
+      - .env
+    ports:
+      - "${DJANGO_BIND_PORT}:${DJANGO_BIND_PORT}"
+    volumes:
+      - .:/app
+    depends_on:
+      - database
+    command:
+      [
+        "./start.sh",
+      ]
+  integration-tests:
+    image: python:3.9-rc-buster
+    env_file: .env
+    working_dir: /app
+    volumes:
+      - .:/app
+    depends_on:
+      - web
+    command: ["./start-tests.sh"]
+  lint:
+    build:
+      dockerfile: DockerfileDev
+      context: .
+    working_dir: /app
+    volumes:
+      - .:/app
+    command: ["./start-lint.sh"]

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>节流</title>
+  <style>
+    #bg {
+      width: 100%;
+      height: 768px;
+    }
+  </style>
+</head>
+<body>
+  <div id="bg"></div>
+</body>
+<script src="../libs/vconsole/3.3.4/vconsole.min.js"></script>
+<script>
+  const vConsole = new VConsole();
+  console.log('vconsole init');
+  function throttle(func, threshhold) {
+    let timer = null;
+    let start = Date.now();
+    threshhold = threshhold || 160;
+    return function() {
+      let context = this;
+      let args = arguments;
+      current = Date.now();
+      clearTimeout(timer);
+      if (current - start >= threshhold) {
+        console.log(`now ${ current } ${ current - start }`);
+        func.apply(context, args);
+        start = current;
+      } else {
+        timer = setTimeout(function() {
+          func.apply(context, args);
+        }, threshhold);
+      }
+    }
+  }
+
+  const mousemove = throttle(function(e) {
+    console.log(e.pageX, e.pageY);
+  });
+
+  document.getElementById('bg').addEventListener('mousemove', mousemove);  
+</script>
+</html>
