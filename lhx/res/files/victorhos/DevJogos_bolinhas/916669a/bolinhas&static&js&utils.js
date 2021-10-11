@@ -1,0 +1,5 @@
+Utils.prototype = function(){
+
+    'random' = 
+
+}

@@ -1,0 +1,118 @@
+﻿package Main_window;
+
+import Main_window.User_Server.User_server;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
+/**
+ * @author: 李子麟
+ * @date: 2021/3/20 9:48
+ **/
+public class Login_window extends JFrame
+{
+    private JPanel root_panel;
+    private GridBagLayout root_layout;
+    private JTextField message;
+    private JTextField user_text;
+    private JTextField password_text;
+    public Login_window()
+    {
+        root_panel = new JPanel();
+        root_layout = new GridBagLayout();
+        root_panel.setLayout(root_layout);
+        add(root_panel);
+
+        JLabel label_user = new JLabel("账号");
+        JLabel label_password = new JLabel("密码");
+        message = new JTextField();
+        message.setEditable(false);
+        message.setOpaque(false);
+
+        user_text = new JTextField();
+        password_text = new JTextField();
+
+        JButton button_confirm = new JButton("登录");
+        JButton button_register = new JButton("注册");
+
+        GridBagConstraints constraints = new GridBagConstraints();
+        constraints.fill = GridBagConstraints.NONE;
+        constraints.ipadx = 30;
+        constraints.anchor = GridBagConstraints.WEST;
+        root_layout.setConstraints(label_user, constraints);
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.weightx = 1;
+        constraints.ipadx = 0;
+        constraints.gridwidth = 0;
+        constraints.anchor = GridBagConstraints.CENTER;
+        root_layout.setConstraints(user_text, constraints);
+        constraints.gridwidth = 1;
+        constraints.fill = GridBagConstraints.NONE;
+        constraints.weightx = 0;
+        constraints.ipadx = 30;
+        constraints.anchor = GridBagConstraints.WEST;
+        root_layout.setConstraints(label_password, constraints);
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.weightx = 1;
+        constraints.ipadx = 0;
+        constraints.gridwidth = 0;
+        constraints.anchor = GridBagConstraints.CENTER;
+        root_layout.setConstraints(password_text, constraints);
+        constraints.fill = GridBagConstraints.NONE;
+        constraints.ipadx = 50;
+        constraints.weightx = 0;
+        root_layout.setConstraints(button_register, constraints);
+        constraints.weightx = 1;
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.gridwidth = 0;
+        root_layout.setConstraints(button_confirm, constraints);
+        constraints.ipadx = 0;
+        root_layout.setConstraints(message, constraints);
+
+        root_panel.add(label_password);
+        root_panel.add(label_user);
+        root_panel.add(password_text);
+        root_panel.add(user_text);
+        root_panel.add(button_confirm);
+        root_panel.add(button_register);
+        root_panel.add(message);
+
+        button_confirm.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent)
+            {
+                try
+                {
+                    Main.main_user.send_login_message(InetAddress.getLocalHost().getHostAddress(),
+                            User_server.receive_port, Integer.parseInt(user_text.getText()), false, password_text.getText());
+                }
+                catch (UnknownHostException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        button_register.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent)
+            {
+
+            }
+        });
+
+        pack();
+        setVisible(true);
+    }
+
+    public void set_text(String text)
+    {
+        message.setText(text);
+    }
+}

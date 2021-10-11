@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>杂项堆积</title>
+</head>
+
+<body>
+    <input type="button" value="全屏" onclick="setFullScreen()" />
+</body>
+<script>
+    function setFullScreen() {
+        var docElm = document.documentElement;
+        //W3C
+        if (docElm.requestFullscreen) {
+            docElm.requestFullscreen();
+        }
+        //FireFox 
+        else if (docElm.mozRequestFullScreen) {
+            docElm.mozRequestFullScreen();
+        }
+        //Chrome等 
+        else if (docElm.webkitRequestFullScreen) {
+            docElm.webkitRequestFullScreen();
+        }
+        //IE11
+        else if (elem.msRequestFullscreen) {
+            elem.msRequestFullscreen();
+        }
+    }
+    //参考： https://zhuanlan.zhihu.com/p/30160684
+</script>
+
+</html>

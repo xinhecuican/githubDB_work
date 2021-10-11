@@ -1,0 +1,39 @@
+﻿﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using TaleWorlds.CampaignSystem;
+
+namespace Tired_party
+{
+    class Calculate_party_tired
+    {
+        /*
+         * 和等级挂钩
+         * 和伤员数量挂钩
+         * 和俘虏数量挂钩
+         * 和地形挂钩（过于困难）
+         */
+        public static float calculate_ratio(MobileParty mobile)
+        {
+            TroopRoster roster = mobile.MemberRoster;
+            TroopRoster prison_roster = mobile.PrisonRoster;
+            int all_tier = 0;
+            foreach(CharacterObject characterObject in roster.Troops)
+            {
+                all_tier += characterObject.Tier;
+            }
+            int hero_count = roster.TotalHeroes;
+            all_tier += hero_count * 6;
+            int total_count = roster.TotalManCount + roster.TotalWounded;
+            float average_tier = all_tier / total_count; //和等级挂钩
+            int wounded = roster.TotalWounded;
+            int captured = prison_roster.TotalWounded + prison_roster.TotalManCount;
+            float persist_hour = (average_tier * (average_tier + 1) / 20 + 2) * 24;
+
+            float persist_rate = 1 / persist_hour;
+            return persist_rate;
+        }
+    }
+}

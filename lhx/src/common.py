@@ -1,12 +1,15 @@
 import requests
+from retrying import retry
+import time
 import json
 import csv
 import os
+import re
 
 import urllib3.exceptions
 
-
-def getHTML(url):
+@retry(wait_fixed=2000)
+def getHTML(url, getType = 0):
     headers = {
         'User-Agent': 'Mozilla/5.0',
         'Authorization': 'token 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',
@@ -17,19 +20,13 @@ def getHTML(url):
     if 'api' in url:
         r = requests.get(url, timeout=30, headers=headers)
     else:
-        try:
-            r = requests.get(url, timeout=30)
-        except (requests.exceptions.ConnectionError, urllib3.exceptions.MaxRetryError, urllib3.exceptions.NewConnectionError, TimeoutError):
-            print('get_HTML出现问题，睡眠 2 秒')
-            time.sleep(2)
-            r = requests.get(url, timeout=30)
-    try:
-        if r.status_code == 200:
-            r.encoding = r.apparent_encoding
-            return r.text
-    except:
-        print('conn failed')
-        return None
+        r = requests.get(url, timeout=30)
+    if getType == 0:
+        return r.text
+    else:
+        return r.content
+
+
 
 def get_user_id(user_name):
     url = 'https://api.github.com/users/' + user_name
@@ -71,20 +68,41 @@ def save_sth(lists, fname, types): # 0是单行 1是多行
         else:
             print('error when saving')
 
-def save_file(path, fstr, fname): # fname是x/x/x的形式
+def save_file(path, fbyte, fname): # fname是x/x/x的形式
     if not os.path.exists(path):
         os.makedirs(path)
-    # end_type = fname.rpartition('.')[2]
-    if path.endswith('.jpg'):
-        path = path = path + r'\\' + fname.replace('/', '&') + '.jpg'
-    elif path.endswith('.png'):
-        path = path = path + r'\\' + fname.replace('/', '&') + '.png'
-    else:
-        path = path + r'\\' + fname.replace('/', '&') + '.txt'
-    with open(path, 'a+', encoding='utf-8-sig') as f:
-        try:
-            f.write(fstr)
-        except:
-            print(fname, '[出问题]')
 
-    print('文件[', path, ']已保存')
+
+    temp = fname.split('/')
+    ends = temp[-1]
+    outp = ''
+
+    if ends.startswith('.'):  # gitnone/ [.asd.md]
+        if ends.count('.') >= 2:
+            for each in range(len(temp) - 1):
+                outp = outp + temp[each] + '&'
+            outp = outp + ends
+        else:
+            for each in range(len(temp) - 1):
+                outp = outp + temp[each] + '&'
+            outp = outp + ends + '.txt'
+    else:
+        if ends.count('.') >= 1:
+            for each in range(len(temp) - 1):
+                outp = outp + temp[each] + '&'
+            outp = outp + ends
+        else:
+            for each in range(len(temp) - 1):
+                outp = outp + temp[each] + '&'
+            outp = outp + ends + '.txt'
+
+    path = path + outp
+
+    try:
+        with open(path, 'ab+') as f:
+            f.write(fbyte)
+    except FileNotFoundError as e:
+        print(e.filename)
+        pass
+
+#  eigen/.hgtags

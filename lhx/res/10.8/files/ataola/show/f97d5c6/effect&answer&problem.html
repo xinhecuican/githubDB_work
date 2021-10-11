@@ -1,0 +1,186 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<title>答题</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+	<link rel="stylesheet" href="./assets/css/base.css">
+	<link rel="stylesheet" href="./assets/css/answer.css">
+</head>
+<body>
+<!-- wrap start -->
+<div class="wrap">
+	<div class="head">
+		<a class="back" href="index.html"></a>
+		<div class="title">挑战答题</div>
+	</div>
+	<div class="answer-content">
+		<div class="notes">注：多次答题取最高分值来获得更高额的流量包哦！(总共5次机会）</div>
+		<div class="conbox">
+			<div class="clearfix">
+				<div class="tinum">
+					<span>1</span>/<span>10</span>题
+				</div>
+				<div class="yutime">剩余时间 <span id="sysj"></span></div>
+			</div>
+			<div class="problem">
+				<div class="problem-tit">某部门需要规划建设某桥梁工程，规划时应当（  ）</div>
+				<button class="keyselect" value="A">A.应当预留电信管线及其他电信基础设施建设空间</button>
+				<button class="keyselect" value="B">B.无需特意为电信管线或其他电信基础设施预留建设空间</button>
+				<button class="keyselect" value="C">C.除电信管理机构或者电信业务经营者特意申请外，无需特意预留空间</button>
+				<button class="keyselect" value="D">D.只有原用地存在电信基础设施规划的情形时，才需要预留配套空间</button>
+			</div>
+
+			<a class="nextbtn" id="btn1" onclick="next(1)" disabled="disabled">下一题</a>
+
+			<input type="hidden" id="answerNum" name="answerNum" value="1">
+            <input type="hidden" id="questionId" name="questionId" value="37">
+			<form id="form1" method="post">
+				<!--<input type="hidden" id="answerNum" name="answerNum" th:value="${answerNum}">
+				<input type="hidden" id="questionId" name="questionId" th:value="${ansQuestion.id}">
+				<input type="hidden" id="selectValue" name="selectValue">-->
+				<input type="hidden" id="answerId" name="answerId" value="140756">
+				<input type="hidden" id="answerTime" name="answerTime">
+				<input type="hidden" id="answerResult" name="answerResult">
+			</form>
+		</div>
+	</div>
+</div>
+<!-- wrap end -->
+<script type="text/javascript" src="./assets/js/jquery-1.8.3.min.js"></script>
+<script type="text/javascript"  src="./assets/js/jquery.base64.js"></script>
+<script type="text/javascript" src="./assets/js/layer/layer.min.js"></script>
+<script>
+	var storage = window.localStorage;
+	$(function () {
+		storage.setItem("rightVal", 'UVE9PQ==');
+		showSysj();
+		if(!!storage.answerResult){
+			var answerNum = $("#answerNum").val();
+			var answerResult = storage.answerResult;
+			var answerResultJson = JSON.parse($.base64.atob(answerResult));
+			var answerNumJson = answerResultJson['answerNum_' + answerNum];
+			if(!!answerNumJson) {
+				var rightValue = $.base64.atob($.base64.atob(answerNumJson.selectVal));
+				var selectItem = $("button[class='keyselect'][value='" + rightValue + "']");
+				var rightValue = $.base64.atob($.base64.atob(answerNumJson.rightVal));
+				changeShow(selectItem, rightValue);
+			}
+		}
+	})
+	var interval = setInterval(
+		function () {
+			showSysj();
+		}, 1000);
+	function showSysj(){
+		var yysj = getUseTime();
+		var sysj = 300 - yysj;// 剩余时间
+		if (sysj <= 0) {
+			sysj = 0;
+			nextOrSubmit = true;
+			// submit();
+			clearInterval(interval);//停止
+		}
+		var m = parseInt(sysj / 60);
+		var s = parseInt(sysj % 60);
+		var showsysj = m + ":" + (s<10 ? '0' + s : s);
+		$("#sysj").html(showsysj);
+	}
+	var nextOrSubmit = false;
+	//答题
+	$(".keyselect").click(function(){
+		var selectValue = $(this).val();
+		$("#selectValue").val(selectValue);
+		var selectItem = $(this);
+		var value = $.base64.atob($.base64.atob(storage.rightVal));
+		changeShow(selectItem, value);
+
+		saveAnswer(value, selectValue, $("#questionId").val(), $("#answerNum").val());
+	})
+
+	function changeShow(selectItem, rightValue){
+		$("button[class='keyselect'][value='" + rightValue + "']").addClass("correct");
+		if (selectItem.hasClass("correct")) {
+			selectItem.addClass("on");
+			$(".keyselect").attr('disabled', 'disabled');
+		} else {
+			selectItem.addClass("on");
+			$(".keyselect").attr('disabled', 'disabled');
+			setTimeout(
+					function () {
+						$(".correct").addClass("on");
+					},100);
+			$("#remark").show();
+		}
+		$("#btn1").attr("disabled", false);
+		$("#btn2").attr("disabled", false);
+		nextOrSubmit = true;
+	}
+
+	function saveAnswer(rightVal, selectVal, questionId, answerNum){
+		var answerResult = storage.answerResult;
+		if(!answerResult){
+			var data = {};
+			var d = JSON.stringify(data);
+			storage.setItem("answerResult", $.base64.btoa(d));
+			answerResult = storage.answerResult;
+		}
+		var answerResultJson = JSON.parse($.base64.atob(answerResult));
+		var answerNumJson = {};
+		answerNumJson['questionId'] = questionId;
+		answerNumJson['rightVal'] = $.base64.btoa($.base64.btoa(rightVal));
+		answerNumJson['selectVal'] = $.base64.btoa($.base64.btoa(selectVal));
+		answerResultJson['answerNum_' + answerNum] = answerNumJson;
+		storage.setItem("answerResult", $.base64.btoa(JSON.stringify(answerResultJson)));
+
+	}
+	function next(answerNum){
+		if(nextOrSubmit){
+			window.location.href = "/answer/nextAnswer?answerNum=" + answerNum + "&d=" + new Date().getTime() + "&v=" + Math.random();
+		}else{
+            layer.msg("未作答，请作答后再次点击下一题");
+		}
+	}
+	function submit(){
+		if(nextOrSubmit){
+			$("#answerTime").val(getUseTimeStr());
+			var answerResult = storage.answerResult;
+			$("#answerResult").val(answerResult);
+			$('#form1').attr("action", "submit?d=" + new Date().getTime() + "&v=" + Math.random());
+			$('#form1').submit();
+			storage.removeItem('data');
+			storage.removeItem('answerResult');
+		}else{
+            layer.msg('未作答，请作答后再提交');
+		}
+	}
+	function getUseTime(){
+		var data = storage.data;
+		if(!data){
+			var data = {
+				startDate: new Date
+			};
+			var data = JSON.stringify(data);
+			storage.setItem("data", data);
+		}
+		data = JSON.parse(data);
+		var startDate = new Date(data.startDate);
+		var currentDate = new Date();
+		var yysj = currentDate.getTime() - startDate.getTime() // 已用时间
+		yysj = Math.round(yysj / 1000);
+		if(yysj > 300){
+			yysj = 300;
+		}
+		return yysj
+	}
+	function getUseTimeStr(){
+		var useTime = getUseTime();
+		var m = Math.round(useTime / 60);
+		var s = Math.round(useTime % 60);
+		var useTimeStr = m + "分" + (s<10 ? '0' + s : s) + "秒";
+		return useTimeStr;
+	}
+</script>
+</body>
+</html>

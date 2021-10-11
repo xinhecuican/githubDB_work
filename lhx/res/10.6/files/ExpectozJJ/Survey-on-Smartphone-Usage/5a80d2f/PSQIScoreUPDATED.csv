@@ -1,0 +1,122 @@
+What is your gender?,What is your weight? (in kilograms) ,What is your height? (in metres) ,PSQIDURAT,PSQIDISTB,PSQILATEN,PSQIDAYSDYS,PSQIHSE,PSQISLPQUAL,PSQIMEDS,PSQI Global Score,Do you use your smartphone while you are in bed before sleeping? ,Do you switch off your phone before going to bed? ,Indicate your choice for the  statement:  [Excessive Smartphone Usage before bedtime affects sleep quality],Smartphone Usage,How long do you spend on your smartphone while you are in bed before sleeping? ,"Rank the following activities that are being engaged from most time spent (Rank 1) to least time spent (Rank 6) while using smartphone in bed before bedtime. [Social Media (Facebook, Twitter, SnapChat, Instagram etc.) ]",Rank the following activities that are being engaged from most time spent (Rank 1) to least time spent (Rank 6) while using smartphone in bed before bedtime. [Videos],Rank the following activities that are being engaged from most time spent (Rank 1) to least time spent (Rank 6) while using smartphone in bed before bedtime. [Gaming (Pokemon GO etc.) ],Rank the following activities that are being engaged from most time spent (Rank 1) to least time spent (Rank 6) while using smartphone in bed before bedtime. [Surfing the Internet ],"Rank the following activities that are being engaged from most time spent (Rank 1) to least time spent (Rank 6) while using smartphone in bed before bedtime. [Chatting (Whatsapp, LINE, Telegram etc.)]","Rank the following activities that are being engaged from most time spent (Rank 1) to least time spent (Rank 6) while using smartphone in bed before bedtime. [Online Shopping (Qoo10, Carousell etc.)]"
+Female,45,1.51,0,1,0,1,0,0,0,2,Yes,Yes,Agree,3,0-15 minutes,1,4,6,2,3,5
+Female,45,1.63,0,1,1,1,0,0,0,3,Yes,Yes,Agree,11,0-15 minutes,4,3,1,5,6,2
+Female,48,1.5,1,0,1,1,0,0,1,4,No,No,Neutral,14,> 60 minutes,2,3,5,6,1,4
+Female,48,1.6,1,1,2,2,0,0,0,6,Yes,No,Agree,20,16-30 minutes,3,2,4,6,5,1
+Female,48,1.56,0,1,1,1,0,1,0,4,Yes,No,Neutral,15,0-15 minutes,3,5,2,4,1,6
+Female,54,1.62,0,1,1,2,0,0,0,4,Yes,No,Strongly Disagree,30,16-30 minutes,3,2,1,6,5,4
+Female,55,1.65,0,1,0,2,0,0,0,3,No,Yes,Strongly Agree,0,> 60 minutes,1,2,3,4,5,6
+Female,55,1.65,2,0,0,2,0,0,2,6,Yes,No,Neutral,15,0-15 minutes,2,3,6,4,1,5
+Female,58,1.63,0,1,0,1,0,0,0,2,Yes,No,Agree,6,0-15 minutes,1,3,6,2,4,5
+Female,60,1.7,0,3,1,0,0,2,0,6,Yes,No,Strongly Agree,27,> 60 minutes,2,1,5,4,6,3
+Female,52,1.65,2,3,0,0,1,0,0,6,Yes,No,Strongly Agree,24,16-30 minutes,1,4,2,5,3,6
+Female,53,1.61,3,1,0,1,3,0,0,8,Yes,No,Agree,36,16-30 minutes,1,3,4,6,2,5
+Female,53,1.63,3,2,1,0,2,1,0,9,Yes,Yes,Strongly Agree,56,46-60 minutes,1,3,6,4,2,5
+Female,53,1.63,0,3,0,2,1,3,0,9,Yes,Yes,Agree,53,0-15 minutes,1,3,6,4,2,5
+Female,53,1.62,3,2,1,1,2,0,0,9,Yes,Yes,Strongly Agree,51,16-30 minutes,2,3,5,6,1,4
+Female,54,1.57,0,3,0,2,2,3,0,10,Yes,Yes,Neutral,51,0-15 minutes,1,4,6,2,3,5
+Female,51,1.52,1,3,0,2,2,3,0,11,Yes,Yes,Neutral,47,0-15 minutes,3,2,1,6,5,4
+Female,45,1.53,2,2,3,1,1,2,0,11,Yes,Yes,Strongly Agree,48,16-30 minutes,1,3,6,4,2,5
+Female,48,1.54,0,2,3,1,3,3,0,12,Yes,No,Agree,61,46-60 minutes,2,3,5,6,1,4
+Female,50,1.6,3,0,2,3,1,3,0,12,No,No,Strongly Agree,67,0-15 minutes,1,3,6,2,4,5
+Male,50,1.6,2,1,3,1,3,0,0,10,Yes,No,Agree,50,46-60 minutes,1,2,4,5,3,6
+Male,66,1.68,2,2,3,3,2,0,1,13,Yes,No,Disagree,68,> 60 minutes,1,2,6,3,4,5
+Male,67,1.65,1,1,1,2,2,0,0,7,Yes,No,Agree,60,> 60 minutes,6,2,3,4,5,1
+Male,48,1.52,0,1,1,1,0,0,0,3,Yes,Yes,Neutral,7,0-15 minutes,6,1,2,5,3,4
+Male,50,1.6,1,0,1,3,1,0,0,6,Yes,Yes,Disagree,25,31-45 minutes,5,1,6,4,3,2
+Male,51,1.63,0,0,3,2,0,1,0,6,Yes,Yes,Agree,18,16-30 minutes,1,4,6,2,3,5
+Male,42,1.6,3,0,3,0,0,0,0,6,Yes,No,Agree,17,31-45 minutes,2,1,5,3,4,6
+Male,55,1.7,2,1,0,1,2,1,0,7,Yes,No,Agree,16,> 60 minutes,3,2,1,6,5,4
+Male,58,1.72,2,0,1,1,0,3,0,7,Yes,Yes,Agree,43,31-45 minutes,2,3,5,6,1,4
+Male,50,1.7,1,0,0,1,3,3,0,8,Yes,No,Agree,34,16-30 minutes,2,1,5,3,4,6
+Male,43,1.48,0,0,3,2,1,2,0,8,Yes,No,Neutral,35,31-45 minutes,3,2,1,6,5,4
+Male,60,1.78,0,3,1,0,2,2,0,8,Yes,Yes,Agree,31,0-15 minutes,6,4,1,2,3,5
+Male,55,1.65,0,3,3,1,2,1,0,10,Yes,No,Neutral,55,31-45 minutes,1,3,5,4,2,6
+Male,55,1.67,1,3,2,1,0,3,0,10,No,Yes,Agree,47,31-45 minutes,1,4,6,2,3,5
+Male,60,1.7,2,2,1,3,2,1,0,11,Yes,No,Agree,57,16-30 minutes,6,4,1,2,5,3
+Male,61,1.7,3,3,1,0,1,3,0,11,Yes,No,Agree,54,31-45 minutes,1,3,6,2,4,5
+Male,52,1.56,0,3,3,2,0,3,0,11,Yes,No,Strongly Agree,73,0-15 minutes,2,3,5,6,1,4
+Male,53,1.58,1,0,3,2,3,3,0,12,Yes,Yes,Strongly Agree,74,31-45 minutes,1,4,6,2,3,5
+Male,60,1.78,1,0,2,3,3,3,0,12,Yes,Yes,Strongly Agree,65,31-45 minutes,3,2,1,6,5,4
+Male,62,1.75,1,2,3,2,3,2,0,13,No,Yes,Agree,80,31-45 minutes,1,4,6,2,3,5
+Male,60,1.73,1,3,3,1,2,3,0,13,Yes,Yes,Agree,79,31-45 minutes,6,5,4,3,2,1
+Female,45,1.53,0,1,1,1,0,0,0,3,Yes,No,Strongly Disagree,15,31-45 minutes,2,1,6,5,3,4
+Female,45,1.67,1,1,1,2,0,1,2,8,Yes,Yes,Agree,46,46-60 minutes,5,1,6,3,2,4
+Female,45,1.58,1,1,0,2,3,0,1,8,Yes,No,Neutral,50,46-60 minutes,6,4,1,2,5,3
+Female,46,1.51,1,1,1,2,1,0,2,8,Yes,No,Disagree,30,16-30 minutes,1,3,5,4,2,6
+Female,47,1.64,0,1,1,1,0,0,0,3,Yes,Yes,Neutral,30,31-45 minutes,1,3,6,2,4,5
+Female,47,1.65,0,1,1,1,0,0,0,3,Yes,No,Neutral,40,31-45 minutes,1,2,3,4,5,6
+Female,48,1.63,0,1,0,1,0,0,0,2,Yes,No,Agree,30,16-30 minutes,1,2,5,3,4,6
+Female,53,1.66,0,1,0,1,0,0,0,2,Yes,No,Agree,13,16-30 minutes,1,5,6,4,2,3
+Female,54,1.55,1,2,3,1,0,0,0,7,Yes,No,Agree,28,16-30 minutes,1,3,5,4,2,6
+Female,56,1.65,1,1,0,2,0,1,0,5,Yes,No,Neutral,15,16-30 minutes,6,3,1,2,5,4
+Female,60,1.66,1,1,2,2,1,0,2,9,Yes,Yes,Agree,25,16-30 minutes,4,1,5,3,2,6
+Female,62,1.65,1,2,1,2,2,0,2,10,Yes,No,Neutral,35,31-45 minutes,2,1,3,4,5,6
+Female,70,1.63,0,1,1,1,0,0,1,4,Yes,No,Agree,40,31-45 minutes,2,4,6,5,1,3
+Female,48,1.51,2,0,1,0,1,2,0,4,Yes,No,Agree,27,46-60 minutes,1,3,4,2,5,6
+Female,48,1.58,2,1,2,0,0,3,0,6,Yes,No,Agree,24,46-60 minutes,4,6,3,1,2,5
+Female,50,1.65,1,0,2,2,2,0,0,6,Yes,No,Agree,28,0-15 minutes,4,1,5,3,2,6
+Female,52,1.7,0,2,2,3,1,1,0,9,No,Yes,Agree,55,0-15 minutes,2,1,3,4,5,6
+Female,65,1.8,2,2,2,3,1,2,0,10,Yes,No,Neutral,58,46-60 minutes,1,3,4,2,5,6
+Female,46,1.48,2,3,3,3,2,1,0,12,Yes,No,Agree,77,46-60 minutes,3,2,1,6,5,4
+Male,52,1.65,2,1,0,1,1,0,0,5,Yes,No,Disagree,8,0-15 minutes,6,4,1,2,3,5
+Male,52,1.72,1,1,1,2,0,0,3,8,Yes,No,Agree,20,16-30 minutes,4,6,3,1,2,5
+Male,58,1.69,0,1,1,1,0,0,0,3,Yes,No,Strongly Agree,13,16-30 minutes,1,3,4,2,5,6
+Male,60,1.75,0,1,1,1,0,0,1,4,Yes,Yes,Disagree,15,16-30 minutes,2,3,6,4,1,5
+Male,60,1.65,1,1,2,1,2,0,0,7,Yes,No,Agree,46,46-60 minutes,1,2,5,4,3,6
+Male,63,1.78,0,1,3,2,1,1,0,8,No,No,Strongly Agree,33,> 60 minutes,3,2,1,6,5,4
+Male,64,1.73,0,1,1,1,1,0,0,4,Yes,No,Neutral,40,31-45 minutes,5,2,3,4,6,1
+Male,85,1.77,1,1,0,1,0,0,0,3,Yes,Yes,Agree,14,16-30 minutes,4,1,5,3,2,6
+Male,90,1.7,0,1,0,1,0,0,0,2,No,No,Strongly Disagree,9,> 60 minutes,6,4,1,2,3,5
+Male,70,1.8,0,0,0,0,3,0,0,3,Yes,No,Agree,3,0-15 minutes,1,4,6,2,3,5
+Male,58,1.6,2,0,1,0,2,2,0,5,Yes,No,Disagree,26,16-30 minutes,1,5,3,4,2,6
+Male,65,1.69,0,3,1,1,0,0,0,5,Yes,No,Neutral,18,0-15 minutes,1,5,6,4,2,3
+Male,65,1.68,1,0,3,1,1,1,0,6,Yes,No,Neutral,29,16-30 minutes,2,1,6,5,3,4
+Male,65,1.71,2,2,3,0,3,0,0,8,Yes,No,Agree,42,16-30 minutes,3,2,1,6,5,4
+Male,52,1.67,0,3,3,1,1,0,0,8,Yes,No,Strongly Agree,32,0-15 minutes,1,5,3,4,2,6
+Male,50,1.6,2,3,1,2,2,0,0,8,Yes,No,Agree,43,46-60 minutes,3,2,4,6,5,1
+Male,55,1.76,0,2,3,0,1,3,0,9,Yes,No,Neutral,48,46-60 minutes,4,6,3,1,2,5
+Male,53,1.68,1,1,2,3,2,1,0,9,Yes,No,Agree,52,0-15 minutes,5,1,6,3,2,4
+Male,51,1.58,0,2,1,1,2,3,0,9,No,No,Strongly Agree,53,> 60 minutes,1,4,6,2,3,5
+Male,58,1.7,3,2,1,3,2,2,0,10,No,No,Agree,48,16-30 minutes,6,4,1,2,5,3
+Male,61,1.76,2,1,1,2,3,3,0,10,Yes,Yes,Strongly Agree,46,0-15 minutes,1,2,4,5,3,6
+Male,50,1.78,2,3,2,3,1,3,0,12,Yes,Yes,Agree,69,> 60 minutes,3,2,4,6,5,1
+Female,38.4,1.65,0,1,0,1,0,0,0,2,Yes,No,Neutral,15,0-15 minutes,1,5,3,4,2,6
+Female,41,1.57,0,1,0,2,0,0,0,3,Yes,No,Disagree,10,46-60 minutes,2,1,5,3,4,6
+Female,41,1.52,1,1,1,1,0,1,1,6,No,Yes,Agree,26,> 60 minutes,5,2,3,4,6,1
+Female,50,1.73,0,0,1,1,2,2,0,6,Yes,No,Neutral,30,0-15 minutes,4,6,3,1,2,5
+Female,57,1.75,2,0,1,0,1,3,0,7,Yes,No,Neutral,29,16-30 minutes,3,2,1,6,5,4
+Female,50,1.55,1,0,3,2,0,1,0,7,Yes,No,Disagree,21,16-30 minutes,6,2,3,4,5,1
+Female,40,1.53,0,3,1,1,2,0,0,7,Yes,No,Agree,25,0-15 minutes,1,2,4,5,3,6
+Female,43,1.61,0,2,3,0,2,1,0,8,Yes,No,Strongly Agree,31,> 60 minutes,5,1,6,3,2,4
+Female,44,1.62,1,2,2,0,3,0,0,8,Yes,No,Strongly Agree,42,0-15 minutes,5,2,3,4,6,1
+Female,39,1.64,3,0,2,2,0,1,0,8,Yes,No,Agree,39,31-45 minutes,3,2,1,6,5,4
+Female,40,1.61,1,3,2,1,0,2,0,9,Yes,No,Agree,60,16-30 minutes,3,2,4,6,5,1
+Female,45,1.57,1,2,2,1,1,2,0,9,Yes,No,Agree,60,0-15 minutes,1,5,6,4,2,3
+Female,43,1.52,3,3,0,2,1,0,0,9,Yes,No,Strongly Agree,48,> 60 minutes,6,2,3,4,5,1
+Female,47,1.71,2,0,0,2,3,3,0,10,Yes,No,Agree,48,31-45 minutes,1,2,4,5,3,6
+Female,45,1.65,1,0,3,2,1,3,0,10,Yes,Yes,Neutral,55,31-45 minutes,1,5,3,4,2,6
+Female,43,1.63,1,1,1,3,3,1,0,10,Yes,Yes,Disagree,58,> 60 minutes,4,6,3,1,2,5
+Female,38,1.56,3,1,0,3,3,2,0,12,Yes,Yes,Agree,73,31-45 minutes,3,2,1,6,5,4
+Female,40,1.52,3,0,3,2,2,3,0,13,Yes,No,Agree,68,0-15 minutes,6,4,1,2,5,3
+Male,54,1.67,1,1,3,1,2,0,0,8,Yes,No,Neutral,35,31-45 minutes,2,3,6,5,4,1
+Male,69,1.68,0,1,2,0,0,1,1,5,Yes,No,Strongly Agree,10,0-15 minutes,2,1,6,3,4,5
+Male,72,1.8,2,2,2,3,3,0,2,14,Yes,No,Agree,80,> 60 minutes,1,2,5,3,4,6
+Male,75,1.78,0,1,1,1,0,0,1,4,No,Yes,Agree,13,16-30 minutes,4,6,3,1,2,5
+Male,70,1.8,0,0,0,3,1,0,0,4,Yes,No,Strongly Agree,10,46-60 minutes,2,1,6,5,3,4
+Male,65,1.78,2,0,0,2,1,1,0,6,Yes,No,Agree,29,16-30 minutes,4,6,3,1,2,5
+Male,65,1.75,3,0,3,0,1,0,0,7,Yes,No,Agree,26,0-15 minutes,3,2,4,6,5,1
+Male,60,1.68,1,0,2,3,0,1,0,7,Yes,No,Agree,26,> 60 minutes,1,2,4,5,3,6
+Male,54,1.63,2,1,2,1,0,1,0,7,Yes,No,Agree,41,16-30 minutes,6,4,1,2,5,3
+Male,55,1.65,0,2,1,2,2,1,0,8,Yes,No,Strongly Agree,43,0-15 minutes,4,6,3,1,2,5
+Male,55,1.67,3,0,2,2,2,0,0,9,No,No,Strongly Agree,51,46-60 minutes,1,5,6,4,2,3
+Male,53,1.69,2,2,0,3,2,0,0,9,No,No,Agree,52,16-30 minutes,1,5,3,4,2,6
+Male,60,1.69,2,2,1,3,0,1,0,9,Yes,No,Neutral,60,> 60 minutes,2,3,6,5,4,1
+Male,57,1.68,1,3,2,1,1,2,0,10,Yes,No,Disagree,60,0-15 minutes,1,2,4,5,3,6
+Male,60,1.7,1,2,3,0,2,2,0,10,Yes,No,Agree,55,16-30 minutes,2,1,6,5,3,4
+Male,61,1.73,3,0,2,1,2,2,0,10,Yes,No,Agree,59,0-15 minutes,5,1,6,3,2,4
+Male,63,1.75,1,3,2,2,0,2,0,10,Yes,No,Agree,50,16-30 minutes,1,5,6,4,2,3
+Male,62,1.64,1,3,0,2,3,2,0,11,Yes,No,Agree,70,46-60 minutes,5,2,3,4,6,1
+Male,49,1.68,2,3,0,1,3,2,0,11,Yes,Yes,Agree,70,31-45 minutes,3,2,1,6,5,4
+Male,58,1.72,1,3,2,0,2,3,0,11,Yes,Yes,Agree,64,46-60 minutes,3,2,4,6,5,1
+Male,50,1.59,2,0,2,2,3,3,0,12,Yes,No,Agree,77,> 60 minutes,6,4,1,2,5,3

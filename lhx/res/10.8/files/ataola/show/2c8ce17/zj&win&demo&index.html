@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>window.open</title>
+</head>
+<body>
+<button>a.html</button>
+<button>b.html</button>
+<button>c.html</button>
+<button>d.html</button>
+<button>e.html</button>
+</body>
+<script>
+let window_monitor;
+
+const btns = document.getElementsByTagName('button');
+for (let i = 0; i < btns.length; i++) {
+	btns[i].addEventListener('click', function(e) {
+		const url = e.target.innerText;
+		if (window_monitor) {
+			let { monitor_list, monitor_index } = window_monitor;
+			if (!monitor_list.includes(url)) {
+				if (monitor_list.includes('about:blank')) {
+					for (let i = 0; i < monitor_list.length; i++) {
+						if (monitor_list[i] === 'about:blank') {
+							monitor_list[i] = url;
+							setTimeout(() => {
+								window_monitor.updateMonitor(i, url);
+							}, 1000);
+							break;
+						}
+					}
+				} else {
+					window_monitor.monitor_list[monitor_index] = url;
+					window_monitor.monitor_index = (monitor_index + 1) % monitor_list.length;
+					setTimeout(() => {
+						window_monitor.updateMonitor(monitor_index, url);
+					}, 1000);
+				}
+			}
+		} else {
+			// location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes not support
+			window_monitor = window.open('/zj/win/demo/monitor.html', '_blank', 'width=810,height=500');
+			window_monitor.monitor_list = [url, 'about:blank', 'about:blank', 'about:blank'];
+			window_monitor.monitor_index = 0;
+			setTimeout(() => {
+				window_monitor.updateMonitor(0, url);
+			}, 1000);
+		}
+	});
+}
+
+</script>
+</html>

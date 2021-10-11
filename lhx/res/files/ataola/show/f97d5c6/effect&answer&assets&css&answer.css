@@ -1,0 +1,532 @@
+@charset "utf-8";
+.mtop20 {
+  margin-top: 0.2rem !important;
+}
+.mtop30 {
+  margin-top: 0.3rem !important;
+}
+.mtop90 {
+  margin-top: 0.9rem !important;
+}
+.mbottom10 {
+  margin-bottom: 0.1rem !important;
+}
+.mright0 {
+  margin-right: 0 !important;
+}
+.fsize20 {
+  font-size: 0.2rem !important;
+}
+.padd30 {
+  padding: 0 0.3rem;
+}
+/*
+* 活动规则、答题记录
+*/
+.rule-content {
+  padding: 0.3rem 0.3rem 0.5rem;
+}
+.rule-content .conbox {
+  background: url(../img/20201113bchimg2.png) no-repeat top left;
+  background-size: 100% 100%;
+  padding: 0.7rem;
+  min-height: 11.5rem;
+}
+.conbox p {
+  font-size: 0.28rem;
+  color: #333;
+  line-height: 0.5rem;
+}
+.rule-tit {
+  color: #3348bd;
+  font-size: 0.28rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.1rem;
+}
+.record-content {
+  padding: 0.3rem 0.3rem 0.5rem;
+}
+.record-content .conbox {
+  background: url(../img/20201113bchimg3.png) no-repeat top left;
+  background-size: 100% 100%;
+  padding: 0.7rem;
+  min-height: 11.5rem;
+}
+.recordtj {
+  float: left;
+  width: 33.333%;
+}
+.recordtj span {
+  display: block;
+  text-align: center;
+}
+.record-tab {
+  margin-top: 0.9rem;
+}
+.tab-item {
+  font-size: 0.28rem;
+  color: #666;
+  margin-top: 0.2rem;
+}
+.tab-item div {
+  text-align: center;
+  width: 20%;
+  float: left;
+  height: 0.55rem;
+  line-height: 0.65rem;
+}
+.tab-item div:nth-child(2),
+.tab-item div:nth-child(3) {
+  width: 30%;
+}
+.tab-item-top {
+  font-size: 0.3rem;
+  color: #333;
+}
+.ranknum {
+  font-size: 0.2rem;
+  color: #fff;
+  display: block;
+  width: 0.43rem;
+  height: 0.55rem;
+  background: url(../img/20201114bchimg11.png) no-repeat bottom center;
+  background-size: 100% 100%;
+  margin: 0 auto;
+}
+.ranknum.one {
+  background: url(../img/20201114bchimg8.png) no-repeat center;
+  background-size: 100% 100%;
+}
+.ranknum.two {
+  background: url(../img/20201114bchimg9.png) no-repeat center;
+  background-size: 100% 100%;
+}
+.ranknum.three {
+  background: url(../img/20201114bchimg10.png) no-repeat center;
+  background-size: 100% 100%;
+}
+/*
+* 首页
+*/
+.indexbox {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background: url(../img/20201114bchimg1.png?v=11) no-repeat top center;
+  background-size: 100% 100%;
+}
+.flink {
+  position: absolute;
+  z-index: 100;
+  top: 0.15rem;
+  right: 0;
+  width: 1.28rem;
+}
+.flink a {
+  display: block;
+  width: 1.28rem;
+  height: 0.64rem;
+  background: url(../img/20201114bchimg2.png) no-repeat left;
+  background-size: 1.28rem 0.64rem;
+  font-size: 0.22rem;
+  color: #3348bd;
+  line-height: 0.64rem;
+  padding-left: 0.28rem;
+}
+.indexcon {
+  margin-top: 1.7rem;
+}
+.indexfoot {
+  position: absolute;
+  bottom: 1rem;
+  width: 100%;
+  z-index: 100;
+}
+a.loginbtn {
+  display: block;
+  margin: 0 auto;
+  width: 5.3rem;
+  height: 1.4rem;
+  text-align: center;
+  line-height: 1.4rem;
+  font-size: 0.36rem;
+  color: #3348bd;
+  background: url(../img/20201114bchimg3.png) no-repeat left;
+  background-size: 100% 100%;
+}
+.login {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1000;
+  display: none;
+}
+.mask {
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+}
+.loginbox {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 6.7rem;
+  height: 9rem;
+  margin-top: -4.5rem;
+  margin-left: -3.35rem;
+  background: url(../img/20201114bchimg6.png) no-repeat left;
+  background-size: 100% 100%;
+  z-index: 1001;
+  padding: 0.35rem;
+}
+.closebtn {
+  display: block;
+  width: 0.6rem;
+  height: 0.6rem;
+  background: url(../img/20201114bchimg5.png) no-repeat top;
+  background-size: 100% 100%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 1001;
+  margin-top: -5.3rem;
+  margin-left: 2.75rem;
+}
+.logintit {
+  font-size: 0.56rem;
+  color: #fff;
+}
+.loginform {
+  width: 100%;
+  margin-top: 0.2rem;
+  border-radius: 0.2rem;
+  padding: 0.5rem;
+  background: #fff;
+}
+.yunbtn {
+  width: 1.46rem;
+  height: 0.88rem;
+  display: inline-block;
+  font-size: 0.26rem;
+  color: #999;
+  background: #f4f4f4;
+  text-align: center;
+  line-height: 0.88rem;
+  float: left;
+  border-radius: 0.1rem;
+  margin-left: 0.3rem;
+}
+.yunbtn:first-child {
+  margin-left: 0;
+}
+.yunbtn-on {
+  color: #3849b7;
+  background: url(../img/20201114bchimg7.png) no-repeat center;
+  background-size: 100% 100%;
+}
+.display-b {
+  display: block;
+}
+.display-f {
+  display: flex;
+}
+.login-item input {
+  font-size: 0.28rem;
+  background: #f4f4f4;
+  border-radius: 0.1rem;
+  padding: 0.3rem;
+  height: 0.88rem;
+  flex: 1;
+  width: 100%;
+  display: block;
+}
+.codebtn {
+  width: 1.8rem;
+  height: 0.88rem;
+  line-height: 0.88rem;
+  padding: 0 0.2rem;
+  background: url(../img/yan.png) no-repeat center;
+  background-size: 100% 100%;
+  margin-left: 0.3rem;
+  border-radius: 0.1rem;
+}
+.codebtn.on {
+  background: #f4f4f4;
+  color: #999;
+  cursor: not-allowed;
+}
+.loginanswer {
+  display: block;
+  width: 100%;
+  height: 0.9rem;
+  background: #fff33b;
+  border-radius: 0.5rem;
+  text-align: center;
+  line-height: 0.9rem;
+  font-size: 0.36rem;
+  color: #3248bf;
+  margin-top: 0.4rem;
+}
+/*
+* 答题完成
+*/
+.answer-end-content {
+  padding: 0.4rem;
+}
+.answer-end-content .conbox {
+  margin-top: 0.7rem;
+  background: #fff;
+  border-radius: 0.2rem;
+  padding: 0.5rem;
+  position: relative;
+}
+.answer-end-tit {
+  position: absolute;
+  top: -0.49rem;
+  left: 50%;
+  margin-left: -1.68rem;
+  width: 3.37rem;
+  height: 0.98rem;
+  background: url(../img/20201114bchimg12.png) no-repeat center;
+  background-size: 100% 100%;
+  text-align: center;
+  font-size: 0.4rem;
+  color: #fff;
+  line-height: 0.9rem;
+}
+.gifimg {
+  height: 3.9rem;
+  background: url(../img/AAA.gif) no-repeat center -3rem;
+  background-size: 7.5rem;
+}
+.mark {
+  font-size: 0.38rem;
+  color: #333;
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+.lin40 {
+  line-height: 0.4rem;
+}
+.answer-more {
+  flex: 1;
+  margin: 0.5rem 0.18rem 0 0.3rem;
+  display: block;
+  height: 0.9rem;
+  line-height: 0.9rem;
+  background: #3348bd;
+  border-radius: 0.5rem;
+  text-align: center;
+  color: #fff;
+  font-size: 0.36rem;
+}
+.backindex {
+  flex: 1;
+  margin: 0.5rem 0.3rem 0 0.18rem;
+  display: block;
+  height: 0.9rem;
+  line-height: 0.9rem;
+  background: #ffef38;
+  border-radius: 0.5rem;
+  text-align: center;
+  color: #3348bd;
+  font-size: 0.36rem;
+}
+/*
+* 排队中
+*/
+.loading-content {
+  padding: 0.4rem;
+}
+.loading-content .conbox {
+  background: #fff;
+  border-radius: 0.2rem;
+  min-height: 11rem;
+  padding-top: 2rem;
+}
+/*
+* 答题
+*/
+.answer-content {
+  padding: 0.2rem 0.4rem 0.4rem;
+}
+.notes {
+  font-size: 0.2rem;
+  color: #fff;
+  background: rgba(51, 72, 189, 0.4);
+  border-radius: 0.1rem;
+  min-height: 0.6rem;
+  padding: 0.2rem;
+  text-align: center;
+}
+.answer-content .conbox {
+  background: #fff;
+  border-radius: 0.2rem;
+  min-height: 10rem;
+  margin-top: 0.5rem;
+  padding-top: 0.6rem;
+  padding-bottom: 0.4rem;
+}
+.tinum {
+  float: left;
+  width: 1.66rem;
+  height: 0.7rem;
+  text-align: center;
+  line-height: 0.7rem;
+  font-size: 0.3rem;
+  color: #fff;
+  background: #3348bd;
+  border-radius: 0.5rem;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.yutime {
+  float: right;
+  font-size: 0.36rem;
+  color: #3348bd;
+  margin-right: 0.5rem;
+  line-height: 0.7rem;
+}
+.problem {
+  padding: 0.6rem 0.5rem;
+}
+.problem-tit {
+  font-size: 0.34rem;
+  color: #333;
+  line-height: 0.55rem;
+  margin-bottom: 0.5rem;
+}
+.keyselect {
+  font-size: 0.28rem;
+  color: #333;
+  background: #f5f5f5;
+  padding: 0.25rem 1rem 0.28rem 0.6rem;
+  margin-top: 0.2rem;
+  display: block;
+  width: 100%;
+  border-radius: 0.5rem;
+  border: 0;
+  text-align: left;
+}
+.remark {
+  font-size: 0.28rem;
+  color: #333;
+  background: #f5eb9e;
+  padding: 0.2rem 0.6rem 0.2rem;
+  margin-bottom: 0.2rem;
+  display: none;
+  width: 100%;
+  border-radius: 0.5rem;
+  border: 0;
+  text-align: left;
+}
+.keyselect.on {
+  background: #fe504f url(../img/20201114bchimg15.png) no-repeat right;
+  background-size: 0.8rem 0.3rem;
+  color: #fff;
+}
+.correct.on {
+  background: #24ce90 url(../img/20201114bchimg14.png) no-repeat right;
+  background-size: 0.8rem 0.3rem;
+  color: #fff;
+}
+.nextbtn {
+  margin: 0 0.5rem;
+  display: block;
+  height: 0.88rem;
+  border-radius: 0.5rem;
+  background: #3348bd;
+  color: #fff;
+  font-size: 0.32rem;
+  line-height: 0.88rem;
+  text-align: center;
+}
+
+@media screen and (min-width: 1024px) {
+  .indexfoot {
+    bottom: 0;
+  }
+  .login {
+    position: absolute;
+  }
+  .loginbox {
+    width: 900px;
+    margin-left: -450px;
+    height: 850px;
+    margin-top: -475px;
+    padding: 30px;
+  }
+  a.loginbtn {
+    width: 80%;
+    height: 200px;
+    font-size: 40px;
+    line-height: 200px;
+  }
+  .logintit img {
+    width: 1.2rem !important;
+    height: auto !important;
+  }
+  .closebtn {
+    width: 40px;
+    height: 40px;
+    margin-left: 400px;
+    margin-top: -520px;
+  }
+  .loginform {
+    margin-top: 20px;
+    padding: 30px;
+  }
+  .login-item span {
+    font-size: 24px !important;
+  }
+  .yunbtn {
+    width: 31.666%;
+    height: 120px;
+    line-height: 120px;
+    margin-left: 2%;
+    font-size: 24px;
+  }
+  .login-item input {
+    padding: 10px 20px;
+    height: 100px;
+    font-size: 24px;
+  }
+  .codebtn {
+    width: 180px;
+    height: 100px;
+  }
+  .login-item {
+    margin-top: 20px !important;
+  }
+  .login-item > div {
+    margin-top: 20px !important;
+  }
+  .loginanswer {
+    height: 100px;
+    margin-top: 30px;
+    font-size: 36px;
+    line-height: 100px;
+  }
+  .flink {
+    width: 128px;
+  }
+  .flink a {
+    width: 128px;
+    height: 64px;
+    background-size: 100%;
+    font-size: 20px;
+    line-height: 64px;
+    padding-left: 28px;
+  }
+  .indexcon {
+    margin-top: 170px;
+  }
+  .indexcon p {
+    font-size: 34px !important;
+  }
+  .indexfoot p {
+    font-size: 34px !important;
+  }
+}

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>deep first</title>
+</head>
+<body>
+	<header></header>
+	<aside></aside>
+	<div>
+		<h2>Hello World</h2>
+		<p>test 1</p>
+		<p>test 2</p>
+		<p>test 3</p>
+		<p>test 4</p>
+		<p>test 5</p>
+		<p>test 6</p>
+	</div>
+	<footer></footer>
+</body>
+<script>
+	function deepLogTagNames(parentNode) {
+		console.log(parentNode.tagName);
+		const childNodes = parentNode.childNodes;
+		Array.prototype.filter.call(childNodes, childNode => childNode.tagName).forEach(childNode => {
+			deepLogTagNames(childNode);
+		});
+	}
+
+	deepLogTagNames(document.body);
+</script>
+</html>

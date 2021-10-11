@@ -5,8 +5,8 @@ from bs4 import BeautifulSoup
 from common import getHTML, get_repo_id, save_sth, trans_date_format, save_file, get_user_id
 
 
-def get_commit(user_name, repo_name, branch_name, have_had_commit):
-    print('已进入')
+def get_commit(user_name, repo_name, branch_name, have_had_commit, nick_login):
+    print('已进入', repo_name, '的', branch_name, '分支')
     url = 'https://github.com/' + user_name + '/' + repo_name + '/commits/' + branch_name
     html = getHTML(url)
     soup = BeautifulSoup(html, 'html.parser')
@@ -58,17 +58,39 @@ def get_commit(user_name, repo_name, branch_name, have_had_commit):
             parent_commit = parents[0]['sha'][:7]
         except:
             parent_commit = ''
-
+        '''
         try:
-            author_user_id = get_user_id(comi_js['commit']['author']['name'])
+            author_user_id = comi_js['author']['id']
         except TypeError as e:
             print(repo_name, '的提交', commit_sha, '没有author的id')
             author_user_id = ''
+          
         try:
-            commit_user_id = get_user_id(comi_js['commit']['committer']['name'])
+            commit_user_id = comi_js['committer']['id']
+            i2 = nick_login[comi_js['commit']['committer']['name']]
         except TypeError as e:
             print(repo_name, '的提交', commit_sha, '没有commiter的id')
             commit_user_id = ''
+        '''
+        if comi_js['author'] is None:
+            try:
+                a2 = nick_login[comi_js['commit']['author']['name']]
+                author_user_id = get_user_id(a2)
+            except:
+                author_user_id = ''
+        else:
+             author_user_id = comi_js['author']['id']
+        print('author_user_id:', author_user_id)
+        if comi_js['committer'] is None:
+            try:
+                i2 = nick_login[comi_js['commit']['committer']['name']]
+                commit_user_id = get_user_id(i2)
+            except:
+                commit_user_id = ''
+        else:
+            commit_user_id = comi_js['committer']['id']
+        print('commit_user_id:', commit_user_id)
+
 
         commit_date = comi_js['commit']['committer']['date']
         message = comi_js['commit']['message']
@@ -135,12 +157,17 @@ def get_commit(user_name, repo_name, branch_name, have_had_commit):
             change_file_names.append(file_name)
 
             file_type = change_files[each]['filename'].rpartition('.')[2]
-            if file_type == 'jpg' or file_type == 'png' or file_type == 'svg' or file_type == 'zip' or file_type == 'pdf':
-                continue
+            # if file_type == 'jpg' or file_type == 'png' or file_type == 'svg' or file_type == 'zip' or file_type == 'pdf':
+            #     continue
 
             if file_type == '':
                 file_type = file_name  # 比如Makefile
-            file_id = change_files[each]['sha'][:7]
+            try:
+                file_id = change_files[each]['sha'][:7]
+            except:
+                print(change_files[each])
+                sleep(1)
+                file_id = 'wrong_because_crawl_too_much'
 
             act_map = {'added': '0', 'modified': '1', 'removed': '2', 'renamed': '3'}
             file_action = change_files[each]['status']
@@ -184,9 +211,9 @@ def get_commit(user_name, repo_name, branch_name, have_had_commit):
 
             # NEW 10.2 added文件的爬取
             if file_action == 'added':
-                path = r'D:\\21-22-1\\Database_Practice2\\files\\' + user_name + r'\\' + repo_name + r'\\' + commit_sha[:7]
+                path = r'D:\\21-22-1\\Database_Practice2\\files\\' + user_name + r'\\' + repo_name + r'\\' + commit_sha[:7] + r'\\'
                 real_link = 'https://raw.githubusercontent.com/' + user_name + '/' + repo_name + '/' + commit_sha + '/' + file_path
-                r_html = getHTML(real_link)
+                r_html = getHTML(real_link, 2)
                 save_file(path, r_html, file_path)
             # NEW END
 
@@ -236,3 +263,5 @@ def get_commit_comment(url): # 传入的是api url
 
 # get_commit_comment('https://api.github.com/repos/xinhecuican/githubDB_work/commits/1d497a92a7a84a8a16cda830d0aa3319da74994e/comments')
 # get_all_adddel_lines('tonybaloney', 'wily' , 'e1bcd8dcc1823da3c1d9e4670e68550ac8ac5f77')
+# a = []
+# get_commit('NavaneethDhruvsoft', 'bw-xero-devdocs', 'gh-pages', a)

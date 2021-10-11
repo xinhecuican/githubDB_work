@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DOM-节点操作</title>
+  <link rel="stylesheet" href="../box/assets/taolaui/taolaui.css">
+  <style>
+    html,
+    body {
+      height: 100%;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: rgb(243, 243, 243);
+    }
+
+    #app {
+      width: 100%;
+      height: 100%;
+      box-sizing: border-box;
+    }
+
+    #add {
+      background-color: #4CAF50;
+      border: none;
+      border-radius: 8px;
+      height: 40px;
+      color: #fff;
+      padding: 15px 32px;
+      text-align: center;
+      text-decoration: none;
+      outline: none;
+      font-weight: bold;
+      display: inline-block;
+      box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    }
+
+    #add:hover {
+      cursor: pointer;
+      box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19);
+    }
+
+    #sentence {
+      flex-basis: 60%;
+      height: 200px;
+    }
+
+    .left {
+      width: 200px;
+      height: 200px;
+    }
+
+    .bg {
+      width: 100%;
+      height: 100%;
+      background-image: url('./images/totoro.jpg');
+      background-repeat: no-repeat;
+      background-position: 50% 50%;
+      background-size: cover;
+    }
+
+    .right {
+      flex-grow: 1;
+    }
+
+    .sentence {
+      margin: 10px 0;
+      font-size: 24px;
+    }
+
+    .color1 {
+      background-color: #eb6383;
+    }
+
+    .color2 {
+      background-color: #fa9191;
+    }
+
+    .color3 {
+      background-color: #ffe9c5;
+    }
+
+    .color4 {
+      background-color: #b4f2e1;
+    }
+
+    @media screen and (min-width: 375px) and (max-width: 450px) {
+      #sentence {
+        height: 100px;
+      }
+
+      .left {
+        width: 100px;
+        height: 100px;
+      }
+
+      .sentence {
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <div class="container-fluid">
+      <div class="flex flex-center padding">
+        <div class="section padding flex flex-wrap">
+          <div class="flex flex-full">
+            <h2>箴言：</h2>
+          </div>
+          <div class="flex flex-full flex-space-around flex-middle">
+            <textarea name="" id="sentence"></textarea>
+            <button id="add">添加</button>
+          </div>
+        </div>
+      </div>
+      <div class="flex flex-center padding">
+        <div class="section padding flex flex-middle flex-no-wrap">
+          <div class="left flex flex-fixed flex-middle padding-small">
+            <div class="flex bg"></div>
+          </div>
+          <div class="right flex flex-middle padding-small">
+            <div class="flex sentence">
+              这世界上没有毫无理由的横空出世，所谓的运气好，不过是因为他们时刻准备着而已。那些苟且的时光，那些苦痛的日子，他们不是没有经历，而是你不知道。 -- 《龙猫》
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="sentences" class="flex flex-row flex-wrap flex-center padding-horizontal">
+        <!-- <div class="section sentence padding"></div> -->
+      </div>
+    </div>
+  </div>
+</body>
+
+
+<script>
+  //textarea: https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/textarea
+  const colors = ['color1', 'color2', 'color3', 'color4'];
+  let curIndex = 0;
+  let add = document.getElementById('add');
+  add.onclick = function () {
+    const sentence = document.getElementById('sentence');
+    const sentenceContent = sentence.value;
+    if (sentenceContent.trim().length > 0) {
+      const sentences = document.getElementById('sentences');
+      const item = document.createElement('div');
+      curIndex++;
+      const color = colors[curIndex % colors.length];
+      item.className = `section-nobg sentence padding ${color}`;
+      item.innerText = sentenceContent;
+      sentences.appendChild(item);
+    }
+  }
+</script>
+
+</html>

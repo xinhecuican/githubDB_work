@@ -1,0 +1,173 @@
+﻿package Main_window.User_Server;
+
+import Main_window.Data.Login_data;
+import Main_window.Data.Send_data;
+import Main_window.Main;
+import Main_window.Pop_window.Add_friend_window;
+import Main_window.Separate_panel.Friend_confirm_card;
+import Main_window.Separate_panel.Left_panel;
+import Server.Data.Login_back_data;
+import Server.Data.Search_back_data;
+
+import javax.swing.*;
+import java.io.*;
+import java.net.Socket;
+import java.security.MessageDigest;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * @author: 李子麟
+ * @date: 2021/3/18 9:24
+ **/
+public class User implements Serializable
+{
+    public String name;
+    private int id;
+    private List<User_friend> friends;
+    private List<Friend_confirm_card> confirm_cards;
+
+    public User()
+    {
+        friends = new ArrayList<User_friend>();
+        confirm_cards = new ArrayList<Friend_confirm_card>();
+    }
+
+    public User(String name)
+    {
+        this.name = name;
+    }
+
+    public void send_message(Send_data message)
+    {
+        new Thread(()->
+        {
+            Socket client;
+            try
+            {
+                client = new Socket("192.168.137.1", 10088);
+                OutputStream outToServer = client.getOutputStream();
+                ObjectOutputStream out = new ObjectOutputStream(outToServer);
+                message.my_id = id;
+                out.writeObject(message);
+                if (message.send_to_id == 1) //搜索用户的返回信息
+                {
+                    client.setSoTimeout(30);
+                    InputStream inputStream = client.getInputStream();
+                    ObjectInputStream input_stream = new ObjectInputStream(inputStream);
+                    Search_back_data back_data = (Search_back_data) input_stream.readObject();
+                    if (Add_friend_window.current != null)
+                    {
+                        synchronized (this)
+                        {
+                            Add_friend_window.current.add_friend_card(back_data);
+                        }
+                    }
+                    client.close();
+                }
+                client.close();
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }).start();
+    }
+
+    /**
+     *
+     * @param host：自己的host
+     * @param port： 自己的port
+     * @param user_id
+     * @param is_register: 如果是，为注册信息
+     * @param password
+     */
+    public void send_login_message(String host, int port,int user_id, boolean is_register, String password)
+    {
+
+        new Thread(()->
+        {
+            try
+            {
+                Socket socket = new Socket("192.168.137.1", 10087);
+                OutputStream outToServer = socket.getOutputStream();
+                ObjectOutputStream out = new ObjectOutputStream(outToServer);
+                MessageDigest md5 = null;
+                try
+                {
+                    md5 = MessageDigest.getInstance("MD5");
+                } catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+                //加密开始
+                char[] charArray = password.toCharArray();
+                byte[] byteArray = new byte[charArray.length];
+
+                for (int i = 0; i < charArray.length; i++)
+                    byteArray[i] = (byte) charArray[i];
+                assert md5 != null;
+                byte[] md5Bytes = md5.digest(byteArray);
+                StringBuffer hexValue = new StringBuffer();
+                for (int i = 0; i < md5Bytes.length; i++)
+                {
+                    int val = ((int) md5Bytes[i]) & 0xff;
+                    if (val < 16)
+                        hexValue.append("0");
+                    hexValue.append(Integer.toHexString(val));
+                }
+                char[] a = hexValue.toString().toCharArray();
+                for (int i = 0; i < a.length; i++)
+                {
+                    a[i] = (char) (a[i] ^ 't');
+                }
+                String s = new String(a);
+                //加密结束
+                Login_data login_data = new Login_data(host, port, user_id, s, Main.main_user.name);
+                login_data.is_regesiter = is_register;
+                out.writeObject(login_data);
+                socket.setSoTimeout(120);
+                InputStream inputStream = socket.getInputStream();
+                ObjectInputStream input = new ObjectInputStream(inputStream);
+                Login_back_data back_data = (Login_back_data)input.readObject();
+                if(back_data.is_error)
+                {
+                    Main.login_window.set_text("用户名或密码错误");
+                }
+                else
+                {
+                    Main.is_login = true;
+                    if(is_register)
+                    {
+                        JOptionPane.showMessageDialog(null, "成功注册\n 账号id为"+back_data.id,
+                                "消息", JOptionPane.INFORMATION_MESSAGE);
+                        id = back_data.id;
+                    }
+                    else//登录成功
+                    {
+
+                    }
+                }
+            }
+            catch (IOException | ClassNotFoundException e)
+            {
+                e.printStackTrace();
+            }
+        }).start();
+    }
+
+    public void load_from_data(int id)
+    {
+
+    }
+
+    public void add_confirmed_card(Friend_confirm_card card)
+    {
+        confirm_cards.add(card);
+    }
+
+    public int getId()
+    {
+        return id;
+    }
+}

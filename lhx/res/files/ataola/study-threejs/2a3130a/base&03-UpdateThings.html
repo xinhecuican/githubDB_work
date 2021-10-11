@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>three.js-How to Update Things</title>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+
+</body>
+<script type="text/javascript" src="../lib/three.js"></script>
+<script type="text/javascript">
+    let renderer, scene, camera;
+    let line;
+    let MAX_POINTS = 500;
+    let drawCount;
+
+    function init() {
+        // renderer
+        renderer = new THREE.WebGLRenderer();
+        renderer.setPixelRatio(window.devicePixelRatio);
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        // scene
+        scene = new THREE.Scene();
+
+        // camera
+        camera = new THREE.PerspectiveCamera(30, window.innerWidth / window.innerHeight, 1, 10000);
+        camera.position.set(0, 0, 1000);
+
+        // geometry
+        const geometry = new THREE.BufferGeometry();
+
+        // attributes
+        const positions = new Float32Array(MAX_POINTS * 3);
+        geometry.addAttribute('position', new THREE.BufferAttribute(positions, 3));
+
+        // drawCalls
+        drawCount = 2
+        geometry.setDrawRange(0, drawCount);
+
+        // material
+        const material = new THREE.LineBasicMaterial({color: 0xff0000});
+
+        // line
+        line = new THREE.Line(geometry, material);
+        scene.add(line);
+
+        // update position
+        updatePositions();
+    }
+
+    function updatePositions() {
+        const positions = line.geometry.attributes.position.array;
+        let x, y, z, index;
+        x = y = z = index = 0;
+        for (let i = 0, l = MAX_POINTS; i < l; i++) {
+            positions[index++] = x;
+            positions[index++] = y;
+            positions[index++] = z;
+
+            x += (Math.random() - 0.5) * 30;
+            y += (Math.random() - 0.5) * 30;
+            z += (Math.random() - 0.5) * 30;
+        }
+    }
+
+    function render() {
+        renderer.render(scene, camera);
+    }
+
+    function animate() {
+        requestAnimationFrame(animate);
+        drawCount = (drawCount + 1) % MAX_POINTS;
+        line.geometry.setDrawRange(0, drawCount);
+        if (drawCount === 0) {
+            updatePositions();
+            line.geometry.attributes.position.needsUpdate = true;
+            line.material.color.setHSL(Math.random(), 1, 0.5);
+        }
+        render();
+    }
+
+    init();
+    animate();
+</script>
+</html>

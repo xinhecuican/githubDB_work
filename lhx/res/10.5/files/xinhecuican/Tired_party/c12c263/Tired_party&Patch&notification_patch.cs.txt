@@ -1,0 +1,47 @@
+﻿﻿using HarmonyLib;
+using MCM.Abstractions.Settings.Base.Global;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using TaleWorlds.CampaignSystem;
+using TaleWorlds.CampaignSystem.Actions;
+using TaleWorlds.CampaignSystem.SandBox.CampaignBehaviors;
+
+namespace Tired_party.Patch
+{
+    [HarmonyPatch(typeof(DefaultNotificationsCampaignBehavior))]
+    class notification_patch
+    {
+        [HarmonyPatch("OnPrisonerTaken")]
+        [HarmonyPrefix]
+        public static void on_prison_taken_fix(DefaultNotificationsCampaignBehavior __instance, PartyBase capturer, Hero prisoner)
+        {
+            if(GlobalSettings<mod_setting>.Instance.is_ban_capture_information)
+            {
+                return;
+            }
+        }
+
+        [HarmonyPatch("OnPrisonerReleased")]
+        [HarmonyPrefix]
+        public static void on_prison_release_fix(Hero hero, PartyBase party, IFaction capturerFaction, EndCaptivityDetail detail)
+        {
+            if(GlobalSettings<mod_setting>.Instance.is_ban_release_information && hero.Clan != Clan.PlayerClan)
+            {
+                return;
+            }
+        }
+
+        [HarmonyPatch("OnHeroesMarried")]
+        [HarmonyPrefix]
+        public static void on_heros_merried_fix(Hero firstHero, Hero secondHero, bool showNotification)
+        {
+            if(GlobalSettings<mod_setting>.Instance.is_ban_married_information)
+            {
+                return;
+            }
+        }
+    }
+}

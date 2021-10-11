@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>盒模型</title>
+    <link type="text/css" rel="stylesheet" href="./assets/taolaui/taolaui.css">
+    <style>
+
+        html, body {
+            height: 100%;
+        }
+
+        .box-container {
+            height: 100%;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .border-box {
+            width: 100px;
+            height: 100px;
+            border: 10px solid;
+            box-sizing: border-box;
+        }
+
+        .content-box {
+            width: 100px;
+            height: 100px;
+            border: 10px solid;
+        }
+
+        img {
+            width: auto;
+            height: auto;
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+    </style>
+</head>
+<body>
+   <div class="box-container">
+       <div>
+            <h2>border-box</h2>
+            <div class="padding bg-yellow border-box">
+                <img src="./assets/images/ataola.png" alt="">
+            </div>
+       </div>
+        <div>
+					  <h2>content-box</h2>
+            <div class="padding bg-yellow content-box">
+                <img src="./assets/images/ataola.png" alt="">
+            </div>
+        </div>
+   </div>
+</body>
+</html>

@@ -1,0 +1,18 @@
+<%- include('./partials/header');  %>
+
+<div class="container col-md-6">
+    <form action="/register" method="POST">
+        <div class="form-group">
+          <label for="userdNameReg">Username</label>
+          <input type="text" class="form-control" id="userdNameReg" name="username">
+        </div>
+        <div class="form-group">
+          <label for="userPasswordReg">Password</label>
+          <input type="password" class="form-control" id="userPasswordReg" name="password">
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Register</button>
+      </form>
+    <a href="/campgrounds">Go back</a>
+</div>
+
+<%- include('./partials/footer'); %>

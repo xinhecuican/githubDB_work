@@ -1,0 +1,50 @@
+﻿#!/bin/python3
+from gi.repository import Gtk, GObject
+import socket
+import time
+import random
+
+# Variable
+TIMER_INTERVAL = 1000
+UPDATER_INTERVAL = 5000
+
+# String For Glade
+BUILDER_FILE_STR = "shower.glade"
+TREEVIEW_STR = "treeview"
+WINDOW_STR = "window"
+LABEL_STR = "label"
+
+# Events
+DELETE_EVENT = "delete-event"
+
+
+def update_interval():
+    print("update_interval")
+    # Update The Timer
+    
+    return True
+
+def update_table(): 
+    print("update_table")
+    # Open Socket to Server and Read from Socket
+    
+    return True
+
+builder = Gtk.Builder()
+builder.add_from_file(BUILDER_FILE_STR)
+
+# Loading Window
+window = builder.get_object(WINDOW_STR)
+window.connect(DELETE_EVENT, Gtk.main_quit)
+
+# Loading TreeView
+treeview = builder.get_object(WINDOW_STR)
+
+# Timer Label
+timer = builder.get_object(LABEL_STR)
+
+GObject.timeout_add(TIMER_INTERVAL, update_interval)
+GObject.timeout_add(UPDATER_INTERVAL, update_table)
+
+window.show_all()
+Gtk.main()

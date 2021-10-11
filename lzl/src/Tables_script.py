@@ -1,3 +1,4 @@
+
 # 为了描述user_info的结构加上了password，但是实际上无法获得数据，直接使用default值即可
 # status: 状态，可以在主页的用户头像旁设置
 table_user_info = '''create table User_info(

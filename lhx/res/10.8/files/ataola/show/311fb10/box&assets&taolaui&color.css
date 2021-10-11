@@ -1,0 +1,36 @@
+/*
+ * @Author: ataola 
+ * @Date: 2020-04-19 00:01:41 
+ * @Last Modified by:   ataola 
+ * @Last Modified time: 2020-04-19 00:01:41 
+ */
+
+/* background-color */
+.bg-blue {
+    background-color: #069;
+}
+
+.bg-yellow {
+    background-color: #FDF002;
+}
+
+.bg-red {
+    background-color: #FE6666;
+}
+
+.bg-white {
+    background-color: #FFF;
+}
+
+.bg-black {
+    background-color: #000;
+}
+
+.bg-gray {
+    background-color: #CCC;
+}
+
+.bg-green {
+    background-color: #A3CBA9;
+}
+

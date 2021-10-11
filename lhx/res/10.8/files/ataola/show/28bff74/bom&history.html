@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>history</title>
+</head>
+
+<body>
+	<h2 align="center">观察history对象</h2>
+	<p><a href="javascript:;" onclick="history.go('https://www.baidu.com')">百度一下没啥用</a></p>
+	<p><a href="javascript:;" onclick="goToBaiDu()">死循环去百度</a></p>
+	<p><a href="https://www.baidu.com">真的去百度了</a></p>
+	<p><a href="javascript:;" onclick="history.go(-1)">返回上一步</a></p>
+	<p><a href="javascript:;" onclick="history.go(0)">go(0)</a></p>
+	<p><a href="javascript:;" onclick="history.go(1)">go(1)</a></p>
+</body>
+<script>
+	function goToBaiDu() {
+		history.go('https://www.baidu.com');
+	}
+	let str = '';
+	for (const key in history) {
+		const type = typeof history[key];
+		if (['string', 'number', 'boolean'].includes(type)) {
+			str = str + `history ${key}: ${history[key]}\n\n`;
+		} else {
+			str = str + `history ${key}: ${type}\n\n`;
+		}
+	}
+	const p = document.createElement('p');
+	p.innerText = str;
+	document.body.append(p);
+</script>
+
+</html>

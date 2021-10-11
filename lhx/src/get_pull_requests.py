@@ -10,7 +10,11 @@ from common import getHTML, save_sth, get_user_id
 def get_open_pulls(user_name, repo_name, repo_id):
     url = 'https://github.com/' + user_name + '/' + repo_name + '/pulls' # 网页
     html = getHTML(url)
-    soup = BeautifulSoup(html, 'html.parser')
+    try:
+        soup = BeautifulSoup(html, 'html.parser')
+    except TypeError:
+        print('仓库', repo_name, '没有open pull')
+        return
 
     all_question = soup.find_all('div', class_='flex-auto min-width-0 p-2 pr-3 pr-md-2')
     # each问题

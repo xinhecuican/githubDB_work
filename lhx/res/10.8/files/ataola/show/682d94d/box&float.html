@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>float - 浮动布局</title>
+    <link type="text/css" rel="stylesheet" href="./assets/taolaui/taolaui.css">
+    <style>
+        html,
+        body {
+            height: 100%;
+        }
+
+        body {
+            padding: 0;
+            margin: 0;
+            background-color: rgb(243, 243, 243);
+        }
+
+        .header {
+            width: 100%;
+            height: 64px;
+            background-image: linear-gradient(-15deg, #84fab0 0%, #8fd3f4 100%);
+        }
+
+        .header-title {
+            overflow: hidden;
+        }
+
+        .header-img {
+            height: 100%;
+        }
+
+        .sidebar {
+            width: 160px;
+            height: auto;
+            background-color: #fff;
+            margin: 10px;
+        }
+
+        .sidebar-link:active {
+            background-color: #8fd3f4;
+            color: red;
+            font-size: 18px;
+        }
+
+        .sidebar-link:hover {
+            background-color: #8fd3f4;
+            color: red;
+            font-size: 18px;
+        }
+
+        .main {
+            margin-left: 160px;
+        }
+
+        .img {
+            width: 200px;
+            height: 200px;
+        }
+
+        .example0 {
+            margin: 10px;
+        }
+
+        .example1 {
+            margin: 10px;
+        }
+
+        .example2 {
+            overflow: hidden;
+            margin: 10px;
+        }
+
+        .example3 {
+            display: inline-block;
+            margin: 10px;
+        }
+
+        .example5 {
+            overflow: hidden;
+            margin: 10px;
+        }
+
+        .example6 {
+            overflow: hidden;
+            margin: 10px;
+        }
+
+        .example7 {
+            overflow: hidden;
+            margin: 10px;
+        }
+
+        .example8 {
+            overflow: hidden;
+            margin: 10px;
+        }
+
+        .example9 {
+            overflow: hidden;
+            margin: 10px;
+        }
+
+        .example10 {
+            overflow: hidden;
+            margin: 10px;
+        }
+
+        .example11 {
+            margin: 10px;
+        }
+
+        .example12 {
+            margin: 400px 10px 0 10px;
+        }
+
+        .example13 {
+            margin: 10px;
+        }
+
+        .img-reverse {
+            transform: rotate(-180deg);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <div class="header-title float-left">
+            <div class="float-left font-red font-blod padding-small text-headline">浮动布局</div>
+            <div class="float-left font-red font-blod padding">左浮动</div>
+            <div class="float-left font-red font-blod padding">右浮动</div>
+            <div class="float-left font-red font-blod padding">清除浮动</div>
+        </div>
+        <div class="header-img padding-mini border-box float-right">
+            <img class="img-auto circle" src="./assets/images/ataola.png" alt="">
+        </div>
+    </div>
+    <div class="padding">
+        <div class="sidebar text-center round-large overflow-hide float-left">
+            <div class="sidebar-link padding-small pointer"> 春天走了 </div>
+            <div class="sidebar-link padding-small pointer"> 夏天来了 </div>
+            <div class="sidebar-link padding-small pointer"> 秋天也快了 </div>
+            <div class="sidebar-link padding-small pointer"> 冬天还远吗 </div>
+        </div>
+        <div class="main padding-horizontal">
+            <div class="example0 padding-small bg-white round-large">
+                <h2>考点分析：</h2>
+                <p>1、BFC触发机制与结果</p>
+                <p>2、margin上下边距合并问题</p>
+                <p>3、清除浮动</p>
+                <p>3、利用浮动实现两栏布局</p>
+            </div>
+            <div class="example0 padding-small bg-white round-large">
+                <div class="half-width">
+                    <p>送给你小心心</p>
+                    <p>送你花一朵</p>
+                    <p>你在我生命中</p>
+                    <p>太多的感动</p>
+                    <p>你是我的天使</p>
+                    <p>一路指回引我</p>
+                    <p>无论岁月变幻</p>
+                    <p>爱你唱成歌</p>
+                </div>
+                <div class="half-width">
+                    <img class="img" src="./assets/images/ataola.png" alt="">
+                </div>
+            </div>
+            <!-- <div class="example1 padding-small bg-white round-large">
+               <div class="half-width float-right">
+                    <p>送给你小心心</p>
+                    <p>送你花一朵</p>
+                    <p>你在我生命中</p>
+                    <p>太多的感动</p>
+                    <p>你是我的天使</p>
+                    <p>一路指回引我</p>
+                    <p>无论岁月变幻</p>
+                    <p>爱你唱成歌</p> 
+               </div>
+               <div class="half-width">
+                   <img class="img" src="./assets/images/ataola.png" alt="">
+               </div>
+            </div> -->
+            <div class="example2 padding-small bg-white round-large">
+                <div class="half-width float-right">
+                    <p>送给你小心心</p>
+                    <p>送你花一朵</p>
+                    <p>你在我生命中</p>
+                    <p>太多的感动</p>
+                    <p>你是我的天使</p>
+                    <p>一路指回引我</p>
+                    <p>无论岁月变幻</p>
+                    <p>爱你唱成歌</p>
+                </div>
+                <div class="half-width">
+                    <img class="img" src="./assets/images/ataola.png" alt="">
+                </div>
+            </div>
+            <div class="example3 padding-small bg-white round-large">
+                <div class="half-width float-right">
+                    <p>送给你小心心度</p>
+                    <p>送你花一朵</p>
+                    <p>你在我生命中</p>
+                    <p>太多的感动</p>
+                    <p>你是我的天使</p>
+                    <p>一路指回引我</p>
+                    <p>无论岁月变幻</p>
+                    <p>爱你唱成歌</p>
+                </div>
+                <div class="half-width">
+                    <img class="img" src="./assets/images/ataola.png" alt="">
+                </div>
+            </div>
+            <!-- <div class="example4 padding-small bg-white round-large">
+                <div class="half-width">
+                    <p>送给你小心心</p>
+                    <p>送你花一朵</p>
+                    <p>你在我生命中</p>
+                    <p>太多的感动</p>
+                    <p>你是我的天使</p>
+                    <p>一路指回引我</p>
+                    <p>无论岁月变幻</p>
+                    <p>爱你唱成歌</p> 
+                </div>
+                <div class="half-width float-left">
+                    <img class="img" src="./assets/images/ataola.png" alt="">
+                </div>
+             </div> -->
+            <div class="example5 padding-small bg-white round-large">
+                <div class="half-width">
+                    <p>送给你小心心</p>
+                    <p>送你花一朵</p>
+                    <p>你在我生命中</p>
+                    <p>太多的感动</p>
+                    <p>你是我的天使</p>
+                    <p>一路指回引我</p>
+                    <p>无论岁月变幻</p>
+                    <p>爱你唱成歌</p>
+                </div>
+                <div class="half-width float-left">
+                    <img class="img" src="./assets/images/ataola.png" alt="">
+                </div>
+            </div>
+            <div class="example6 padding-small bg-white round-large">
+                <div class="half-width float-right">
+                    <p>送给你小心心</p>
+                    <p>送你花一朵</p>
+                    <p>你在我生命中</p>
+                    <p>太多的感动</p>
+                    <p>你是我的天使</p>
+                    <p>一路指回引我</p>
+                    <p>无论岁月变幻</p>
+                    <p>爱你唱成歌</p>
+                </div>
+                <div class="half-width float-left">
+                    <img class="img" src="./assets/images/ataola.png" alt="">
+                </div>
+            </div>
+
+            <div class="example7 padding-small bg-white round-large">
+                <div class="half-width float-left">
+                    <p>送给你小心心</p>
+                    <p>送你花一朵</p>
+                    <p>你在我生命中</p>
+                    <p>太多的感动</p>
+                    <p>你是我的天使</p>
+                    <p>一路指回引我</p>
+                    <p>无论岁月变幻</p>
+                    <p>爱你唱成歌</p>
+                </div>
+                <div class="half-width float-right">
+                    <img class="img" src="./assets/images/ataola.png" alt="">
+                </div>
+            </div>
+
+            <div class="example8 padding-small bg-white round-large">
+                <div class="half-width float-left">
+                    <p>送给你小心心</p>
+                    <p>送你花一朵</p>
+                    <p>你在我生命中</p>
+                    <p>太多的感动</p>
+                    <p>你是我的天使</p>
+                    <p>一路指回引我</p>
+                    <p>无论岁月变幻</p>
+                    <p>爱你唱成歌</p>
+                </div>
+                <div class="half-width float-left">
+                    <img class="img" src="./assets/images/ataola.png" alt="">
+                </div>
+            </div>
+
+
+            <div class="example9 padding-small bg-white round-large">
+                <div class="half-width float-right">
+                    <p>送给你小心心</p>
+                    <p>送你花一朵</p>
+                    <p>你在我生命中</p>
+                    <p>太多的感动</p>
+                    <p>你是我的天使</p>
+                    <p>一路指回引我</p>
+                    <p>无论岁月变幻</p>
+                    <p>爱你唱成歌</p>
+                </div>
+                <div class="half-width float-right">
+                    <img class="img" src="./assets/images/ataola.png" alt="">
+                </div>
+            </div>
+
+            <div class="example10 padding-small bg-white round-large">
+                <div class="half-width float-right">
+                    <p>送给你小心心</p>
+                    <p>送你花一朵</p>
+                    <p>你在我生命中</p>
+                    <p>太多的感动</p>
+                    <p>你是我的天使</p>
+                    <p>一路指回引我</p>
+                    <p>无论岁月变幻</p>
+                    <p>爱你唱成歌</p>
+                </div>
+                <div class="half-width float-right">
+                    <img class="img float-right" src="./assets/images/ataola.png" alt="">
+                </div>
+            </div>
+
+            <div class="example10 padding-small bg-white round-large">
+                <div class="half-width">
+                    <p>送给你小心心</p>
+                    <p>送你花一朵</p>
+                    <p>你在我生命中</p>
+                    <p>太多的感动</p>
+                    <p>你是我的天使</p>
+                    <p>一路指回引我</p>
+                    <p>无论岁月变幻</p>
+                    <p>爱你唱成歌</p>
+                </div>
+                <div class="half-width">
+                    <img class="img float-right" src="./assets/images/ataola.png" alt="">
+                </div>
+                <div class="half-width float-right">
+                    <p>送给你小心心</p>
+                    <p>送你花一朵</p>
+                    <p>你在我生命中</p>
+                    <p>太多的感动</p>
+                    <p>你是我的天使</p>
+                    <p>一路指回引我</p>
+                    <p>无论岁月变幻</p>
+                    <p>爱你唱成歌</p>
+                </div>
+                <div class="half-width float-right">
+                    <img class="img float-right" src="./assets/images/ataola.png" alt="">
+                </div>
+            </div>
+
+            <div class="example10 padding-small bg-white round-large">
+                <div class="half-width float-right">
+                    <p>送给你小心心</p>
+                    <p>送你花一朵</p>
+                    <p>你在我生命中</p>
+                    <p>太多的感动</p>
+                    <p>你是我的天使</p>
+                    <p>一路指回引我</p>
+                    <p>无论岁月变幻</p>
+                    <p>爱你唱成歌</p>
+                </div>
+                <div class="half-width float-right">
+                    <img class="img float-right" src="./assets/images/ataola.png" alt="">
+                </div>
+                <div class="half-width">
+                    <p>送给你小心心</p>
+                    <p>送你花一朵</p>
+                    <p>你在我生命中</p>
+                    <p>太多的感动</p>
+                    <p>你是我的天使</p>
+                    <p>一路指回引我</p>
+                    <p>无论岁月变幻</p>
+                    <p>爱你唱成歌</p>
+                </div>
+                <div class="half-width">
+                    <img class="img float-right" src="./assets/images/ataola.png" alt="">
+                </div>
+            </div>
+
+            <div class="example11 padding-small bg-white round-large">
+                <div class="half-width float-right">
+                    <p>送给你小心心</p>
+                    <p>送你花一朵</p>
+                    <p>你在我生命中</p>
+                    <p>太多的感动</p>
+                    <p>你是我的天使</p>
+                    <p>一路指回引我</p>
+                    <p>无论岁月变幻</p>
+                    <p>爱你唱成歌</p>
+                </div>
+                <div class="half-width float-right">
+                    <img class="img" src="./assets/images/ataola.png" alt="">
+                </div>
+            </div>
+
+            <div class="example12 padding-small bg-white round-large">
+                <div class="half-width float-right">
+                    <p>送给你小心心</p>
+                    <p>送你花一朵</p>
+                    <p>你在我生命中</p>
+                    <p>太多的感动</p>
+                    <p>你是我的天使</p>
+                    <p>一路指回引我</p>
+                    <p>无论岁月变幻</p>
+                    <p>爱你唱成歌</p>
+                </div>
+                <div class="half-width float-right">
+                    <img class="img" src="./assets/images/ataola.png" alt="">
+                </div>
+                <div class="clearfix"></div>
+            </div>
+
+            <div class="example13 padding-small bg-white round-large">
+                <div class="half-width float-right">
+                    <p>送给你小心心</p>
+                    <p>送你花一朵</p>
+                    <p>你在我生命中</p>
+                    <p>太多的感动</p>
+                    <p>你是我的天使</p>
+                    <p>一路指回引我</p>
+                    <p>无论岁月变幻</p>
+                    <p>爱你唱成歌</p>
+                </div>
+                <div class="half-width">
+                    <p>送给你小心心</p>
+                    <p>送你花一朵</p>
+                    <p>你在我生命中</p>
+                    <p>太多的感动</p>
+                    <p>你是我的天使</p>
+                    <p>一路指回引我</p>
+                    <p>无论岁月变幻</p>
+                    <p>爱你唱成歌</p>
+                </div>
+                <div class="half-width float-right">
+                    <img class="img" src="./assets/images/ataola.png" alt="">
+                </div>
+                <div class="half-width">
+                    <img class="img img-reverse" src="./assets/images/ataola.png" alt="">
+                </div>
+                <div class="clearfix"></div>
+            </div>
+
+            <div class="example13 padding-small bg-white round-large">
+                <div class="half-width float-right">
+                    <p>送给你小心心</p>
+                    <p>送你花一朵</p>
+                    <p>你在我生命中</p>
+                    <p>太多的感动</p>
+                    <p>你是我的天使</p>
+                    <p>一路指回引我</p>
+                    <p>无论岁月变幻</p>
+                    <p>爱你唱成歌</p>
+                </div>
+                <div class="half-width float-right">
+                    <p>送给你小心心</p>
+                    <p>送你花一朵</p>
+                    <p>你在我生命中</p>
+                    <p>太多的感动</p>
+                    <p>你是我的天使</p>
+                    <p>一路指回引我</p>
+                    <p>无论岁月变幻</p>
+                    <p>爱你唱成歌</p>
+                </div>
+                <div class="half-width float-right">
+                    <img class="img" src="./assets/images/ataola.png" alt="">
+                </div>
+                <div class="half-width float-right">
+                    <img class="img img-reverse" src="./assets/images/ataola.png" alt="">
+                </div>
+                <div class="clearfix"></div>
+            </div>
+
+            <div class="example13 padding-small bg-white round-large">
+                <div class="half-width float-right">
+                    <p>送给你小心心</p>
+                    <p>送你花一朵</p>
+                    <p>你在我生命中</p>
+                    <p>太多的感动</p>
+                    <p>你是我的天使</p>
+                    <p>一路指回引我</p>
+                    <p>无论岁月变幻</p>
+                    <p>爱你唱成歌</p>
+                </div>
+                <div class="half-width float-right">
+                    <img class="img" src="./assets/images/ataola.png" alt="">
+                </div>
+                <div class="half-width">
+                    <img class="img img-reverse" src="./assets/images/ataola.png" alt="">
+                </div>
+                <div class="half-width">
+                    <p>送给你小心心</p>
+                    <p>送你花一朵</p>
+                    <p>你在我生命中</p>
+                    <p>太多的感动</p>
+                    <p>你是我的天使</p>
+                    <p>一路指回引我</p>
+                    <p>无论岁月变幻</p>
+                    <p>爱你唱成歌</p>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+
+            <div class="example13 padding-small bg-white round-large">
+                <div class="half-width">
+                    <img class="img img-reverse" src="./assets/images/ataola.png" alt="">
+                </div>
+                <div class="half-width">
+                    <p>送给你小心心</p>
+                    <p>送你花一朵</p>
+                    <p>你在我生命中</p>
+                    <p>太多的感动</p>
+                    <p>你是我的天使</p>
+                    <p>一路指回引我</p>
+                    <p>无论岁月变幻</p>
+                    <p>爱你唱成歌</p>
+                </div>
+                <div class="half-width float-right">
+                    <p>送给你小心心</p>
+                    <p>送你花一朵</p>
+                    <p>你在我生命中</p>
+                    <p>太多的感动</p>
+                    <p>你是我的天使</p>
+                    <p>一路指回引我</p>
+                    <p>无论岁月变幻</p>
+                    <p>爱你唱成歌</p>
+                </div>
+                <div class="half-width float-right">
+                    <img class="img" src="./assets/images/ataola.png" alt="">
+                </div>
+                <div class="clearfix"></div>
+            </div>
+
+
+            
+        </div>
+    </div>
+</body>
+
+</html>

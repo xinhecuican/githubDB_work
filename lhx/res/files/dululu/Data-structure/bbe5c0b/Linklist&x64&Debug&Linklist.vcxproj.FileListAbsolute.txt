@@ -1,0 +1,2 @@
+D:\C\C\Data Structure\Linklist\x64\Debug\Linklist.exe
+D:\C\C\Data Structure\Linklist\x64\Debug\Linklist.pdb

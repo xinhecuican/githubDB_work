@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>export excel base on jquery.tableExport</title>
+	<link rel="stylesheet" href="../libs/font-awesome-4.7.0/css/font-awesome.min.css">
+	<style>
+		table  {
+			width: 920px;
+			margin: 0 auto;
+		}
+		table,th, td {
+			border: 1px solid #000;
+			border-collapse: collapse;
+			text-align: center;
+			height: 60px;
+		}
+
+		.type-area-box {
+			height: 100%;
+			position: relative;
+		}
+		.type {
+			font-style: normal;
+			display: block;
+			position: absolute;
+			top: 24px;
+			right: 12px;
+			width: 35px;
+		}
+		.area {
+			font-style: normal;
+			display: block;
+			position: absolute;
+			bottom: 20px;
+			left: 8px;
+			width: 55px;
+		}
+		span {
+			display: block;
+			width: 164px;
+			height: 1px;
+			background: #000;
+			transform: rotate(50deg);
+			position: absolute;
+			top: 62px;
+			left: -29px;
+		}
+
+		.excel-export {
+			background-color: #4CAF50;
+			border: none;
+			border-radius: 10px;
+			color: white;
+			padding: 10px 10px;
+			margin: 10px 0;
+			text-align: center;
+			text-decoration: none;
+			display: inline-block;
+			font-size: 16px;
+			outline: none;
+			cursor: pointer;
+		}
+
+		.export-excel-operate {
+			position: absolute;
+			right: 50px;
+			display: grid;
+		}
+
+		#exportExcelTwo, #exportExcelThree {
+			position: absolute;
+			right: 20px;
+		}
+
+	</style>
+</head>
+<body>
+	<div id="tableBox">
+		<div class="export-excel-operate">
+			<button id="exportExcelOneXls" class="excel-export"><i class="fa fa-file-excel-o" aria-hidden="true"></i> xls</button>
+			<button id="exportExcelOneXlsx" class="excel-export"><i class="fa fa-file-excel-o" aria-hidden="true"></i> xlsx</button>
+			<button id="exportExcelOneCsv" class="excel-export"><i class="fa fa-file-excel-o" aria-hidden="true"></i> csv</button>
+			<button id="exportExcelOneXml" class="excel-export"><i class="fa fa-file-code-o" aria-hidden="true"></i> xml</button>
+			<button id="exportExcelOneTxt" class="excel-export"><i class="fa fa-file-text-o" aria-hidden="true"></i> txt</button>
+			<button id="exportExcelOneJson" class="excel-export"><i class="fa fa-file-code-o" aria-hidden="true"></i> JSON</button>
+			<button id="exportExcelOneSql" class="excel-export"><i class="fa fa-file-code-o" aria-hidden="true"></i> SQL</button>
+		</div>
+		<table id="table">
+			<thead>
+				<tr>
+					<th rowspan="2">
+						<div class="type-area-box">
+							<div class="type">类别</div>
+							<div class="area">辖区</div>
+							<span></span>
+						</div>
+					</th>
+					<th colspan="4">刑事类</th>
+					<th colspan="5">治安类</th>
+					<th rowspan="2">合计</th>
+				</tr>
+				<tr>
+					<th>盗窃</th>
+					<th>两抢</th>
+					<th>诈骗</th>
+					<th>其他</th>
+					<th>盗窃</th>
+					<th>诈骗</th>
+					<th>殴打他人</th>
+					<th>纠纷</th>
+					<th>其他</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>杨凌所</td>
+					<td>22</td>
+					<td>33</td>
+					<td>44</td>
+					<td>55</td>
+					<td>66</td>
+					<td>77</td>
+					<td>88</td>
+					<td>99</td>
+					<td>10</td>
+					<td>11</td>
+				</tr>
+				<tr>
+					<td>李台所</td>
+					<td>22</td>
+					<td>33</td>
+					<td>44</td>
+					<td>55</td>
+					<td>66</td>
+					<td>77</td>
+					<td>88</td>
+					<td>99</td>
+					<td>10</td>
+					<td>11</td>
+				</tr>
+				<tr>
+					<td>揉谷所</td>
+					<td>22</td>
+					<td>33</td>
+					<td>44</td>
+					<td>55</td>
+					<td>66</td>
+					<td>77</td>
+					<td>88</td>
+					<td>99</td>
+					<td>10</td>
+					<td>11</td>
+				</tr>
+				<tr>
+					<td>大寨所</td>
+					<td>22</td>
+					<td>33</td>
+					<td>44</td>
+					<td>55</td>
+					<td>66</td>
+					<td>77</td>
+					<td>88</td>
+					<td>99</td>
+					<td>10</td>
+					<td>11</td>
+				</tr>
+				<tr>
+					<td>杨村所</td>
+					<td>22</td>
+					<td>33</td>
+					<td>44</td>
+					<td>55</td>
+					<td>66</td>
+					<td>77</td>
+					<td>88</td>
+					<td>99</td>
+					<td>10</td>
+					<td>11</td>
+				</tr>
+			</tbody>
+		</table>
+		<hr/>
+		<div class="export-excel-operate">
+			<button id="exportExcelTwoXls" class="excel-export"><i class="fa fa-file-excel-o" aria-hidden="true"></i> xls</button>
+			<button id="exportExcelTwoXlsx" class="excel-export"><i class="fa fa-file-excel-o" aria-hidden="true"></i> xlsx</button>
+			<button id="exportExcelTwoCsv" class="excel-export"><i class="fa fa-file-excel-o" aria-hidden="true"></i> csv</button>
+			<button id="exportExcelTwoXml" class="excel-export"><i class="fa fa-file-code-o" aria-hidden="true"></i> xml</button>
+			<button id="exportExcelTwoTxt" class="excel-export"><i class="fa fa-file-text-o" aria-hidden="true"></i> txt</button>
+			<button id="exportExcelTwoJson" class="excel-export"><i class="fa fa-file-code-o" aria-hidden="true"></i> JSON</button>
+			<button id="exportExcelTwoSql" class="excel-export"><i class="fa fa-file-code-o" aria-hidden="true"></i> SQL</button>
+		</div>
+		<table id="tableTwo">
+			<thead>
+				<tr>
+					<th>姓名</th>
+					<th>语文</th>
+					<th>数学</th>
+					<th>英语</th>
+					<th>科学</th>
+					<th>社会</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>丰臣正一</td>
+					<td>90</td>
+					<td>99</td>
+					<td>98</td>
+					<td>97</td>
+					<td>90</td>
+				</tr>
+				<tr>
+					<td>织田信二</td>
+					<td>90</td>
+					<td>99</td>
+					<td>98</td>
+					<td>97</td>
+					<td>90</td>
+				</tr>
+				<tr>
+					<td>德川家三</td>
+					<td>90</td>
+					<td>99</td>
+					<td>98</td>
+					<td>97</td>
+					<td>90</td>
+				</tr>
+				<tr>
+					<td>特朗布普</td>
+					<td>90</td>
+					<td>99</td>
+					<td>98</td>
+					<td>97</td>
+					<td>90</td>
+				</tr>
+				<tr>
+					<td>拜拉登</td>
+					<td>90</td>
+					<td>99</td>
+					<td>98</td>
+					<td>97</td>
+					<td>90</td>
+				</tr>
+				<tr>
+					<td>安倍十五</td>
+					<td>90</td>
+					<td>99</td>
+					<td>98</td>
+					<td>97</td>
+					<td>90</td>
+				</tr>
+				<tr>
+					<td>希拉外</td>
+					<td>90</td>
+					<td>99</td>
+					<td>98</td>
+					<td>97</td>
+					<td>90</td>
+				</tr>
+				<tr>
+					<td>奥马巴</td>
+					<td>90</td>
+					<td>99</td>
+					<td>98</td>
+					<td>97</td>
+					<td>90</td>
+				</tr>
+			</tbody>
+		</table>
+		<hr/>
+		<div class="export-excel-operate">
+			<button id="exportExcelThreeXls" class="excel-export"><i class="fa fa-file-excel-o" aria-hidden="true"></i> xls</button>
+			<button id="exportExcelThreeXlsx" class="excel-export"><i class="fa fa-file-excel-o" aria-hidden="true"></i> xlsx</button>
+			<button id="exportExcelThreeCsv" class="excel-export"><i class="fa fa-file-excel-o" aria-hidden="true"></i> csv</button>
+			<button id="exportExcelThreeXml" class="excel-export"><i class="fa fa-file-code-o" aria-hidden="true"></i> xml</button>
+			<button id="exportExcelThreeTxt" class="excel-export"><i class="fa fa-file-text-o" aria-hidden="true"></i> txt</button>
+			<button id="exportExcelThreeJson" class="excel-export"><i class="fa fa-file-code-o" aria-hidden="true"></i> JSON</button>
+			<button id="exportExcelThreeSql" class="excel-export"><i class="fa fa-file-code-o" aria-hidden="true"></i> SQL</button>
+		</div>
+		<table id="tableThree">
+			<thead>
+				<tr>
+					<th>name</th>
+					<th>chinese</th>
+					<th>math</th>
+					<th>english</th>
+					<th>science</th>
+					<th>sociology</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>eason</td>
+					<td>90</td>
+					<td>99</td>
+					<td>98</td>
+					<td>97</td>
+					<td>90</td>
+				</tr>
+				<tr>
+					<td>Lili</td>
+					<td>97</td>
+					<td>66</td>
+					<td>88</td>
+					<td>77</td>
+					<td>68</td>
+				</tr>
+				<tr>
+					<td>daming</td>
+					<td>63</td>
+					<td>74</td>
+					<td>82</td>
+					<td>97</td>
+					<td>60</td>
+				</tr>
+				<tr>
+					<td>alice</td>
+					<td>96</td>
+					<td>88</td>
+					<td>27</td>
+					<td>36</td>
+					<td>55</td>
+				</tr>
+				<tr>
+					<td>wudy</td>
+					<td>77</td>
+					<td>66</td>
+					<td>87</td>
+					<td>69</td>
+					<td>74</td>
+				</tr>
+				<tr>
+					<td>mina</td>
+					<td>71</td>
+					<td>68</td>
+					<td>69</td>
+					<td>65</td>
+					<td>64</td>
+				</tr>
+				<tr>
+					<td>amile</td>
+					<td>90</td>
+					<td>88</td>
+					<td>77</td>
+					<td>66</td>
+					<td>55</td>
+				</tr>
+				<tr>
+					<td>jack</td>
+					<td>77</td>
+					<td>66</td>
+					<td>85</td>
+					<td>93</td>
+					<td>85</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+</body>
+<script src="../libs/jquery/jquery-3.3.1-.min.js"></script>
+<script src="../libs/FileSaver/FileSaver.min.js"></script>
+<script src="../libs/tableExport/libs/js-xlsx/xlsx.core.min.js"></script>
+<script src="../libs/tableExport/tableExport-ext.js"></script>
+<script>
+	$(document).ready(function(){
+        $('#exportExcelOneXls').click(function(){
+            $('#table').tableExport({ type:'excel', fileName:'警情研判', tableName: 'myTableName' });
+				});
+
+				$('#exportExcelOneXlsx').click(function(){
+            $('#table').tableExport({ type:'xlsx', fileName:'警情研判', tableName: 'myTableName' });
+				});
+
+				$('#exportExcelOneCsv').click(function(){
+            $('#table').tableExport({ type:'csv', fileName:'警情研判' });
+				});
+
+				$('#exportExcelOneXml').click(function(){
+            $('#table').tableExport({ type:'xml', fileName:'警情研判', mso: {fileFormat:'xmlss',
+                              worksheetName: ['杨凌区每日警情统计']}});
+				});
+
+				$('#exportExcelOneTxt').click(function(){
+            $('#table').tableExport({ type:'txt', fileName:'警情研判' });
+				});
+
+				$('#exportExcelOneJson').click(function(){
+            $('#table').tableExport({ type:'json', fileName:'警情研判' });
+				});
+
+				$('#exportExcelOneSql').click(function(){
+            $('#table').tableExport({ type:'sql', fileName:'警情研判' });
+				});
+
+
+
+				$('#exportExcelTwoXls').click(function(){
+            $('#tableTwo').tableExport({ type:'excel', fileName:'初三二班成绩排名', tableName: 'myTableName' });
+				});
+
+				$('#exportExcelTwoXlsx').click(function(){
+            $('#tableTwo').tableExport({ type:'xlsx', fileName:'初三二班成绩排名', tableName: 'myTableName' });
+				});
+
+				$('#exportExcelTwoCsv').click(function(){
+            $('#tableTwo').tableExport({ type:'csv', fileName:'初三二班成绩排名' });
+				});
+
+				$('#exportExcelTwoXml').click(function(){
+            $('#tableTwo').tableExport({ type:'xml', fileName:'初三二班成绩排名', mso: {fileFormat:'xmlss',
+                              worksheetName: ['第一学期']}});
+				});
+
+				$('#exportExcelTwoTxt').click(function(){
+            $('#tableTwo').tableExport({ type:'txt', fileName:'初三二班成绩排名' });
+				});
+
+				$('#exportExcelTwoJson').click(function(){
+            $('#tableTwo').tableExport({ type:'json', fileName:'初三二班成绩排名' });
+				});
+
+				$('#exportExcelTwoSql').click(function(){
+            $('#tableTwo').tableExport({ type:'sql', fileName:'初三二班成绩排名' });
+				});
+
+
+
+				$('#exportExcelThreeXls').click(function(){
+            $('#tableThree').tableExport({ type:'excel', fileName:'class-three-grade-two', tableName: 'myTableName' });
+				});
+
+				$('#exportExcelThreeXlsx').click(function(){
+            $('#tableThree').tableExport({ type:'xlsx', fileName:'class-three-grade-two', tableName: 'myTableName' });
+				});
+
+				$('#exportExcelThreeCsv').click(function(){
+            $('#tableThree').tableExport({ type:'csv', fileName:'class-three-grade-two' });
+				});
+
+				$('#exportExcelThreeXml').click(function(){
+            $('#tableThree').tableExport({ type:'xml', fileName:'class-three-grade-two', mso: {fileFormat:'xmlss',
+                              worksheetName: ['First semester']}});
+				});
+
+				$('#exportExcelThreeTxt').click(function(){
+            $('#tableThree').tableExport({ type:'txt', fileName:'class-three-grade-two' });
+				});
+
+				$('#exportExcelThreeJson').click(function(){
+            $('#tableThree').tableExport({ type:'json', fileName:'class-three-grade-two' });
+				});
+
+				$('#exportExcelThreeSql').click(function(){
+            $('#tableThree').tableExport({ type:'sql', fileName:'class-three-grade-two' });
+				});
+
+
+
+    });
+</script>
+</html>

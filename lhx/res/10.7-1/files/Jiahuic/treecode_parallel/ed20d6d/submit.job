@@ -1,0 +1,11 @@
+#!/bin/bash
+#SBATCH -o output2_%j.txt
+#SBATCH -N 1
+#SBATCH -n 4                 # requested MPI tasks
+#SBATCH -p parallel-short            # requested queue
+#SBATCH -t 100                 # maximum runtime in minutes
+
+srun ./ctreecode.exe
+
+
+

@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1541405759832.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "863DD61F",
+    "lastKnownWriteTime" : 1541409151,
+    "last_content_update" : 1541409151161,
+    "path" : "~/R/AGE08G Report/New_R.Rmd",
+    "project_path" : "New_R.Rmd",
+    "properties" : {
+        "cursorPosition" : "148,41",
+        "scrollLine" : "127"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

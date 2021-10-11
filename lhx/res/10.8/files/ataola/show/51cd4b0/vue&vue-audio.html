@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vue audio</title>
+</head>
+
+<body>
+  <div id="app">
+    <button @click="play">play</button>
+    <button @click="pause">pause</button>
+    <button @click="reload">reload</button>
+  </div>
+</body>
+<script src="../libs/vue/2.6.12/vue.min.js"></script>
+<script>
+  let vm = new Vue({
+    el: '#app',
+    data() {
+      return {
+        audio: null
+      }
+    },
+    mounted() {
+      // this.audio = new Audio('../static/msg.mp3');
+      this.audio = new Audio();
+      this.audio.src = '../static/msg.mp3';
+    },
+    methods: {
+      play() {
+        this.audio.play();
+      },
+      pause() {
+        this.audio.pause();
+      },
+      reload() {
+        this.audio.load();
+      }
+    }
+  })
+</script>
+
+</html>

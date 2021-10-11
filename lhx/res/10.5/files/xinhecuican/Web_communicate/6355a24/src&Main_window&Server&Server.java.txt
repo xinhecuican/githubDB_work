@@ -1,0 +1,37 @@
+﻿package Main_window.Server;
+
+import java.io.DataInputStream;
+import java.io.InputStream;
+import java.net.InetAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
+
+/**
+ * @author: 李子麟
+ * @date: 2021/3/18 12:21
+ **/
+public class Server extends Thread
+{
+    public static int receive_port;
+    @Override
+    public void run()
+    {
+        super.run();
+        try
+        {
+            ServerSocket socket = new ServerSocket(0);
+            receive_port = socket.getLocalPort();
+            while(true)
+            {
+                Socket communicate_socket = socket.accept();
+                Server_handle_thread handle = new Server_handle_thread(communicate_socket);
+                handle.start();
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+}

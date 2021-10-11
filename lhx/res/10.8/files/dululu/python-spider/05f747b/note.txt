@@ -1,0 +1,66 @@
+数据解析：
+   正则
+   bs4
+   xpath
+数据解析的原理概述：
+解析的局部文本内容都会在标签之间或者标签对应的属性中进行存储
+1.进行指定标签的定位
+2.标签或者标签对应的属性中存储的数值进行提取（解析）
+
+
+
+
+<div class="thumb">
+
+<a href="/article/123933400" target="_blank">
+<img src="//pic.qiushibaike.com/system/pictures/12393/123933400/medium/L5GLUJ3831GSRBHS.jpg" alt="糗事#123933400" class="illustration" width="100%" height="auto">
+</a>
+</div>
+
+ex = '<div class="thumb">.*?<img src="(.*?) ait.*?</div>'
+l
+
+bs4进行数据解析
+1 实例化一个BeautifulSoup对象，并将相关页面源代码数据加载到该对象中
+2 通过调用BeautifulSoup对象中相关的属性或者方法进行标签定位和数据提取
+
+环境
+1 pip install bs4
+2 pip install lxml
+
+如何实例化bs4
+1 from bs4 import BeautifulSoup
+2  对象的实例化
+     1  将本地的html文档中的数据加载到该对象中
+     fp = open('./test.html','r',encoding='utf-8')
+    soup = BeautifulSoup(fp,'lxml')
+     2 将互联网上获取的页面源码加载到该对象中
+page_text = response.text
+soup = BeautifulSoup(page_text,'lxml')
+
+  -soup.tagName 返回的是文档中第一次出现的tagName标签
+  #print(soup.a)
+  #print(soup.div)
+  #print(soup.find('div'))
+
+   --属性定位：
+      print(soup.find('div',class_='song'))
+
+print(soup.find_all('a')  返回符合要求的所有标签（列表）
+print(soup.select('tag'))  定位选择器
+
+
+
+
+———xpath解析原理：
+   -1.实例化一个etree的对象，且需要将被解析的页面源码数据加载到该对象中
+   -2.调用etree对象中的xpath方法结合着xpath表达式实现标签的定位和内容的捕获。
+--环境安装：
+    -pip install lxml
+--如何将实例化一个etree对象：from lxml import etree
+    -1.将本地的html文档中的数据加载到etree对象中：
+        etree.parse(filePath)
+    -2.可以将互联网上获取的源码数据加载到该对象中
+      etree.HTML('page_text')
+    -xapth('xpath表达式')
+

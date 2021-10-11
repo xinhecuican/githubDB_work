@@ -1,0 +1,11 @@
+.border-box {
+    box-sizing: border-box;
+}
+
+.content-box {
+    box-shadow: content-box;
+}
+
+.inline-box {
+    display: inline-block;
+}

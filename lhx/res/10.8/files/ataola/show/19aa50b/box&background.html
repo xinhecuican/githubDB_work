@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>背景</title>
+	<link type="text/css" rel="stylesheet" href="./assets/taolaui/taolaui.css">
+	<style>
+		html,
+		body {
+			height: 100%;
+		}
+
+		body {
+			margin: 0;
+			padding: 0;
+			background-color: rgb(243, 243, 243);
+		}
+
+		#app {
+			width: 100%;
+			height: 100%;
+			box-sizing: border-box;
+		}
+
+		.box {
+			width: 200px;
+			height: 200px;
+			margin: 10px;
+			background-color: #ff9595;
+			border: 5px solid #342b38;
+			background-image: url('./assets/images/ataola128.png')
+		}
+
+		.no-repeat {
+			background-repeat: no-repeat;
+		}
+
+		.round {
+			background-repeat: round;
+		}
+
+		.content-box {
+			background-origin: content-box;
+		}
+
+		.b-position {
+			background-position: 50% 50%;
+		}
+
+		.contain {
+			background-size: contain
+		}
+
+		.cover {
+			background-size: cover;
+		}
+
+		.blend-color {
+			background-blend-mode: color;
+		}
+
+		.blend-color-burn {
+			background-blend-mode: color-burn;
+		}
+
+		.blend-color-dodge {
+			background-blend-mode: color-dodge;
+		}
+
+		.blend-color-darken {
+			background-blend-mode: darken;
+		}
+
+		.blend-color-difference {
+			background-blend-mode: difference;
+		}
+
+		.blend-color-exclusion {
+			background-blend-mode: exclusion;
+		}
+
+		.blend-color-hue {
+			background-blend-mode: hue;
+		}
+
+		.contain-clip {
+			background-clip: content-box;
+		}
+
+		@media screen {
+			@media screen and (min-width: 375px) and (max-width: 450px) {
+				body {
+					background: #80bdab;
+				}
+				.section {
+					flex-wrap: wrap;
+				}
+			}
+		}
+	</style>
+</head>
+
+<body>
+	<div id="app">
+		<div class="container-fluid">
+			<div class="flex flex-center padding">
+				<div class="section padding">
+					<h2>background</h2>
+					<p class="padding-horizontal">background-image</p>
+					<p class="padding-horizontal">background-repeat</p>
+					<p class="padding-horizontal">background-position</p>
+					<p class="padding-horizontal">background-origin</p>
+					<p class="padding-horizontal">background-size</p>
+					<p class="padding-horizontal">background-clip</p>
+					<p class="padding-horizontal">background-blend-mode</p>
+				</div>
+			</div>
+			<div class="flex flex-center padding">
+				<div class="section padding flex flex-no-wrap flex-center">
+					<div class="box border-box padding-small"></div>
+					<div class="box border-box padding-small no-repeat"></div>
+					<div class="box border-box padding-small round"></div>
+					<div class="box border-box padding-small no-repeat content-box"></div>
+					<div class="box border-box padding-small no-repeat content-box b-position"></div>
+				</div>
+			</div>
+			<div class="flex flex-center padding">
+				<div class="section padding flex flex-no-wrap flex-center">
+					<div class="box border-box padding-small contain"></div>
+					<div class="box border-box padding-small cover"></div>
+					<div class="box border-box padding-small blend-color"></div>
+					<div class="box border-box padding-small blend-color-burn"></div>
+					<div class="box border-box padding-small blend-color-dodge"></div>
+				</div>
+			</div>
+			<div class="flex flex-center padding">
+				<div class="section padding flex flex-no-wrap flex-center">
+					<div class="box border-box padding-small blend-color-darken"></div>
+					<div class="box border-box padding-small blend-color-difference"></div>
+					<div class="box border-box padding-small blend-color-exclusion"></div>
+					<div class="box border-box padding-small blend-color-hue"></div>
+					<div class="box border-box padding-small contain-clip"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>

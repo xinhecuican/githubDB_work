@@ -1,0 +1,44 @@
+﻿﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using MCM.Abstractions.Attributes;
+using MCM.Abstractions.Attributes.v2;
+using MCM.Abstractions.Settings.Base;
+using MCM.Abstractions.Settings.Base.Global;
+using TaleWorlds.Localization;
+
+namespace Tired_party
+{
+    class mod_setting : AttributeGlobalSettings<mod_setting>
+    {
+        public override string Id
+        {
+            get
+            {
+                return "tired_party";
+            }
+        }
+
+        public override string DisplayName
+        {
+            get
+            {
+                return string.Format("{0}", new TextObject("军队疲乏度", null));
+            }
+        }
+
+        public override string FolderName
+        {
+            get
+            {
+                return "Tired_party";
+            }
+        }
+
+        [SettingPropertyFloatingInteger("{=tired_party_day_time}day time tired increased rate", 0f, 1f, "0.00", Order = 1, RequireRestart = false, HintText = "{=tired_hint_text_day_time}白天每小时恢复的数值，默认是0.25")]
+        [SettingPropertyGroup("{=tired_party_base_setting}base setting")]
+        public float WithholdInfluenceMultiplier { get; set; } = 0.25f;
+    }
+}

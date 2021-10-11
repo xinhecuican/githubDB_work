@@ -1,0 +1,58 @@
+﻿package Main_window.Separate_panel;
+
+import Main_window.Data.Message_data;
+import Main_window.Main;
+import Main_window.Separate_panel.Left_button;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
+
+/**
+ * @author: 李子麟
+ * @date: 2021/3/15 20:41
+ **/
+public class Left_panel extends JScrollPane
+{
+    private JPanel scroll_inner_panel;
+    public Left_panel()
+    {
+
+        super();
+        setAutoscrolls(true);
+        getVerticalScrollBar().setUnitIncrement(20);
+        scroll_inner_panel = new JPanel();
+        scroll_inner_panel.setLayout(new BoxLayout(scroll_inner_panel, BoxLayout.Y_AXIS));
+        //scroll_inner_panel.setPreferredSize(new Dimension(Main.LEFT_PANEL_WIDTH, 8000));
+        setViewportView(scroll_inner_panel);
+        /*addComponentListener(new ComponentAdapter()
+        {
+            @Override
+            public void componentResized(ComponentEvent e)
+            {
+                super.componentResized(e);
+                scroll_inner_panel.setPreferredSize(new Dimension(scroll_inner_panel.getWidth(), scroll_inner_panel.getHeight()));
+                scroll_inner_panel.revalidate();
+            }
+        });*/
+    }
+
+
+
+    public void add_card(Message_data data)
+    {
+        Left_button button;
+        if(!data.is_empty())
+        {
+            button = new Left_button(data);
+        }
+        else
+        {
+            button = new Left_button(data.name, data);
+        }
+        scroll_inner_panel.add(button);
+        //button.setBounds(new Rectangle(10, 10));
+    }
+}

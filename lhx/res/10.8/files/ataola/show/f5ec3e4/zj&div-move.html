@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>移动交互</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+      }
+
+      .container {
+        width: 100%;
+        line-height: 1.5;
+        text-align: center;
+      }
+
+      .container p {
+        margin: 10px auto;
+      }
+
+      #ataolaBox {
+        width: 150px;
+        height: 190px;
+        position: absolute;
+        top: 100px;
+        left: 160px;
+        display: block;
+        z-index: 9999;
+      }
+
+      #message {
+        width: auto !important;
+        min-height: 1em;
+        padding: 5px;
+        background-color: #ddd;
+        color: #191919;
+        border: 1px solid #eeeeee;
+        border-radius: 5px;
+        -moz-border-radius: 5px;
+        -webkit-border-radius: 5px;
+        box-shadow: 0 0 15px #eeeeee;
+        -moz-box-shadow: 0 0 15px #eeeeee;
+        -webkit-box-shadow: 0 0 15px #eeeeee;
+        position: absolute;
+        top: -30px;
+        text-align: center;
+        z-index: 10000;
+        outline: none;
+      }
+
+      #ataola {
+        width: 150px;
+        height: 300px;
+        background-image: url('./assets/images/ataola.png');
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: 50% 50%;
+        cursor: move;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>《可惜没如果》</h1>
+      <h2>作词：林夕</h2>
+      <h2>演唱：林俊杰</h2>
+      <p>假如把犯得起的错，能错的都白错过</p>
+      <p>那一场小风波 将一笑带过，在感情面前 讲什么自我</p>
+      <p>要得过且过 才好过，全都怪我</p>
+      <p>不该沉默时沉默 该勇敢时软弱，如果不是我</p>
+      <p>误会自己洒脱 让我们难过，可当初的你 和现在的我</p>
+      <p>假如重来过，倘若那天</p>
+      <p>把该说的话好好说，该体谅的不执着</p>
+      <p>如果那天我，不受情绪挑拨</p>
+      <p>你会怎么做，那么多如果 可能如果我</p>
+      <p>可惜没如果 只剩下结果，如果早点了解</p>
+      <p>那率性的你，或者晚一点</p>
+      <p>遇上成熟的我，不过 oh</p>
+      <p>假如把犯得起的错，能错的都白错过</p>
+      <p>那一场小风波 将一笑带过，在感情面前 讲什么自我</p>
+      <p>要得过且过 才好过，全都怪我</p>
+      <p>不该沉默时沉默 该勇敢时软弱，如果不是我</p>
+      <p>误会自己洒脱 让我们难过，可当初的你 和现在的我</p>
+      <p>假如重来过，倘若那天</p>
+      <p>把该说的话好好说，该体谅的不执着</p>
+      <p>如果那天我，不受情绪挑拨</p>
+      <p>你会怎么做，那么多如果 可能如果我</p>
+      <p>可惜没如果 只剩下结果，如果早点了解</p>
+      <p>那率性的你，或者晚一点</p>
+      <p>遇上成熟的我，不过 oh</p>
+      <p>假如把犯得起的错，能错的都白错过</p>
+      <p>那一场小风波 将一笑带过，在感情面前 讲什么自我</p>
+      <p>要得过且过 才好过，全都怪我</p>
+      <p>不该沉默时沉默 该勇敢时软弱，如果不是我</p>
+      <p>误会自己洒脱 让我们难过，可当初的你 和现在的我</p>
+      <p>假如重来过，倘若那天</p>
+      <p>把该说的话好好说，该体谅的不执着</p>
+      <p>如果那天我，不受情绪挑拨</p>
+      <p>你会怎么做，那么多如果 可能如果我</p>
+      <p>可惜没如果 只剩下结果，如果早点了解</p>
+      <p>那率性的你，或者晚一点</p>
+      <p>遇上成熟的我，不过 oh</p>
+    </div>
+    <div id="ataolaBox">
+      <div id="message"></div>
+      <div id="ataola"></div>
+    </div>
+  </body>
+  <script src="../libs/jquery/jquery-3.3.1-.min.js"></script>
+  <script>
+    //显示消息函数
+    function showMessage(content, duration = 10000) {
+      $('#message').hide().stop().html(content).fadeIn().fadeTo('1', 1).fadeOut(duration);
+    }
+
+    $(document).ready(function ($) {
+      const lyric = [
+        '假如把犯得起的错，能错的都白错过',
+        '那一场小风波 将一笑带过，在感情面前 讲什么自我',
+        '要得过且过 才好过，全都怪我',
+        '不该沉默时沉默 该勇敢时软弱，如果不是我',
+        '误会自己洒脱 让我们难过，可当初的你 和现在的我',
+        '假如重来过，倘若那天',
+        '把该说的话好好说，该体谅的不执着',
+        '如果那天我，不受情绪挑拨',
+        '你会怎么做，那么多如果 可能如果我',
+        '可惜没如果 只剩下结果，如果早点了解'
+      ];
+      const word = ['苦茶', '逝水', '禅香', '赤夜', '新月', '繁星'];
+      let current_lyric_index = 0;
+
+      const offset_top = $('#ataolaBox').offset().top;
+      const move_distance = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.75, -0.1, -0.2, -0.3, -0.4, -0.5, -0.6, -0.7, -0.75];
+
+      let click_count = 0;
+
+      let is_ataola_move = false;
+      let is_move = false;
+      let x, y; //鼠标离控件左上角的相对位置
+
+      showMessage('我要开始唱歌了，<br/>给老铁们带来一手<br/>《可惜没如果》<br/>音效师，music！', 3000);
+
+      window.setInterval(function () {
+        const current_lyric = lyric[current_lyric_index];
+        current_lyric_index = (current_lyric_index + 1) % lyric.length;
+        const top = Math.floor(Math.random() * move_distance.length);
+        const left = Math.floor(Math.random() * move_distance.length);
+        $('#ataolaBox').animate(
+          {
+            top: (document.body.offsetHeight / 2) * (1 + move_distance[top]),
+            left: (document.body.offsetWidth / 2) * (1 + move_distance[left])
+          },
+          {
+            duration: 2000,
+            complete: showMessage(current_lyric)
+          }
+        );
+      }, 9000);
+
+      $(window).scroll(function () {
+        $('#ataolaBox').animate(
+          {
+            top: $(window).scrollTop() + offset_top + 200
+          },
+          {
+            queue: false,
+            duration: 1000
+          }
+        );
+      });
+
+      $(document)
+        .mousemove(function (e) {
+          if (is_ataola_move) {
+            const top = e.pageY - y;
+            const left = e.pageX - x;
+            const width = $(window).width() - $('#ataolaBox').width();
+            const height = $(document).height() - $('#ataolaBox').height();
+            if (left >= 0 && left <= width && top > 0 && top <= height) {
+              $('#ataolaBox').css({
+                top,
+                left
+              });
+              is_move = true;
+            }
+          }
+        })
+        .mouseup(function () {
+          is_ataola_move = false;
+        });
+
+      $('#ataolaBox').animate(
+        {
+          top: $('#ataolaBox').offset().top + 200,
+          left: document.body.offsetWidth - 160
+        },
+        {
+          queue: false,
+          duration: 1000
+        }
+      );
+
+      // 禁用鼠标右键浏览器默认行为
+      $('#ataolaBox').bind('contextmenu', function () {
+        return false;
+      });
+
+      $('#ataolaBox').mousedown(function (e) {
+        // which为1为左键，3为右键
+        if (e.which === 1) {
+          showMessage('鼠标左键被点击了！');
+        } else if (e.which === 3) {
+          showMessage('鼠标右键被点击了！');
+        }
+        is_ataola_move = true;
+        x = e.pageX - parseInt($('#ataolaBox').css('left'));
+        y = e.pageY - parseInt($('#ataolaBox').css('top'));
+      });
+
+      $('#message').hover(function (e) {
+        $('#message').fadeTo('100', 1);
+      });
+
+      $('#ataola')
+        .mouseover(function (e) {
+          $('#ataola').fadeTo('300', 0.7);
+          const random = Math.floor(Math.random() * word.length);
+          showMessage(word[random]);
+        })
+        .mouseout(function (e) {
+          $('#ataola').fadeTo('300', 1);
+        });
+
+      $('#ataola').click(function () {
+				let msg = '你点我我就跑，来抓我呀！';
+        if (!is_move) {
+          click_count++;
+          if (click_count > 3) {
+            msg = `你有完没完呀？ 你已经摸我${click_count}次了, 有摸我的工夫不会去写代码吗！`
+          }
+          const top = Math.floor(Math.random() * move_distance.length);
+					const left = Math.floor(Math.random() * move_distance.length);
+					$('#ataolaBox').animate(
+						{
+							top: (document.body.offsetHeight / 2) * (1 + move_distance[top]),
+							left: (document.body.offsetWidth / 2) * (1 + move_distance[left])
+						},
+						{
+							duration: 2000,
+							complete: showMessage(msg)
+						}
+					);
+        } else {
+          is_move = false;
+        }
+      });
+    });
+  </script>
+</html>

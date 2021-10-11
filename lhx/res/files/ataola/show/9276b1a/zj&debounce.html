@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>防抖</title>
+</head>
+<body>
+  <input type="text" name="" id="">
+</body>
+<script src="../libs/vconsole/3.3.4/vconsole.min.js"></script>
+<script>
+  const vConsole = new VConsole();
+  console.log('VConsole  init');
+
+
+  function debounce(func, delay) {
+    let timer = null;
+    return function(e) {
+      console.log(`清除 ${ timer } ${ e.target.value }`);
+      clearTimeout(timer);
+      const context = this;
+      const args = arguments;
+      console.log(`新的 ${ timer } ${ e.target.value }`);
+      timer = setTimeout(function() {
+        console.log('========')
+        func.apply(context, args);
+      }, delay);
+    }
+  }
+
+  var validate = debounce(function(e) {
+    console.log(`change ${ e.target.value } ${ Date.now() }`);
+  }, 380);
+
+  document.querySelector('input').addEventListener('input', validate);
+</script>
+</html>

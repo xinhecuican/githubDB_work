@@ -1,0 +1,151 @@
+---
+title: "WAZA Project Manual"
+author: "Wee Jun Jie"
+date: "5th Nov 2018"
+runtime: shiny
+output:
+  ioslides_presentation:
+    css: slides.css
+    keep_md: yes
+    logo: waza1.png
+    widescreen: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Introduction to WAZA 
+<div class="columns-2">
+```{r out.width = "100%"}
+library(knitr)
+include_graphics("waza.png", dpi=800)
+```
+
+WAZA originates from its meaning in japanese whereby it represents action/movement with a certain form. 
+
+In WAZA, our product consists of:
+
+- WAZA Gloves
+
+- WAZA Application
+</div>
+
+## WAZA Gloves
+<div class="columns-2">
+<div class="centered">
+```{r out.width = "100%"}
+include_graphics("Glove_1.jpg", dpi=800)
+```
+</div>
+### Material
+Our WAZA Gloves are made with the ALLsense fabric which contains high-quality fabric with embedded textile circuitry to incorporate microcontroller (E.g. Arduino) to monitor movements from user. The microcontroller can be connected to the WAZA Application via Bluetooth.
+</div>
+
+## WAZA Gloves
+### Sensors 
+Our WAZA Gloves currently has 3 main sensors: Accelerometer, Proximity sensor and the Touch sensor. 
+<div class="centered">
+```{r out.width = "70%"}
+include_graphics("Sketch.png", dpi=800)
+```
+</div>
+
+
+## WAZA Application 
+<div class="columns-2">
+<div class="centered">
+```{r out.width = "50%"}
+library(knitr)
+include_graphics("wazaapp1.png", dpi=800)
+```
+</div>
+<div class="centered">
+```{r out.width = "40%"}
+include_graphics("waza3.png", dpi=800)
+```
+</div>
+The WAZA application allows the user to log in to their WAZA accounts to view their training and competition records. 
+
+## WAZA Application 
+<div class="columns-2">
+<div class="centered">
+```{r out.width = "50%"}
+library(knitr)
+include_graphics("wazaapp2.png", dpi=800)
+```
+</div>
+Users can select the following modes:
+
+- Training
+- Competition 
+
+</div>
+
+## WAZA Application: Training Mode
+<div class="columns-2">
+<div class="centered">
+```{r out.width = "60%"}
+library(knitr)
+include_graphics("wazaapp3.png", dpi=800)
+```
+</div>
+Users can select the components they want to track.
+Selected components will be highlighted. Once START is pressed, the tracking begins.
+</div>
+
+## WAZA Application: Accelerometer Data
+<div class="centered">
+```{r , include=FALSE, echo=FALSE}
+library(plotly)
+eval(parse('plot.r'))
+```
+```{r out.width = "100%"}
+p
+```
+</div>
+Accelerometer Data that can be extracted from WAZA Gloves to WAZA App.
+
+## WAZA Application: Gesture Recognition
+By using sensors and IoT, we can use Dynamic Time Warping Algorithm to perform gesture recognition in WAZA App to identify the different sparring movements for the WAZA Gloves.
+
+<div class="columns-2">
+```{r , include=FALSE, echo=FALSE}
+eval(parse('plot3.r'))
+```
+```{r out.width = "100%", fig.height=3.5}
+p
+```
+```{r , include=FALSE, echo=FALSE}
+eval(parse('plot2.r'))
+```
+```{r out.width = "100%", fig.height=3.5}
+p
+```
+</div>
+## WAZA Application: Proximity Data
+Proximity data is collected from the sensors and recorded in the WAZA App.
+```{r , echo=FALSE}
+source('plot4.r')
+
+# Define UI for application that draws a histogram
+ui <- fluidPage(
+   # Application title
+   dateInput("date_", label = h4("Date input: "),value = "2018-10-15", format="dd/mm/yyyy"),
+      # Show a plot of the generated distribution
+      mainPanel(
+        plotlyOutput("barPlot")
+  )
+)
+
+# Define server logic required to draw a histogram
+server <- function(input, output, session) {
+   output$barPlot <- renderPlotly({
+     print(bar_plot(as.character(format(as.Date(input$date_), "%d/%m/%Y"))))
+   })
+}
+
+# Run the application 
+app <- shinyApp(ui = ui, server = server)
+```
+

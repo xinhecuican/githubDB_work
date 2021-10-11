@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>给矿妹写的flex布局</title>
+  <style>
+    html, body {
+      width: 100%;
+      height: 100%;
+    }
+    body {
+      display: flex;
+      flex-wrap: wrap;
+      margin: 0;
+      padding: 0;
+      font-size: 24px;
+      font-weight: 700;
+    }
+
+    header, nav, article, aside, footer {
+      display: flex;
+      flex-direction: column;
+      border: 1px solid #000;
+      box-sizing: border-box;
+      padding: 5px
+    }
+    header {
+      flex-basis: 100%;
+      flex-shrink: 0;
+      height: 100px;
+    }
+
+    nav, aside, article {
+      height: calc(100% - 200px);
+    }
+
+    nav, aside {
+      flex-basis: 20%;
+    }
+
+    article {
+      flex-basis: 60%;
+    }
+
+    footer {
+      flex-basis: 100%;
+      height: 100px
+    }
+  </style>
+</head>
+<body>
+  <header>Header</header>
+  <nav>Nav</nav>
+  <article>Article</article>
+  <aside>Aside</aside>
+  <footer>Footer</footer>
+</body>
+</html>

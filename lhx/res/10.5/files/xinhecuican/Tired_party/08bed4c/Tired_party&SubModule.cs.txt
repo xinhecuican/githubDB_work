@@ -1,0 +1,52 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using TaleWorlds.CampaignSystem;
+using TaleWorlds.Core;
+using TaleWorlds.Engine;
+using TaleWorlds.Engine.Screens;
+using TaleWorlds.InputSystem;
+using TaleWorlds.Library;
+using TaleWorlds.Localization;
+using TaleWorlds.MountAndBlade;
+namespace Tired_party
+{
+    public class SubModule : MBSubModuleBase
+    {
+        /// <summary>
+        /// 游戏处于加载界面时最先被调用的函数，你应该在这个函数中完成初始化的主要部分
+        /// </summary>
+        protected override void OnSubModuleLoad()
+        {
+            Module.CurrentModule.AddInitialStateOption(new InitialStateOption("Message",
+                new TextObject("模板消息", null), 9990,
+                () => { 
+                    InformationManager.DisplayMessage(new InformationMessage("Hello World!"));
+                },
+                false));
+        }
+
+        protected override void OnApplicationTick(float dt)
+        {
+            this.On_key_press();
+        }
+        private void On_key_press()
+        {
+            bool flag = Input.IsKeyDown(InputKey.G) ;
+            bool flag2 = Game.Current != null && Game.Current.GameStateManager != null 
+                && Game.Current.GameStateManager.ActiveState != null && Game.Current.GameStateManager.ActiveState.GetType() == typeof(MapState) 
+                && !Game.Current.GameStateManager.ActiveState.IsMission && !Game.Current.GameStateManager.ActiveState.IsMenuState;
+            bool flag3 = flag && flag2;
+            if (flag3)
+            {
+                
+                float hour = CampaignTime.Now.GetHourOfDay;
+                InformationManager.DisplayMessage(new InformationMessage(new TextObject("{=test_of_me_only}Time:"+hour.ToString(), null).ToString()
+                        , Color.FromUint(4282569842U)));
+                
+            }
+        }
+    }
+}

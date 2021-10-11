@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>暂停服务公告</title>
+  <style>
+     body {
+        font-family: PingFang SC, -apple-system, Arial, Microsoft YaHei,
+          Microsoft JhengHei, Helvetica Neue, sans-serif;
+        text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        line-height: 1;
+        height: 100vh;
+        background-color: #3498db;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0;
+        padding: 0;
+      }
+      .notice {
+        color: #333;
+        border-radius: 3px;
+        padding: 35px 30px;
+        background-color: #fff;
+        box-shadow: -4px 4px 5px rgba(0, 0, 0, 0.3);
+        max-width: 500px;
+        text-align: center;
+      }
+      img.panfish,
+      img.qrcode {
+        width: 100px;
+      }
+      p {
+        line-height: 1.4;
+        text-align: left;
+      }
+      p:last-child {
+        margin-top: -8px;
+      }
+      a {
+        text-decoration: none;
+      }
+      .bold {
+        font-weight: 500;
+      }
+      .text-right {
+        text-align: right;
+        margin-right: 20px;
+      }
+      @media (max-width: 500px) {
+        h2 {
+          font-size: 20px;
+        }
+        p {
+          font-size: 14px;
+        }
+      }
+      @media (max-width: 400px) {
+        h2 {
+          font-size: 18px;
+        }
+        img.panfish,
+        img.qrcode {
+          width: 80px;
+        }
+      }
+      @media (min-width: 980px) {
+        img.qrcode {
+          width: 140px;
+        }
+      }
+  </style>
+</head>
+<body>
+  <div class="notice" align="center">
+    <img
+      class="panfish"
+      src="https://subsite-cdn.xitu.io/bd/img/panfish-b.06309d6593f6b99c.png"
+    />
+    <h2>掘金公告：7月30日站点停服升级</h2>
+    <p>致亲爱的掘友：</p>
+    <p>
+      <span class="bold">7月30日（周四）11:00 ～ 7月31日 08:00 </span
+      >期间，掘金社区将对服务器、客户端和数据库进行架构升级，升级期间会暂停网站及移动端的访问，访问恢复时间以实际为准，请各位谅解。
+    </p>
+    <p>
+      停服期间，掘友可以通过<a
+        href="https://weibo.com/xitucircle"
+        title="掘金技术社区"
+        target="_blank"
+        >掘金技术社区</a
+      >微博或者掘金公众号获取近期精选的技术文章，感谢掘友对掘金的长期支持，我们会持续努力，和大家一起进步！
+    </p>
+    <img
+      class="qrcode"
+      alt="掘金公众号"
+      src="https://gold-cdn.xitu.io/notice/img/qrcode.png"
+    />
+    <p class="text-right">掘金社区</p>
+    <p class="text-right">2020.7.30</p>
+  </div>
+</body>
+</html>

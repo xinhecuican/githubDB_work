@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Module>
+    <!-- 模组的名称 -->
+    <Name value = "Tired_party" />
+    <!-- 模组的ID (不要使用空格) -->
+    <Id value = "Tired_party" />
+    <!-- 模组的当前版本 -->
+    <Version value = "v1.0.0" />
+    <!-- 是否为默认模组 -->
+    <DefaultModule value="false" />
+    <!-- 单人游戏中模组是否可用 -->
+    <SingleplayerModule value="true" />
+    <!-- 多人游戏中模组是否可用 -->
+    <MultiplayerModule value="false" />
+    <!-- 此模组是否为官方模组 -->
+    <Official value="false" />
+    <!-- 此模组正常工作需要的依赖模组 -->
+    <DependedModules>
+        <DependedModule Id="Native" />
+        <DependedModule Id="SandBoxCore" />
+        <DependedModule Id="Sandbox" />
+        <DependedModule Id="CustomBattle" />
+        <DependedModule Id="StoryMode" />
+    </DependedModules>
+    <!-- 该模组由哪些子模组 (DLLs)组成 -->
+    <SubModules>
+        <!-- 以下的SubModule标签是可选的。如果你的模组不需要DLL外链，可用移除这部分内容。-->
+        <SubModule>
+            <!-- 子模组的名称 -->
+            <Name value="Tired_party" />
+            <!-- DLL文件的路径, 假如你的模组叫MyModule，写法会像下面这样   -->
+            <DLLName value="Tired_party.dll" />
+            <!-- 子模组类 -->
+            <SubModuleClassType value="Tired_party.SubModule" />
+            <Tags>
+                <!-- 专用服务器类型 -->
+                <Tag key="DedicatedServerType" value="none" />
+                <!-- 没有渲染模式元素 ??? -->
+                <Tag key="IsNoRenderModeElement" value="false" />
+            </Tags>
+        </SubModule>
+    </SubModules>
+    <!-- 包含ModuleData文件夹中的XML文件路径 -->
+    <Xmls/>
+</Module>

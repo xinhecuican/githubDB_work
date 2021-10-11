@@ -1,0 +1,52 @@
+﻿package Main_window.Separate_panel;
+
+import Main_window.Data.Send_data;
+import Main_window.Main;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+/**
+ * @author: 李子麟
+ * @date: 2021/3/21 8:05
+ **/
+public class Friend_confirm_card extends JPanel
+{
+    /**
+     * 请求添加好友的信息及拒绝添加好友信息
+     * @param id
+     * @param name
+     * @param mode: mode为0是请求信息，mode为1未搜索到好友的错误信息，
+     */
+    public Friend_confirm_card(int id, String name, int mode)
+    {
+        setPreferredSize(new Dimension(200, 40));
+        setLayout(new BorderLayout());
+        if(mode == 0)
+        {
+            JLabel textarea = new JLabel();
+            textarea.setText(name + "请求添加你为好友" + "(id:" + String.valueOf(id) + ")");
+            JButton button = new JButton("确认");
+            button.addActionListener(new ActionListener()
+            {
+                @Override
+                public void actionPerformed(ActionEvent actionEvent)
+                {
+                    Send_data data = new Send_data(3, null);
+                    data.searched_user = Main.main_user.name;
+                    Main.main_user.send_message(data);
+                }
+            });
+            add(textarea, BorderLayout.CENTER);
+            add(button);
+        }
+        else if(mode == 1)
+        {
+            JLabel label = new JLabel("未搜索到" + name);
+            add(label, BorderLayout.CENTER);
+        }
+
+    }
+}

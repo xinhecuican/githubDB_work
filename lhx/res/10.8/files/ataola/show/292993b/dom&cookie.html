@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Cookie</title>
+	<style>
+		.item {
+			display: flex;
+		}
+
+		.del {
+			width: 20px;
+			height: 20px;
+			line-height: 20px;
+			text-align: center;
+			background-color: #ccc;
+			color: #fff;
+			cursor: pointer;
+		}
+	</style>
+</head>
+<body>
+	<div id="app">
+		<div v-for="key in cookieKey" :key="key" class="item">
+			key: {{ key }} , value:{{ cookies[key] }} <div class="del" @click="removeCookie(key)">X</div>
+		</div>
+		<div>
+			<input type="text" v-model="name">
+			<input type="text" v-model="value">
+			<button @click="addCookie()">添加</button>
+		</div>
+	</div>
+</body>
+<script src="../libs/vue/2.6.12/vue.min.js"></script>
+<script>
+	class Cookie {
+		static prefix = 'cool_';
+		static domain = ['localhost', '127.0.0.1'].includes(location.hostname) ? location.hostname : 'zhengjiangtao.cn';
+		static path = '/';
+		constructor() {
+
+		}
+
+		static getCookie(name) {
+			let value = null;
+			if (document.cookie.length > 0) {
+				const key = this.prefix + name;
+				const match = document.cookie.match(new RegExp(`(^| )${name}=([^;]*)`));
+				if (match) {
+					value = unescape(match[2]);
+				}
+			}
+			return value;
+		}
+
+		static getCookies() {
+			let res = {};
+			if (document.cookie.length > 0) {
+				res = document.cookie.split(';').reduce((pre, cur) => Object.assign(pre, { [cur.split('=')[0].trim().substr(5)]: cur.split('=')[1] }), {});
+			}
+			return res;
+		}
+
+		static setCookie(name, value, duration = 30) {
+			const { prefix, domain, path } = this;
+			const date = new Date(Date.now() + duration * 86400000);
+			const expires = `; expires=${ date.toUTCString() }`;
+			document.cookie = prefix + name + '=' + value + '; path=' + path + '; domain=' + domain + expires;
+		}
+
+		static removeCookie(name) {
+			const { prefix, domain, path } = this;
+			const date = new Date(0);
+			const expires = `; expires=${ date.toUTCString() }`;
+			document.cookie = prefix + name + '=' + escape('') + '; path=' + path + expires;
+		}
+	}
+
+	let vm = new Vue({
+		el: '#app',
+		data: {
+			cookies: {},
+			name: '',
+			value: '',
+		},
+		created() {
+			this.cookies = Cookie.getCookies();
+		},
+		computed: {
+			cookieKey() {
+				return Object.keys(this.cookies);
+			}
+		},
+		methods: {
+			addCookie() {
+				const { name, value } = this;
+				Cookie.setCookie(name, value);
+				this.cookies = Cookie.getCookies();
+			},
+			removeCookie(name) {
+				Cookie.removeCookie(name);
+				this.cookies = Cookie.getCookies();
+			}
+		},
+	});
+</script>
+</html>

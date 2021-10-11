@@ -1,0 +1,33 @@
+﻿#include "ant.h"
+
+// initiating a struct _ant 
+struct _ant* initiate_ant(struct _graph *graph,int current_vertex){
+	// non-complete implementation
+	struct _ant* ant = malloc(sizeof(struct _ant));
+	ant->current_vertex = current_vertex;
+	ant->vertex_visited = calloc(graph->numofvertices,sizeof(int));
+	ant->vertex_visited[0] = current_vertex;
+	ant->dead_end = false;
+	return ant;
+}
+
+/*
+ * should check all available vertices
+ * and choose one of them 
+ * by calculating pheromone value
+ * if no vertices are available 
+ * then should go in dead_end state
+ */
+void make_move(struct _graph* graph,struct _ant* ant){
+	// not implemented yet
+	
+}
+
+// freeing struct _ant data structure 
+// associated resources
+void freeing_ant(struct _ant* ant){
+	// non-complete implementation
+	free(ant->vertex_visited);
+	free(ant);
+	ant = NULL;
+}
