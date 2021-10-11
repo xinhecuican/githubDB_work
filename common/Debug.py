@@ -12,5 +12,4 @@ def info_message(msg):
 
 
 def print_traceback():
-    traceback.print_stack()
     traceback.print_exc()
