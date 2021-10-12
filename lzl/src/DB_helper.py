@@ -2,7 +2,7 @@ from _ctypes import PyObj_FromPtr
 
 import pymysql
 from common import Debug
-from lzl.src import test_data, Tables_script, trigger_script
+from lzl.src import test_data, Tables_script, trigger_script, Index_script
 
 
 class DB_helper():
@@ -132,6 +132,11 @@ class DB_helper():
         datas = [e for e in dir(test_data) if not e.startswith("_")]
         for data in datas:
             self.insert(data[:-5], getattr(test_data, data))
+
+    def insert_all_index(self):
+        index_name = [e for e in dir(Index_script) if not e.startswith("_") and e.startswith("trigger")]
+        for index in index_name:
+            self.run(getattr(Index_script, index), True)
 
 
 def print_sql(datas, cols=None):

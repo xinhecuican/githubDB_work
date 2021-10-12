@@ -3,13 +3,14 @@ from PyQt5.QtGui import QPalette, QPixmap
 from PyQt5.QtWidgets import QWidget, QPushButton, QToolButton, QVBoxLayout, QLabel, QHBoxLayout, QTableView, \
     QHeaderView, QTableWidget, QTableWidgetItem, QCommandLinkButton
 
-from zzr.src.Helper import Widget_style
+from zzr.src.Helper import Widget_style, Window_manager
 
 
 class Table_widget(QWidget):
 
     def __init__(self, table_name, row_count, cols_info):
         super(Table_widget, self).__init__()
+        self.name =  table_name
         self.cols_info = cols_info
         self.setMinimumSize(30, 30)
         self.base_layout = QVBoxLayout()
@@ -19,6 +20,7 @@ class Table_widget(QWidget):
         self.setStyleSheet(Widget_style.commandlink_button_style)
         self.name_label = QCommandLinkButton()
         self.name_label.setText(table_name)
+        self.name_label.clicked.connect(self.on_button_click)
         self.count_label = QLabel()
         self.count_label.setText("行数: " + str(row_count))
 
@@ -46,6 +48,9 @@ class Table_widget(QWidget):
         # self.show_button.clicked.connect(lambda: self.on_show_button_click())
         # self.base_layout.addWidget(self.show_button)
         self.adjustSize()
+
+    def on_button_click(self):
+        Window_manager.change_window("Table_panel", [self.name])
 
     def on_show_button_click(self):
 

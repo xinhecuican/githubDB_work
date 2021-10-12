@@ -1,12 +1,18 @@
 import datetime
+import os
 from typing import Dict
 
+import requests as requests
+import urllib3
 from PyQt5.QtCore import Qt, QSize
-from PyQt5.QtGui import QPixmap, QIcon
+from PyQt5.QtGui import QPixmap, QIcon, QCloseEvent
 from PyQt5.QtWidgets import QVBoxLayout, QLabel, QHBoxLayout, QWidget, QCommandLinkButton, QGridLayout, QLayout, \
     QPushButton, QScrollArea, QTabWidget, QToolButton, QMenu, QWidgetAction, QLineEdit, QListWidget, QListWidgetItem, \
     QListView, QStackedWidget, QTextEdit
+from requests.adapters import HTTPAdapter
+from urllib3 import Retry
 
+from zzr.src.Helper import Window_manager
 from zzr.src.Helper.Base_window import Base_window
 from zzr.src.Helper.Register import Registers
 import lzl.src.main as m
@@ -21,6 +27,9 @@ class Repository_panel(Base_window):
 
     def __init__(self, name):
         super().__init__()
+        self.dir_link_text = QLabel()
+        self.dir_link_text.setTextFormat(Qt.RichText)
+        self.dir_link_text.linkActivated.connect(self.on_dir_link_actived)
         self.user_data = {}
         self.parent_dir = ''
         self.directory = {}
@@ -64,6 +73,9 @@ class Repository_panel(Base_window):
         self.code_area.setWidgetResizable(True)
         self.code_area.setMinimumWidth(500)
         self.table_widget.addTab(self.code_area, "代码")
+        self.main_area_layout = QVBoxLayout()
+        self.main_area_layout.addWidget(self.dir_link_text)
+        self.main_area_layout.addWidget(self.table_widget)
         self.contributors = []
         self.contributors_layout = QVBoxLayout()
         self.language_layout = QGridLayout()
@@ -100,7 +112,7 @@ class Repository_panel(Base_window):
         self.description_widget = QWidget()
         self.description_widget.setMaximumWidth(200)
         self.description_widget.setLayout(self.description_layout)
-        self.base_layout.addWidget(self.table_widget)
+        self.base_layout.addLayout(self.main_area_layout)
         self.base_layout.addWidget(self.description_widget)
         self.data = []
         self.name = name
@@ -166,8 +178,20 @@ class Repository_panel(Base_window):
         default_branch = self.branch_data['branches'][str(self.branch_data['default_branch'])]
         file_data = m.giver.give_commit_file_info(default_branch['latest_commit_id'])
         commit_info = m.giver.give_commit_info(default_branch['latest_commit_id'])
+        self.dir_link_text.setText(f'''<a style="color: blue;" href="{self.data['name']}">{self.data['name']}</a>/''')
+        pix = QPixmap()
         commit_user_info = m.giver.give_user_info(commit_info['author'])
-        self.commit_user_label.set_pic(QPixmap(commit_user_info['description']['avatar_url']))
+        if os.path.exists('../../lhx/res/files/' + commit_user_info['name'] + '/avatar.png'):
+            pix.load('../../lhx/res/files/' + commit_user_info['name'] + '/avatar.png')
+        else:
+            url = commit_user_info['description']['avatar_url']
+            headers = {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36'}
+            myfile = requests.get(url, headers=headers)
+            open('../../lhx/res/files/' + commit_user_info['name'] + '/avatar.png', 'wb').write(myfile.content)
+            pix.load('../../lhx/res/files/' + commit_user_info['name'] + '/avatar.png')
+        pix = pix.scaled(24, 24)
+        self.commit_user_label.set_pic(pix)
         self.commit_user_label.set_text(commit_user_info['name'])
         self.commit_message_label.setText(commit_info['message'])
         self.commit_date_label.setText(str(commit_info['commit_date'].date()))
@@ -212,6 +236,26 @@ class Repository_panel(Base_window):
     def on_branch_card_click(self, id, latest_commit_id):
         pass
 
+    def on_dir_link_actived(self, link:str):
+        if link == self.data['name']:
+            self.now_dir = self.directory
+            self.parent_dir= ''
+            self.dir_link_text.setText(
+                f'''<a style="color: blue;" href="{self.data['name']}">{self.data['name']}</a>/''')
+            self.set_files(self.now_dir)
+        else:
+            datas = link.split('/')
+            self.now_dir = self.directory
+            self.parent_dir = ''
+            self.dir_link_text.setText(
+                f'''<a style="color: blue;" href="{self.data['name']}">{self.data['name']}</a>/''')
+            for i in range(len(datas)-1):
+                self.now_dir = self.now_dir[datas[i]]
+                self.parent_dir += datas[i] + "/"
+                self.dir_link_text.setText(
+                    self.dir_link_text.text() + f'''<a style="color blue;" href="{self.parent_dir}">{datas[i]}</a>/''')
+            self.set_files(self.now_dir)
+
     def file_clicked(self, item: QListWidgetItem):
         item_widget = self.file_list.itemWidget(item)
         if type(item_widget) == File_item:
@@ -220,16 +264,21 @@ class Repository_panel(Base_window):
                                 join commit_files 
                                 on commit_files.commit_id = commits.id 
                                 where commit_files.id = {item_widget.value}''')
-            with open(f"../../lhx/res/files/{self.user_data['name']}/{self.data['name']}/{data[0][0][0:7]}/{item_widget.key if self.parent_dir=='' else self.parent_dir.replace('/', '&') + '&' + item_widget.key}", 'r', encoding='utf-8') as f:
-                self.code_text.setText(f.read())
+            if not os.path.exists(f"../../lhx/res/files/{self.user_data['name']}/{self.data['name']}/{data[0][0][0:7]}/{item_widget.key if self.parent_dir=='' else self.parent_dir.replace('/', '&') + '&' + item_widget.key}"):
+                self.code_text.setText("对应文件未爬取")
+            else:
+                with open(f"../../lhx/res/files/{self.user_data['name']}/{self.data['name']}/{data[0][0][0:7]}/{item_widget.key if self.parent_dir=='' else self.parent_dir.replace('/', '&') + '&' + item_widget.key}", 'r', encoding='utf-8') as f:
+                    self.code_text.setText(f.read())
             self.stack_widget.setCurrentWidget(self.code_text)
         else:
             self.parent_dir += item_widget.text + "/"
             self.now_dir = self.now_dir[item_widget.text]
+            self.dir_link_text.setText(self.dir_link_text.text() + f'''<a style="color blue;" href="{self.parent_dir}">{item_widget.text}</a>/''')
             self.set_files(self.now_dir)
 
     def set_files(self, data: dict):
         self.file_list.clear()
+        self.stack_widget.setCurrentWidget(self.file_list)
         for (key, value) in data.items():
             if key == '__parent__':
                 continue
@@ -246,4 +295,8 @@ class Repository_panel(Base_window):
                 # item.setData(Qt.EditRole, value)
                 # item.setData(Qt.DisplayRole, 1)
                 self.file_list.setItemWidget(item, list_widget)
+
+    def closeEvent(self, a0: QCloseEvent):
+        a0.accept()
+        Window_manager.change_window("MainWindow")
 

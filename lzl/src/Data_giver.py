@@ -75,7 +75,7 @@ class Data_giver:
         :return (Array): 返回一个二维列表，第一行是列名，其他行是数据
         """
         cursor = self.helper.connection.cursor()
-        cursor.execute(f"select * from '{table_name}'")
+        cursor.execute(f"select * from {table_name}")
         col_name = []
         for cols in cursor.description:
             col_name.append(cols[0])

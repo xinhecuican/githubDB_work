@@ -25,6 +25,7 @@ class MainWindow(Base_window):
 
         self.search_box = QLineEdit(self)
         self.search_box.setPlaceholderText("请输入用户名、仓库名或表名")
+        self.search_box.returnPressed.connect(self.on_search_button_click)
         self.search_button = QToolButton(self)
         self.search_button.setIcon(QIcon("../resources/images/search.png"))
         self.search_button.clicked.connect(lambda: self.on_search_button_click())
@@ -61,7 +62,6 @@ class MainWindow(Base_window):
         if name in self.table_name:
             info = m.giver.give_table_info(name)
             self.main_area.add_widget(Table_widget(info['name'], info['rows'], info['col_info']))
-
 
         data = m.helper.run(f"select id from repository where name = '{name}'")
         if data:

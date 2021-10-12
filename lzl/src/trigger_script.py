@@ -149,6 +149,8 @@ def repository_delete(connection, states):
         cursor.execute(f"delete from labels where repository_id = {data[0]}")
         cursor.execute(f"delete from branches where repository_id = {data[0]}")
         delete(connection, "commits", f"repository_id = {data[0]}")
+    connection.commit()
+    cursor.close()
 
 
 def repository_info_insert(connection, datas):

@@ -2,10 +2,11 @@ import datetime
 from abc import ABC
 
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QPixmap, QIcon
+from PyQt5.QtGui import QPixmap, QIcon, QCloseEvent
 from PyQt5.QtWidgets import QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QToolButton, QLayout, QGridLayout, \
     QScrollArea, QLayoutItem, QFrame
 import lzl.src.main as m
+from zzr.src.Helper import Window_manager
 from zzr.src.Helper.Base_window import Base_window
 from zzr.src.Helper.Register import Registers
 from zzr.src.Repository_info.Repository_info_card import Repository_info_card
@@ -161,3 +162,7 @@ class User_info_panel(Base_window):
 
     def on_following_num_clicked(self):
         pass
+
+    def closeEvent(self, a0: QCloseEvent):
+        a0.accept()
+        Window_manager.change_window("MainWindow")

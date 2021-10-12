@@ -19,7 +19,8 @@ def _handle_errors(errors):
 
 ALL_MODULES = [("zzr.src", ["MainWindow"]),
                ("zzr.src.User_info", ["User_info_panel"]),
-               ("zzr.src.Repository_info", ["Repository_panel"])]
+               ("zzr.src.Repository_info", ["Repository_panel"]),
+               ("zzr.src", ["Table_panel"])]
 
 
 def import_all_modules_for_register(custom_module_paths=None):
